@@ -1,0 +1,70 @@
+# _quarto.yml
+# Reusable project defaults — copy this file into any new talk/report folder.
+# Individual .qmd files only need: title, date, and content.
+
+project:
+  type: default
+
+# --- Institution logos ---
+# logo-ut:      loaded from URL at render time (embedded into self-contained HTML)
+# logo-taltech: path relative to the .qmd file (copy taltech-logo.png to new projects)
+logo-ut:      "https://www.ut.ee/themes/utheme/assets/img/UT_website_logo_white_est.svg"
+logo-taltech: "taltech-logo.png"
+
+author:
+  - name: "Peeter Laas"
+    affiliation: "Institute of Technology at UT; Tallinn University of Technology"
+    email: "peeter.laas@ut.ee"
+    url: "https://peeterlaas.github.io/"
+
+date-format: "D MMMM YYYY"
+
+format:
+  # --- Slide presentations ---
+  revealjs:
+    theme: dark
+    highlight-style: github-dark
+    code-fold: false
+    code-line-numbers: true
+    slide-number: true
+    transition: slide
+    self-contained: true
+    scrollable: false
+    footer: "{{< meta author >}} · {{< meta date >}}"
+    logo: "https://www.ut.ee/themes/utheme/assets/img/UT_website_logo_white_est.svg"
+    fig-align: center
+    fig-width: 8
+    fig-height: 4.5
+
+  # --- HTML reports ---
+  html:
+    toc: true
+    toc-depth: 3
+    toc-float: true
+    embed-resources: true
+    theme: cosmo
+    highlight-style: github
+    fig-align: center
+    fig-width: 8
+    fig-height: 5
+    df-print: kable
+    code-fold: true
+    code-summary: "Show code"
+
+  # --- PDF reports ---
+  pdf:
+    toc: true
+    number-sections: true
+    fig-align: center
+    fig-width: 6
+    fig-height: 4
+
+execute:
+  echo: true
+  warning: false
+  message: false
+  cache: false         # set to true for slow computations
+
+# Shared bibliography (optional — comment out if not used)
+# bibliography: references.bib
+# csl: apa.csl

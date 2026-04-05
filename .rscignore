@@ -1,0 +1,9 @@
+# Files excluded from shinyapps.io deployment bundle
+bw_assessment_eea_datahub_1990_2024_data.csv
+index.qmd
+_quarto.yml
+deploy.R
+assets/taltech_logo_real.svg
+assets/taltech_logo2.svg
+assets/taltech_test.svg
+assets/ut_logo.png
