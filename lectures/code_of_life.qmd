@@ -1,0 +1,1117 @@
+---
+title: "Lecture 1: The code of life"
+subtitle: "MLB7052.LT: Modern Methods in Molecular Ecology"
+title-slide-attributes:
+    data-background-image: ../assets/logos/uu_sigill_right.png
+    data-background-size: contain
+    data-background-opacity: "0.25"
+author: "Peeter Laas"
+institute: "TalTech / UT Institute of Technology"
+format:
+  revealjs: 
+    theme: [serif, ../css/lectures.scss]
+    slide-number: false
+    show-slide-number: all
+    toc: true
+    toc-depth: 1
+    progress: true
+    width: 1200
+    height: 675
+    transition: slide
+    toc-title: "Modern Methods in Molecular Ecology lecture:"
+    smaller: true
+    footer: "Fall 2026"
+    logo: ../assets/logos/uu_sigill_right.png
+    header-logo: ../assets/logos/UUtopleft.png
+    self-contained: true
+filters:
+  - reveal-header
+execute:
+  echo: true
+  eval: false
+---
+
+```{r}
+#| label: setup
+#| echo: false
+#| eval: true
+
+library(dplyr)
+library(htmltools)
+library(DT)
+library(ggplot2)
+
+# Logo paths come from _quarto.yml — change once, applies everywhere.
+source("../R/course.R")
+logo_tlu     <- file.path("..", course_meta("logo-tlu"))
+logo_taltech <- file.path("..", course_meta("logo-taltech"))
+
+logos_html <- function(height = "70px") {
+  tags$div(
+    style = "display:flex; align-items:center; justify-content:center; gap:60px;",
+    tags$img(src = logo_tlu,     height = height),
+    tags$img(src = logo_taltech, height = height)
+  )
+}
+
+# Plot theme matching the light lecture template
+theme_slides <- function(base_size = 15) {
+  theme_minimal(base_size = base_size) +
+    theme(
+      plot.background  = element_rect(fill = NA, colour = NA),
+      panel.background = element_rect(fill = NA, colour = NA),
+      panel.grid       = element_line(colour = "#00000018"),
+      text             = element_text(colour = "#222222"),
+      axis.text        = element_text(colour = "#555555")
+    )
+}
+
+# --- The standard genetic code, built from first principles -----------------
+bases   <- c("T", "C", "A", "G")
+codons  <- paste0(rep(bases, each = 16), rep(rep(bases, each = 4), 4), rep(bases, 16))
+aminos  <- strsplit("FFLLSSSSYY**CC*WLLLLPPPPHHQQRRRRIIIMTTTTNNKKSSRRVVVVAAAADDEEGGGG", "")[[1]]
+gencode <- setNames(aminos, codons)
+
+translate_dna <- function(s) {
+  s  <- toupper(gsub("[^ACGTacgt]", "", s))
+  cs <- substring(s, seq(1, nchar(s) - 2, 3), seq(3, nchar(s), 3))
+  paste(gencode[cs], collapse = "")
+}
+
+# --- Primer arithmetic ------------------------------------------------------
+gc_pct <- function(x) {
+  v <- strsplit(toupper(x), "")[[1]]
+  round(100 * sum(v %in% c("G", "C")) / sum(v %in% c("A", "C", "G", "T")), 1)
+}
+
+tm_wallace <- function(x) {
+  v <- strsplit(toupper(x), "")[[1]]
+  2 * sum(v %in% c("A", "T")) + 4 * sum(v %in% c("G", "C"))
+}
+
+# --- Genome sizes (Molecular Biology of the Cell, Table 1-1) ----------------
+genomes <- tibble::tribble(
+  ~domain,     ~species,                    ~habitat,                  ~mb,      ~genes,
+  "Bacteria",  "Mycoplasma genitalium",     "human genital tract",     0.580,     468,
+  "Bacteria",  "Rickettsia prowazekii",     "lice and humans",         1.111,     834,
+  "Bacteria",  "Treponema pallidum",        "human tissues",           1.138,    1041,
+  "Bacteria",  "Aquifex aeolicus",          "hydrothermal vents",      1.551,    1544,
+  "Bacteria",  "Helicobacter pylori",       "human stomach",           1.667,    1590,
+  "Bacteria",  "Thermotoga maritima",       "hydrothermal vents",      1.860,    1877,
+  "Bacteria",  "Synechocystis sp.",         "lakes and streams",       3.573,    3168,
+  "Bacteria",  "Escherichia coli",          "human gut",               4.639,    4289,
+  "Bacteria",  "Bacillus anthracis",        "soil",                    5.227,    5634,
+  "Bacteria",  "Streptomyces coelicolor",   "soil",                    8.667,    7825,
+  "Archaea",   "Nanoarchaeum equitans",     "hot vents (parasitic)",   0.491,     552,
+  "Archaea",   "Methanococcus jannaschii",  "hydrothermal vents",      1.664,    1750,
+  "Archaea",   "Archaeoglobus fulgidus",    "hydrothermal vents",      2.178,    2493,
+  "Eukarya",   "Saccharomyces cerevisiae",  "grape skins, beer",      12.069,    6300,
+  "Eukarya",   "Caenorhabditis elegans",    "soil",                   97.000,   20000,
+  "Eukarya",   "Drosophila melanogaster",   "rotting fruit",         137.000,   14000,
+  "Eukarya",   "Arabidopsis thaliana",      "soil and air",          142.000,   26000,
+  "Eukarya",   "Homo sapiens",              "houses",               3200.000,   24000
+)
+
+domain_colours <- c(
+  "Bacteria" = "#4CAF50",
+  "Archaea"  = "#FF9800",
+  "Eukarya"  = "#2196F3"
+)
+
+rendered <- format(Sys.time(), "%Y-%m-%d %H:%M")
+```
+
+```{=html}
+<style>
+/* Collapsible "dropdown table" rows */
+.dropdown-table details {
+  border-bottom: 1px solid rgba(0,0,0,.2);
+  padding: .35em 0;
+}
+.dropdown-table summary { cursor: pointer; font-size: .85em; padding: .3em .5em; }
+.dropdown-table summary:hover { background: rgba(0,0,0,.05); }
+.dropdown-table ul, .dropdown-table p { font-size: .72em; margin: .4em 0 .6em 1.2em; }
+
+/* Figure credit line */
+.credit { font-size: 0.5em; color: #777; margin-top: 0.3em; }
+</style>
+```
+
+---
+
+## 1. About the course
+
+| Field | Specification |
+|---|---|
+| Course code | MLB7052.LT |
+| Course title | Kaasaegsed meetodid molekulaarses ökoloogias / Modern Molecular Methods in Ecology |
+| Lecture | 2 — Basics of molecular biology; introduction to molecular ecology |
+| Written exam | 70% — slides, questions, and textbooks provided |
+| Seminar presentation | 30% — one research article, 15 min (3–5 for questions), in English |
+| Paired practical | "Molecular Methods in Ecology" |
+| Lecturer | Peeter Laas, PhD — UT Institute of Technology; TalTech Department of Marine Systems |
+| Contact | peeter.laas@ut.ee · peeter.laas@taltech.ee |
+
+::: {style="margin-top:1em; font-size:0.78em; color:#777;"}
+Rendered `r rendered` · figures from *Molecular Biology of the Cell*, 5th ed., and course sources
+:::
+
+---
+
+## Today we cover
+
+::: {.incremental}
+1. **DNA and RNA** — building blocks, base pairing, the double helix, and RNA's many jobs;
+2. **The genetic code** — codons, redundancy, synonymous and non-synonymous change;
+3. **Proteins** — amino acids, four levels of structure, ribosomes at work;
+4. **Genomes** — size, gene number, chromatin packing, and epigenetic marks;
+5. **Mutation and replication** — transitions, transversions, and the modes of genetic innovation;
+6. **The first toolkit** — PCR, melting temperature, electrophoresis, Sanger sequencing;
+7. **Molecular ecology** — from allozymes to SNPs, and the rRNA tree of life.
+:::
+
+::: {.notes}
+Two halves: the molecules first, then what ecologists do with them. Everything after PCR is method; everything before it is why the method works.
+:::
+
+---
+
+# Basics of molecular biology
+
+DNA · RNA · proteins · genomes
+
+---
+
+## DNA — the building blocks
+
+![](/assets/code_of_life/p05_1.jpg){height="430px"}
+
+::: {.credit}
+(A) nucleotide · (B) DNA strand · (C) templated polymerisation · (D) double-stranded DNA · (E) the double helix
+:::
+
+---
+
+## Nucleotide chemistry
+
+![](/assets/code_of_life/p06_1.jpg){height="380px"}
+
+::: {.incremental}
+- **Purines** — adenine, guanine — two rings;
+- **Pyrimidines** — cytosine, thymine (DNA), uracil (RNA) — one ring;
+- sugar + base = **nucleoside**; add phosphates = **nucleotide**.
+:::
+
+---
+
+## Complementary base pairs
+
+::: {.columns}
+::: {.column width="52%"}
+![](/assets/code_of_life/p07_1.jpg){height="420px"}
+:::
+::: {.column width="48%"}
+The shapes and chemistry of the bases allow hydrogen bonds to form efficiently **only**:
+
+- between **A and T** — two hydrogen bonds;
+- between **G and C** — three hydrogen bonds.
+
+The bases can pair this way only if the two polynucleotide chains are **antiparallel**.
+
+::: {.callout-note}
+Three bonds vs two is the whole reason GC-rich DNA melts at a higher temperature — remember this when we reach primers and probes.
+:::
+:::
+:::
+
+---
+
+## The double helix
+
+![](/assets/code_of_life/p08_1.jpg){height="450px"}
+
+::: {.credit}
+Major and minor grooves · 2 nm diameter · 0.34 nm rise per base pair · phosphodiester backbone
+:::
+
+---
+
+## RNA vs DNA — and the types of RNA
+
+::: {.columns}
+::: {.column width="50%"}
+![](/assets/code_of_life/p09_1.jpg)
+
+**(a)** ribose instead of deoxyribose
+**(b)** uracil in place of thymine
+:::
+::: {.column width="50%"}
+![](/assets/code_of_life/p09_2.jpg)
+
+Messenger (mRNA) · ribosomal (rRNA) · transfer (tRNA)
+:::
+:::
+
+---
+
+## RNA does more than carry messages {.scrollable}
+
+![](/assets/code_of_life/p10_1.jpg){height="420px"}
+
+::: {.credit}
+siRNA, miRNA, and piRNA pathways — Großhans & Filipowicz, *Nature* 2008
+:::
+
+---
+
+## The conformation of RNA molecules
+
+::: {.columns}
+::: {.column width="55%"}
+![](/assets/code_of_life/p11_1.jpg)
+:::
+::: {.column width="45%"}
+**(A)** Nucleotide pairing between different regions of the *same* RNA chain gives the molecule a distinctive shape.
+
+**(B)** The three-dimensional structure of a real RNA — from hepatitis delta virus — that **catalyses** RNA strand cleavage.
+
+The blue ribbon is the sugar–phosphate backbone; the bars are base pairs.
+:::
+:::
+
+---
+
+## Ribosomal RNA — the workhorse marker
+
+::: {.columns}
+::: {.column width="50%"}
+![](/assets/code_of_life/p12_1.jpg){height="400px"}
+
+::: {.credit}
+*Thermus thermophilus* small-subunit rRNA
+:::
+:::
+::: {.column width="50%"}
+![](/assets/code_of_life/p12_2.jpg)
+
+The **16S rRNA** gene is ~1600 bp long and contains **nine hypervariable regions** (V1–V9) of differing conservation.
+
+::: {.callout-tip}
+Conserved stretches give you primer sites; variable stretches give you taxonomic signal. Every 16S amplicon study is a choice about which V-regions to read.
+:::
+:::
+:::
+
+---
+
+## Transfer RNA
+
+![](/assets/code_of_life/p13_1.jpg){height="400px"}
+
+**(A)** A tRNA specific for tryptophan: the amino acid sits on one end, the **anticodon** (CCA end shown) on the other, recognising the tryptophan codon in mRNA. **(B)** Its three-dimensional structure.
+
+---
+
+## The genetic code
+
+::: {.columns}
+::: {.column width="52%"}
+![](/assets/code_of_life/p14_1.jpg){height="420px"}
+:::
+::: {.column width="48%"}
+::: {.incremental}
+- A substitution that does **not** change the amino acid — thanks to redundancy — is **synonymous** (same-sense, silent);
+- a **non-synonymous** substitution corrupts the original specification of the codon;
+- **mis-sense** — the codon now specifies a different amino acid;
+- **non-sense** — the codon becomes a stop codon.
+:::
+:::
+:::
+
+---
+
+## The code, in R
+
+```{r}
+#| label: gencode
+#| echo: true
+#| eval: true
+#| classes: fragment
+
+bases   <- c("T", "C", "A", "G")
+codons  <- paste0(rep(bases, each = 16), rep(rep(bases, each = 4), 4), rep(bases, 16))
+aminos  <- strsplit("FFLLSSSSYY**CC*WLLLLPPPPHHQQRRRRIIIMTTTTNNKKSSRRVVVVAAAADDEEGGGG", "")[[1]]
+gencode <- setNames(aminos, codons)
+
+# 64 codons, 20 amino acids, 3 stops
+table(gencode) |> sort(decreasing = TRUE) |> head(6)
+
+translate_dna("ATG GCT TGG AAA TAA")
+```
+
+::: {.callout-note}
+Six codons for leucine and serine, one for methionine and tryptophan. That imbalance is what "redundancy" means in practice — and why synonymous sites accumulate change almost freely.
+:::
+
+---
+
+## Recoding a genome — a virus-resistant organism
+
+![](/assets/code_of_life/p15_1.jpg){height="400px"}
+
+Reassign the redundant codons, delete the matching tRNAs, and an invading phage can no longer translate its own proteins in the host.
+
+---
+
+## Amino acids and optical isomers
+
+![](/assets/code_of_life/p16_1.jpg){height="330px"}
+
+The α-carbon is asymmetric, so amino acids come as two mirror images (L and D). **Proteins consist exclusively of L-amino acids.**
+
+---
+
+## Families of amino acids {.scrollable}
+
+::: {.columns}
+::: {.column width="62%"}
+![](/assets/code_of_life/p17_1.jpg){height="430px"}
+:::
+::: {.column width="38%"}
+The 20 common amino acids are grouped by their **side chains**:
+
+- acidic
+- basic
+- uncharged polar
+- nonpolar
+
+Each has a three-letter and a one-letter abbreviation — alanine = Ala = A.
+
+![](/assets/code_of_life/p17_2.jpg)
+:::
+:::
+
+---
+
+## Protein structure
+
+::: {.columns}
+::: {.column width="55%"}
+![](/assets/code_of_life/p18_1.jpg)
+:::
+::: {.column width="45%"}
+![](/assets/code_of_life/p18_2.jpg){height="230px"}
+:::
+:::
+
+- **primary** — the precise order of amino acids in the chain;
+- **secondary** — weak interactions, mostly hydrogen bonding;
+- **tertiary** — folding in three dimensions (hydrophobic interactions; sometimes disulphide bridges between two Cys);
+- **quaternary** — two or more tertiary structures forming one functional protein.
+
+---
+
+## Ribosome structure
+
+::: {.columns}
+::: {.column width="50%"}
+![](/assets/code_of_life/p19_1.jpg){height="360px"}
+:::
+::: {.column width="50%"}
+The ribosome has a **small** and a **large** subunit.
+
+Subunit and rRNA sizes are given as a **sedimentation coefficient** *S* (Svedberg), which depends on relative molecular mass *and* shape.
+
+::: {.callout-warning}
+S values do not add up: 30S + 50S = **70S**, not 80S. Sedimentation is not mass.
+:::
+:::
+:::
+
+---
+
+## Coding genes (animals)
+
+![](/assets/code_of_life/p20_1.jpg){height="420px"}
+
+::: {.credit}
+Hulley J. & Holland P., *Nature* 2004 — vertebrates converge on ~20,000–25,000 protein-coding genes, and so do *Ciona* and *C. elegans*
+:::
+
+---
+
+## DNA → RNA → proteins
+
+::: {.columns}
+::: {.column width="45%"}
+![](/assets/code_of_life/p21_1.jpg){height="400px"}
+:::
+::: {.column width="55%"}
+![](/assets/code_of_life/p21_2.jpg)
+
+Life as an **autocatalytic process**: polynucleotides carry the *sequence information*, proteins provide the *catalytic function*, and together — through a complex set of chemical reactions — they make more of both.
+:::
+:::
+
+---
+
+## The ribosome at work
+
+::: {.columns}
+::: {.column width="33%"}
+![](/assets/code_of_life/p22_1.jpg)
+:::
+::: {.column width="33%"}
+![](/assets/code_of_life/p22_2.jpg)
+:::
+::: {.column width="33%"}
+![](/assets/code_of_life/p22_3.jpg)
+:::
+:::
+
+The ribosome moves along the mRNA, capturing tRNAs that match the codons and joining their amino acids into a protein chain. **The mRNA specifies the sequence of amino acids.**
+
+---
+
+## Controlling gene read-out by environmental signals {.scrollable}
+
+::: {.columns}
+::: {.column width="52%"}
+![](/assets/code_of_life/p23_1.jpg){height="430px"}
+:::
+::: {.column width="48%"}
+Regulatory DNA lets gene expression be controlled by **regulatory proteins** (e.g. transcription factors) — which are themselves the products of other genes.
+
+The signal may, for example, trigger attachment of a **phosphate group** to the regulatory protein, altering its chemical properties:
+
+![](/assets/code_of_life/p23_2.jpg)
+:::
+:::
+
+::: {.notes}
+This is the hinge between molecular biology and ecology: the environment is not just a selective filter, it is an input to the expression machinery on a timescale of minutes.
+:::
+
+---
+
+## Genome sizes and gene numbers {.scrollable}
+
+```{r}
+#| label: genome-table
+#| echo: false
+#| eval: true
+
+genomes |>
+  mutate(kb = round(mb * 1000)) |>
+  select(domain, species, habitat, kb, genes) |>
+  datatable(
+    extensions = "Buttons",
+    options    = list(
+      dom        = "Bfrtip",
+      buttons    = list(
+        list(extend = "csv",   text = "Download CSV"),
+        list(extend = "excel", text = "Download Excel")
+      ),
+      pageLength = 8,
+      order      = list(list(3, "asc")),
+      scrollY    = "320px",
+      scrollCollapse = TRUE
+    ),
+    filter   = "top",
+    rownames = FALSE,
+    colnames = c("Domain", "Species", "Habitat", "Genome (kb)", "Coding genes")
+  ) |>
+  formatStyle(
+    "domain",
+    backgroundColor = styleEqual(names(domain_colours), unname(domain_colours)),
+    color = "white", fontWeight = "bold"
+  )
+```
+
+---
+
+## Genome size is not gene number
+
+```{r}
+#| label: genome-plot
+#| echo: true
+#| eval: true
+#| fig-height: 4.2
+
+ggplot(genomes, aes(mb, genes, colour = domain)) +
+  geom_point(size = 3.5, alpha = 0.9) +
+  ggrepel::geom_text_repel(aes(label = species), size = 3, show.legend = FALSE) +
+  scale_x_log10(labels = scales::comma) +
+  scale_colour_manual(values = domain_colours) +
+  labs(x = "genome size (Mb, log scale)", y = "protein-coding genes", colour = NULL) +
+  theme_slides()
+```
+
+---
+
+## Genome sizes compared
+
+::: {.columns}
+::: {.column width="55%"}
+![](/assets/code_of_life/p26_1.jpg)
+:::
+::: {.column width="45%"}
+The human genome contains **1000×** as many nucleotide pairs as a typical bacterium, **20×** as many genes, and about **10,000×** as much noncoding DNA.
+
+~98.5% of the human genome is noncoding, against 11% of *E. coli*.
+:::
+:::
+
+---
+
+## Packing of the chromatin fibre
+
+::: {.columns}
+::: {.column width="40%"}
+![](/assets/code_of_life/p27_1.jpg){height="420px"}
+:::
+::: {.column width="60%"}
+![](/assets/code_of_life/p27_2.jpg)
+
+![](/assets/code_of_life/p27_3.jpg)
+
+::: {.credit}
+2 nm double helix → nucleosomes → 30 nm fibre → 300 nm loops → 700 nm → 1400 nm mitotic chromosome
+:::
+:::
+:::
+
+---
+
+## Euchromatin and heterochromatin
+
+::: {.columns}
+::: {.column width="45%"}
+![](/assets/code_of_life/p27_4.jpg){height="380px"}
+:::
+::: {.column width="55%"}
+![](/assets/code_of_life/p28_1.jpg)
+
+Modification of DNA and histone proteins:
+
+- **methylation** packs nucleosomes tightly — DNA inaccessible, gene inactive;
+- **acetylation** loosens the packing — DNA accessible, gene active.
+:::
+:::
+
+---
+
+## Human chromosomes
+
+::: {.columns}
+::: {.column width="45%"}
+![](/assets/code_of_life/p29_1.jpg){height="420px"}
+:::
+::: {.column width="55%"}
+![](/assets/code_of_life/p29_2.jpg){height="420px"}
+:::
+:::
+
+::: {.credit}
+Chromosome 22: ~48 × 10⁶ bp → 10% of an arm ≈ 40 genes → 1% ≈ 4 genes → one gene of 3.4 × 10⁴ bp
+:::
+
+---
+
+## Mutations
+
+::: {.columns}
+::: {.column width="50%"}
+![](/assets/code_of_life/p30_1.jpg)
+
+Insertion · inversion
+:::
+::: {.column width="50%"}
+![](/assets/code_of_life/p30_2.jpg)
+
+Substitution · deletion
+:::
+:::
+
+---
+
+## Transitions and transversions
+
+::: {.columns}
+::: {.column width="45%"}
+![](/assets/code_of_life/p31_1.jpg){height="400px"}
+:::
+::: {.column width="55%"}
+- **Transitions** — purine ↔ purine (A↔G) or pyrimidine ↔ pyrimidine (C↔T): bases of similar shape;
+- **Transversions** — purine ↔ pyrimidine: one-ring for two-ring.
+
+There are **twice as many possible** transversions, yet transitions are generated **more often**. Transitions are also less likely to change the amino acid (wobble), so they persist as silent substitutions — the SNPs we later genotype.
+:::
+:::
+
+---
+
+## Ti/Tv, in R
+
+```{r}
+#| label: titv
+#| echo: true
+#| eval: true
+
+purines <- c("A", "G")
+
+classify_sub <- function(from, to) {
+  ifelse(from == to, "same",
+    ifelse((from %in% purines) == (to %in% purines), "transition", "transversion"))
+}
+
+ref <- strsplit("ACGTTGCAAGGTCCATGAC", "")[[1]]
+alt <- strsplit("ATGTTAGAAAGTACGTGAC", "")[[1]]
+
+subs <- data.frame(pos = seq_along(ref), ref, alt, type = classify_sub(ref, alt)) |>
+  filter(type != "same")
+
+subs
+table(subs$type)
+```
+
+**Ti/Tv ratio** is one of the first quality checks on any variant call set — genome-wide it should sit near 2, and much lower usually means noise.
+
+---
+
+## Modes of genetic innovation {.scrollable}
+
+::: {.columns}
+::: {.column width="45%"}
+![](/assets/code_of_life/p32_1.jpg){height="430px"}
+:::
+::: {.column width="55%"}
+::: {.incremental}
+1. **Intragenic mutation** — an existing gene is modified by sequence change, mostly through replication error;
+2. **Gene duplication** — a gene is duplicated into an initially identical pair, which may then diverge;
+3. **Segment shuffling** — two or more genes are broken and rejoined into a hybrid gene;
+4. **Horizontal transfer** — DNA moves from one cell's genome to another, even across species, in contrast to the usual vertical transfer from parent to progeny.
+:::
+:::
+:::
+
+---
+
+## DNA replication
+
+::: {.columns}
+::: {.column width="55%"}
+![](/assets/code_of_life/p33_1.jpg){height="380px"}
+:::
+::: {.column width="45%"}
+- DNA polymerases copy each of the two strands independently;
+- the strands must be unwound at a **replication fork**;
+- polymerases **cannot start without a primer** — in cells a short RNA stretch made by a primase, complementary to the template.
+
+![](/assets/code_of_life/p33_2.jpg)
+:::
+:::
+
+::: {.notes}
+"Cannot start without a primer" is the sentence PCR is built on. Everything in the next section is a way of supplying that primer deliberately.
+:::
+
+---
+
+# The first molecular toolkit
+
+PCR · melting temperature · electrophoresis · Sanger sequencing
+
+---
+
+## Polymerase chain reaction (PCR)
+
+![](/assets/code_of_life/p34_1.jpg){height="330px"}
+
+**Step 1** heat to separate strands → **Step 2** hybridisation of primers → **Step 3** DNA synthesis from primers, with polymerase and dNTPs. Repeat.
+
+---
+
+## Melting temperature (Tm)
+
+::: {.columns}
+::: {.column width="50%"}
+![](/assets/code_of_life/p35_1.jpg)
+:::
+::: {.column width="50%"}
+- The temperature at which **50% of the DNA is denatured**;
+- G–C pairs have three hydrogen bonds, A–T only two;
+- critical for **primers** (PCR) and for **probes** (hybridisation).
+:::
+:::
+
+```{r}
+#| label: primer-tm
+#| echo: true
+#| eval: true
+
+primers <- c(`27F` = "AGAGTTTGATCMTGGCTCAG", `1492R` = "TACGGYTACCTTGTTACGACTT")
+
+data.frame(
+  primer = names(primers),
+  length = nchar(primers),
+  gc_pct = sapply(primers, gc_pct),
+  tm_c   = sapply(primers, tm_wallace)   # Wallace rule: 2(A+T) + 4(G+C)
+) |> knitr::kable()
+```
+
+::: {.callout-warning}
+Degenerate positions (M, Y) are ignored here — which is exactly why the Wallace rule is a back-of-envelope estimate, not a substitute for a nearest-neighbour calculation.
+:::
+
+---
+
+## PCR — exponential in theory
+
+::: {.columns}
+::: {.column width="55%"}
+![](/assets/code_of_life/p36_1.jpg)
+:::
+::: {.column width="45%"}
+![](/assets/code_of_life/p36_2.jpg)
+
+::: {.credit}
+Animation: <https://www.gene-quantification.de/pcr-animation.gif>
+:::
+:::
+:::
+
+```{r}
+#| label: pcr-copies
+#| echo: true
+#| eval: true
+
+cycles <- 0:40
+data.frame(cycle = cycles, copies = 2^cycles) |> tail(3)
+```
+
+2⁴⁰ ≈ **1000 billion copies** — from one template, in about two hours.
+
+---
+
+## Evolution of thermal cyclers
+
+::: {.columns}
+::: {.column width="33%"}
+![](/assets/code_of_life/p37_1.jpg)
+
+An early PCR machine: three water baths
+:::
+::: {.column width="33%"}
+![](/assets/code_of_life/p37_2.jpg)
+
+1987 — the first commercial thermal cycler, the TC1
+:::
+::: {.column width="33%"}
+![](/assets/code_of_life/p37_3.jpg)
+
+A lab-on-chip cassette for PCR
+:::
+:::
+
+---
+
+## Electrophoresis
+
+::: {.columns}
+::: {.column width="45%"}
+![](/assets/code_of_life/p38_1.jpg)
+:::
+::: {.column width="55%"}
+![](/assets/code_of_life/p38_2.jpg)
+:::
+:::
+
+An **electrokinetic process** that separates charged particles in a fluid using an electric field — DNA is negatively charged, so it runs to the anode, and shorter molecules run further.
+
+---
+
+## Sanger sequencing (first generation)
+
+::: {.columns}
+::: {.column width="50%"}
+![](/assets/code_of_life/p39_1.jpg){height="380px"}
+:::
+::: {.column width="50%"}
+![](/assets/code_of_life/p39_2.jpg){height="380px"}
+
+**Terminator** nucleotides: a ddNTP has no 3′-OH, so the chain stops when one is incorporated.
+:::
+:::
+
+---
+
+## Sanger — the whole workflow
+
+::: {.columns}
+::: {.column width="55%"}
+![](/assets/code_of_life/p40_1.jpg)
+:::
+::: {.column width="45%"}
+![](/assets/code_of_life/p41_1.jpg)
+:::
+:::
+
+Denature → copy the segment → attach a primer → four polymerase reactions → grow chains to termination → denature → electrophorese and read the ladder.
+
+---
+
+# Introduction to molecular ecology
+
+From molecules back out to populations
+
+---
+
+## What is molecular ecology? {.scrollable}
+
+::: {.columns}
+::: {.column width="62%"}
+**Ecology** is the scientific study of the distribution and abundance of organisms — the outcome of interactions between individuals (inter- and intraspecific competition) and between organisms and their abiotic environments.
+
+**Molecular ecology** is interdisciplinary: it brings together molecular biology — the study of DNA, RNA, and proteins — and ecology.
+
+::: {.incremental}
+- Molecular ecology as we know it did not really exist before the **mid-1980s**;
+- the British Ecological Society (founded 1913, the oldest in the world) titled its 1991 conference at the University of East Anglia **"Genes in Ecology"**;
+- **1992** — first issue of *Molecular Ecology*;
+- **2001** — *Molecular Ecology Resources*.
+:::
+:::
+::: {.column width="38%"}
+![](/assets/code_of_life/p43_2.jpg){height="200px"}
+![](/assets/code_of_life/p43_5.jpg){height="200px"}
+![](/assets/code_of_life/p43_6.jpg){height="200px"}
+:::
+:::
+
+---
+
+## The allozyme era
+
+**Allozymes** — proteins differing in electrophoretic mobility as a result of allelic differences in the protein sequence, which ultimately reflect variation in the corresponding DNA sequence.
+
+Population genetics entered the molecular age with two 1966 papers:
+
+- *Drosophila pseudoobscura* — Lewontin & Hubby 1966;
+- humans — Harris 1966.
+
+Genetic diversity was measured in two ways:
+
+- **H** — the average proportion of loci heterozygous in an individual (heterozygosity, gene diversity);
+- **P** — the average proportion of loci polymorphic in the population (gene polymorphism).
+
+---
+
+## Allozymes and isozymes
+
+::: {.dropdown-table}
+
+<details>
+<summary><strong>Allozymes</strong> — variants of the same enzyme, same locus</summary>
+
+Variant forms of an enzyme that differ structurally but **not functionally** from other allozymes coded by different alleles **at the same locus**. Because they differ in structure, they can be separated by electrophoresis.
+
+</details>
+
+<details>
+<summary><strong>Isozymes</strong> — same function, different loci</summary>
+
+Enzymes that perform the same function but are coded by genes located at **different loci**.
+
+</details>
+
+<details>
+<summary><strong>Why phylogeneticists used them</strong></summary>
+
+Alloenzymes are common biological enzymes showing high functional conservation across phyla and kingdoms, so they were used as **molecular markers** to gauge evolutionary history and relationships between species.
+
+</details>
+
+:::
+
+---
+
+## Losing ground to DNA markers
+
+::: {.columns}
+::: {.column width="55%"}
+![](/assets/code_of_life/p46_1.jpg)
+:::
+::: {.column width="45%"}
+Since the 1960s allozymes played an ongoing role in animal and plant population studies — and then, from the mid-1990s, gave way to DNA markers.
+
+By 2008 they were below 10% of published studies; microsatellites had taken the field.
+:::
+:::
+
+---
+
+## Relative importance of genotyping strategies
+
+::: {.columns}
+::: {.column width="55%"}
+![](/assets/code_of_life/p47_1.jpg)
+:::
+::: {.column width="45%"}
+- **SNP** — single-nucleotide polymorphism;
+- **NGS** — next-generation sequencing;
+- **FLPs** — fragment length polymorphisms: RFLP, AFLP, microsatellites.
+:::
+:::
+
+---
+
+## The cost of sequencing
+
+::: {.columns}
+::: {.column width="60%"}
+![](/assets/code_of_life/p48_1.jpg)
+:::
+::: {.column width="40%"}
+Moore's Law predicts a doubling of computing power every two years. Sequencing cost followed a similar curve — until **2007**, when next-generation sequencing broke away from it entirely.
+:::
+:::
+
+::: {.notes}
+The break in this curve is why the rest of the course exists: the method stopped being the limiting factor and study design became the limiting factor.
+:::
+
+---
+
+## Ribosomal RNA: the tree of life
+
+::: {.columns}
+::: {.column width="55%"}
+![](/assets/code_of_life/p50_1.jpg)
+:::
+::: {.column width="45%"}
+Woese C., Kandler O., Wheelis M. (1990):
+*Towards a natural system of organisms: proposal for the domains Archaea, Bacteria, and Eucarya.*
+**PNAS** 87 (12) — ~6956 citations.
+
+One conserved gene, present in everything that translates, used to relate everything that lives.
+:::
+:::
+
+---
+
+## Two domains, not three? {.scrollable}
+
+::: {.columns}
+::: {.column width="45%"}
+![](/assets/code_of_life/p51_1.jpg)
+:::
+::: {.column width="55%"}
+Williams T. A. *et al.* (2020): *Phylogenomics provides robust support for a two-domains tree of life.* **Nature Ecology & Evolution** 4(1): 138–147.
+
+> "We find that eukaryotes consistently originate from within the archaea in a two-domains tree when due consideration is given to the fit between model and data."
+
+> "Heimdallarchaeota as the current best candidate for the closest archaeal relatives of the eukaryotic nuclear lineage."
+
+::: {.callout-important}
+The domain system includes no non-cellular life. In 2012 Stefan Luketa proposed a five-domain system, adding **Prionobiota** (acellular, no nucleic acid) and **Virusobiota** (acellular, with nucleic acid).
+:::
+:::
+:::
+
+---
+
+## Viruses
+
+![](/assets/code_of_life/p52_1.jpg){height="330px"}
+
+**The problem with viruses: two viruses can have nothing in common.** No shared gene, no shared genome chemistry — RNA or DNA, single- or double-stranded, naked or enveloped. There is no 16S for viruses.
+
+---
+
+## Check yourself {.scrollable}
+
+::: {.dropdown-table}
+
+<details>
+<summary>Why does a GC-rich primer have a higher Tm?</summary>
+
+Each G–C pair is held by three hydrogen bonds against two for A–T, so more energy — a higher temperature — is needed to separate the strands.
+
+</details>
+
+<details>
+<summary>Why are transitions more common than transversions, despite being fewer in kind?</summary>
+
+The molecular mechanisms that generate them (notably deamination) favour purine↔purine and pyrimidine↔pyrimidine change; and because of wobble, transitions are more often synonymous, so selection removes fewer of them.
+
+</details>
+
+<details>
+<summary>Why is 16S rRNA the marker of choice for prokaryote community work?</summary>
+
+It is universal in cellular life, functionally constrained (so it is alignable across enormous distances), ~1600 bp long, and interleaves conserved primer-binding regions with nine variable regions carrying taxonomic signal.
+
+</details>
+
+<details>
+<summary>Why did allozymes lose to DNA markers?</summary>
+
+Allozymes only see variation that changes protein charge or shape — a small, biased fraction of the variation that exists — and require fresh tissue and enzyme activity. DNA markers see silent variation too, work on degraded and archived material, and scale.
+
+</details>
+
+:::
+
+---
+
+## Key takeaways
+
+::: {.incremental}
+- **Base pairing** is chemistry, not convention — and it sets Tm, primer design, and probe specificity;
+- **redundancy in the genetic code** makes synonymous sites the neutral clock we later exploit;
+- **genome size tells you almost nothing about gene number** — noncoding DNA dominates the difference;
+- **regulation** is where the environment enters the molecular story;
+- **PCR** exists because polymerases cannot start without a primer;
+- **molecular ecology** is ~35 years old, and its markers changed as sequencing cost collapsed;
+- **rRNA rewrote the tree of life** — and the two-domain debate shows the tree is still moving.
+:::
+
+---
+
+## Reading
+
+::: {.columns}
+::: {.column width="50%"}
+![](/assets/code_of_life/p02_1.jpg){height="260px"}
+
+**Molecular Biology of the Cell**, 5th ed. — Alberts *et al.* Source of most figures in this lecture.
+:::
+::: {.column width="50%"}
+**Journals:**
+
+- *Molecular Ecology* (1992–)
+- *Molecular Ecology Resources* (2001–)
+- *Nature Ecology & Evolution*
+
+**Key papers:**
+
+- Woese, Kandler & Wheelis 1990, *PNAS* 87(12)
+- Williams *et al.* 2020, *Nat Ecol Evol* 4: 138–147
+- Lewontin & Hubby 1966; Harris 1966
+:::
+:::
+
+---
+
+## Thank you {.center}
+
+```{r}
+#| echo: false
+#| eval: true
+logos_html("60px")
+```
+
+::: {style="text-align:center; margin-top:1em;"}
+peeter.laas@ut.ee · peeter.laas@taltech.ee
+:::

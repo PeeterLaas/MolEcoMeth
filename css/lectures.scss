@@ -1,0 +1,71 @@
+@import url('https://fonts.cdnfonts.com/css/tex-gyre-adventor');
+
+/*-- scss:defaults --*/
+
+$body-bg: white;
+$body-color: black;
+$presentation-heading-font: 'TeXGyreAdventor', sans-serif;
+$presentation-heading-font-weight: 700;
+$mainFont: 'TeXGyreAdventor', sans-serif;
+
+/*-- scss:rules --*/
+
+.reveal .slide blockquote {
+  border-left: 3px solid $text-muted;
+  padding-left: 0.5em;
+}
+
+.reveal-header .header-logo {
+  display: block;
+  position: fixed;
+  top: -4.5px;
+  left: 50px;
+}
+
+.reveal .slide h2 {
+  text-align: end;
+  font-size: 1.5em;
+  color: #990000;
+  font-weight: normal;
+  padding-bottom: 50px;
+}
+
+.reveal .slide .toc-title h2 {
+  text-align: end;
+  font-size: 1.5em;
+  font-weight: 700;
+  color: #990000;
+  font-weight: normal;
+  padding-bottom: 50px;
+}
+
+.reveal .slide h1 {
+  text-align: center;
+  font-weight: normal;
+  margin-bottom: 100px;
+}
+
+.reveal .slide-logo {
+  display: block;
+  position: fixed;
+  top: unset !important;
+  left: unset !important;
+  bottom: -10px;
+  right: -10px;
+  height: 600px !important;
+  width: 600x !important;
+  max-width: unset !important;
+  max-height: unset !important;
+  opacity: 0.1;
+}
+
+.reveal #TOC h2 {
+  font-family: 'TeXGyreAdventor', sans-serif;
+  font-size: 2em;
+  font-weight: normal;
+  padding-top: 100px;
+}
+
+.reveal #TOC li {
+  font-family: 'TeXGyreAdventor', sans-serif;
+}

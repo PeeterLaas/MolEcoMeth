@@ -1,0 +1,737 @@
+---
+title: "Lecture 2: The molecular toolkit"
+subtitle: "MLB7052.LT: Modern Methods in Molecular Ecology"
+title-slide-attributes:
+    data-background-image: ../assets/logos/uu_sigill_right.png
+    data-background-size: contain
+    data-background-opacity: "0.25"
+author: "Peeter Laas"
+institute: "TalTech / UT Institute of Technology"
+format:
+  revealjs: 
+    theme: [serif, ../css/lectures.scss]
+    slide-number: false
+    show-slide-number: all
+    toc: true
+    toc-depth: 1
+    progress: true
+    width: 1200
+    height: 675
+    transition: slide
+    toc-title: "Modern Methods in Molecular Ecology lecture:"
+    smaller: true
+    footer: "Fall 2026"
+    logo: ../assets/logos/uu_sigill_right.png
+    header-logo: ../assets/logos/UUtopleft.png
+    self-contained: true
+filters:
+  - reveal-header
+editor_options: 
+  chunk_output_type: inline
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+knitr::opts_chunk$set(eval=TRUE, cache=F, include=T, echo=F, error=F,
+                      message=FALSE, comment=c(" "), width=90)
+
+# Wallace-rule primer arithmetic, used on the melting-temperature slides
+gc_pct <- function(x) {
+  v <- strsplit(toupper(x), "")[[1]]
+  round(100 * sum(v %in% c("G","C")) / sum(v %in% c("A","C","G","T")), 1)
+}
+
+tm_wallace <- function(x) {
+  v <- strsplit(toupper(x), "")[[1]]
+  2 * sum(v %in% c("A","T")) + 4 * sum(v %in% c("G","C"))
+}
+
+# Tm from the %GC formula shown on the slide (Marmur/Doty style)
+tm_gc <- function(x) {
+  v <- strsplit(toupper(x), "")[[1]]
+  round(64.9 + 41 * (sum(v %in% c("G","C")) - 16.4) / length(v), 1)
+}
+```
+
+## Today we cover
+
+::: {.incremental}
+- **electrophoresis** — agarose, polyacrylamide, DGGE, Southern blotting;
+- **allozymes** — the first molecular markers, and why they lost;
+- **PCR** — what it needs, melting temperature, qPCR, RT-qPCR, ddPCR;
+- **Sanger sequencing** — terminators, capillaries, reading a gel;
+- **fragment length polymorphisms** — RFLP, AFLP, RAPD, microsatellites, ISSR.
+:::
+
+::: {.notes}
+The through-line: every method here separates molecules by size or by charge, and reads the pattern. Once you see that, the differences are details of chemistry.
+:::
+
+# Electrophoresis
+
+## Electrophoresis principle
+
+::: {.columns}
+::: {.column width="55%"}
+- Gel electrophoresis is a simple, rapid, and sensitive analytical technique for separating **charged particles**.
+- Gels are porous; the size of the pores relative to the molecule determines whether — and how easily — it passes.
+- Separation therefore depends on **charge, size, and shape**.
+- Most biomolecules carry a net charge at any pH other than their **isoelectric point**.
+:::
+::: {.column width="45%"}
+![](/assets/lecture2/p03_2.jpg)
+:::
+:::
+
+## Two gel materials, two apparatus types
+
+::: {.columns}
+::: {.column width="50%"}
+![](/assets/lecture2/p04_2.jpg){height="250px"}
+
+**Horizontal (submarine)** — agarose, run under buffer; the standard for nucleic acids.
+:::
+::: {.column width="50%"}
+![](/assets/lecture2/p04_3.jpg){height="250px"}
+
+**Vertical** — polyacrylamide, used mostly for proteins and for high-resolution sizing.
+:::
+:::
+
+## Agarose electrophoresis
+
+::: {.columns}
+::: {.column width="52%"}
+- Agarose is a natural colloid isolated from **seaweed** — a linear polysaccharide of repeating agarobiose units (alternating 3,6-anhydrogalactose and galactose).
+- Larger pore size, so it suits molecules **above ~200 kDa**.
+- Used for both proteins and nucleic acids.
+- Typical working concentration: **1–3%**.
+:::
+::: {.column width="48%"}
+![](/assets/lecture2/p05_2.jpg)
+
+Longer molecules stay near the well; shorter ones run further towards the anode.
+:::
+:::
+
+## Seeing the DNA — gel dyes
+
+DNA dyes are what make the separation visible, during or after the run. They differ in **sensitivity**, **toxicity**, and **compatible detection** (UV or blue light).
+
+| Dye | Notes |
+|---|---|
+| Ethidium bromide (EtBr) | classic, very sensitive, intercalating — mutagenic, UV |
+| SYBR Green | high sensitivity, blue-light compatible |
+| GelGreen | designed as a safer EtBr replacement |
+| SYBR Safe | blue light, lower toxicity, routine teaching-lab choice |
+| Methylene blue | insensitive but non-toxic and visible in daylight |
+
+::: {.callout-warning}
+"Safer" is not "safe". Every intercalating dye binds DNA — including yours.
+:::
+
+## Polyacrylamide gels
+
+::: {.columns}
+::: {.column width="55%"}
+- Chains of **acrylamide** monomers cross-linked with **bisacrylamide** (N,N′-methylenebisacrylamide).
+- Pore size and resolving power depend entirely on the acrylamide : bisacrylamide concentration — normally **5–25%**.
+- Separates proteins of **5–250 kDa** and polynucleotides from **<5 to ~3000 bp**.
+- **SDS-PAGE** coats proteins with a uniform negative charge, so they separate by **mass alone**.
+:::
+::: {.column width="45%"}
+![](/assets/lecture2/p07_2.jpg)
+:::
+:::
+
+## Denaturing gradient gel electrophoresis (DGGE)
+
+::: {.columns}
+::: {.column width="45%"}
+![](/assets/lecture2/p06_2.jpg){height="380px"}
+:::
+::: {.column width="55%"}
+Polyacrylamide gels containing a **gradient of chemical denaturants** — urea and formamide.
+
+Fragments of identical length but different sequence melt at different positions in the gradient and stop migrating there. A **GC-rich clamp** on one primer keeps the fragment from melting completely.
+
+![](/assets/lecture2/p06_3.jpg){height="140px"}
+:::
+:::
+
+::: {.notes}
+DGGE was the community-fingerprinting workhorse before amplicon sequencing — one band, roughly one sequence type.
+:::
+
+## Southern blotting
+
+::: {.columns}
+::: {.column width="50%"}
+- An RFLP method that involves **no PCR amplification**.
+- Developed by **Edward M. Southern (1975)**.
+- DNA fragments are separated by electrophoresis, transferred to a **nylon membrane**, and identified by **labelled probe hybridisation**.
+- The probe is complementary to the target and carries a marker for detection.
+:::
+::: {.column width="50%"}
+![](/assets/lecture2/p08_2.jpg)
+:::
+:::
+
+## Codominant vs dominant markers
+
+::: {.columns}
+::: {.column width="55%"}
+![](/assets/lecture2/p09_2.jpg)
+:::
+::: {.column width="45%"}
+**Codominant** markers (a) discriminate homozygotes from heterozygotes — you see both alleles.
+
+**Dominant** markers (b) do not: presence of a band means "at least one copy", so *AA* and *Aa* are indistinguishable.
+
+::: {.callout-important}
+This single property decides which population-genetic statistics you are allowed to calculate.
+:::
+:::
+:::
+
+# Allozymes
+
+## The allozyme era
+
+**Allozymes** — proteins differing in electrophoretic mobility as a result of allelic differences in the protein sequence, which ultimately reflect variation in the corresponding DNA sequence.
+
+Population genetics entered the molecular age with two 1966 papers describing electrophoretically detectable variation in:
+
+i. *Drosophila pseudoobscura* — **Lewontin and Hubby 1966**;
+ii. humans — **Harris 1966**.
+
+Genetic diversity was measured in two ways:
+
+i. the average proportion of loci **heterozygous in an individual** — heterozygosity or gene diversity, **H**;
+ii. the average proportion of loci **polymorphic in the population** — gene polymorphism, **P**.
+
+## Allozymes and isozymes
+
+::: {.incremental}
+- **Allozymes** (alloenzymes) — variant forms of an enzyme that differ **structurally but not functionally**, coded by different alleles **at the same locus**.
+- **Isozymes** — enzymes performing the same function but coded by genes at **different loci**.
+- Alloenzymes are highly conserved in function across phyla and kingdoms, so phylogeneticists used them as **molecular markers** for evolutionary relationships.
+- Because they differ in structure, they can be separated by electrophoresis.
+:::
+
+## Losing ground to DNA markers
+
+::: {.columns}
+::: {.column width="55%"}
+![](/assets/lecture2/p13_2.jpg)
+:::
+::: {.column width="45%"}
+Since the 1960s allozymes played an ongoing role in animal and plant population studies — and then lost the field to DNA markers.
+
+By 2008, microsatellites carried over 80% of published studies and allozymes under 10%.
+:::
+:::
+
+## Genome sizes compared
+
+::: {.columns}
+::: {.column width="55%"}
+![](/assets/lecture2/p14_2.jpg)
+:::
+::: {.column width="45%"}
+The human genome contains **1000×** as many nucleotide pairs as a typical bacterium, **20×** as many genes, and about **10,000×** as much noncoding DNA.
+
+~98.5% of the human genome is noncoding, against 11% for *E. coli*.
+:::
+:::
+
+## Genome size and number of genes
+
+::: {.columns}
+::: {.column width="50%"}
+![](/assets/lecture2/p15_2.jpg)
+:::
+::: {.column width="50%"}
+![](/assets/lecture2/p16_2.jpg)
+:::
+:::
+
+## Genome size is not gene number
+
+```{r genome-plot, fig.height=4}
+genomes <- tibble::tribble(
+  ~domain,    ~species,                   ~mb,      ~genes,
+  "Bacteria", "Mycoplasma genitalium",    0.580,     468,
+  "Bacteria", "Helicobacter pylori",      1.667,    1590,
+  "Bacteria", "Escherichia coli",         4.639,    4289,
+  "Bacteria", "Streptomyces coelicolor",  8.667,    7825,
+  "Archaea",  "Nanoarchaeum equitans",    0.491,     552,
+  "Archaea",  "Methanococcus jannaschii", 1.664,    1750,
+  "Eukarya",  "Saccharomyces cerevisiae", 12.069,   6300,
+  "Eukarya",  "Caenorhabditis elegans",   97.000,  20000,
+  "Eukarya",  "Drosophila melanogaster",  137.000, 14000,
+  "Eukarya",  "Arabidopsis thaliana",     142.000, 26000,
+  "Eukarya",  "Homo sapiens",             3200.000, 24000
+)
+
+ggplot(genomes, aes(mb, genes, colour = domain)) +
+  geom_point(size = 3) +
+  ggrepel::geom_text_repel(aes(label = species), size = 3, show.legend = FALSE) +
+  scale_x_log10(labels = scales::comma) +
+  labs(x = "genome size (Mb, log scale)", y = "protein-coding genes", colour = NULL) +
+  theme_minimal(base_size = 14)
+```
+
+Ten thousand-fold more DNA, the same order of magnitude of genes.
+
+# PCR
+
+## DNA replication — the reason PCR works
+
+::: {.columns}
+::: {.column width="50%"}
+- DNA polymerases copy each of the two strands independently, always **5′ → 3′**.
+- The strands must be unwound at a **replication fork**.
+- Polymerases **cannot initiate synthesis without a primer** — in cells, a short RNA stretch laid down by a primase.
+
+![](/assets/lecture2/p18_3.jpg)
+:::
+::: {.column width="50%"}
+![](/assets/lecture2/p18_2.jpg)
+:::
+:::
+
+::: {.notes}
+Supply that primer yourself, from both sides, and you have PCR.
+:::
+
+## What a PCR reaction needs
+
+::: {.incremental}
+1. **Template DNA** — contains the target region the primers bind and the polymerase copies.
+2. **Primers** — short single-stranded DNA, usually **18–30 nt**, complementary to the sequences flanking the target. Forward primer binds the 5′ end of the target; reverse primer binds the 3′ end of the complementary strand.
+3. **DNA polymerase** — usually **Taq**, from *Thermus aquaticus*: heat-stable, so it survives the denaturation steps.
+4. **dNTPs** — dATP, dTTP, dCTP, dGTP: the building blocks.
+5. **Buffer and Mg²⁺** — the cofactor the polymerase cannot work without.
+:::
+
+## What a PCR reaction needs
+
+**8. Thermocycler** — precisely controls the temperature changes, cycling through three steps:
+
+| Step | Temperature | What happens |
+|---|---|---|
+| Denaturation | 94–98 °C | double-stranded DNA separates into single strands |
+| Annealing | 50–65 °C | primers bind their complementary sequences |
+| Extension | ~72 °C | polymerase adds dNTPs to the primed 3′ ends |
+
+**9. Additives (optional)** — DMSO, glycerol, or betaine help with **GC-rich** templates and secondary structure, improving efficiency and specificity under difficult conditions.
+
+## One cycle, drawn out
+
+![](/assets/lecture2/p20_2.jpg){height="240px"}
+
+```{r cycler-profile, fig.height=2.6}
+prof <- tibble::tibble(
+  t    = c(0, 2, 2, 3, 3, 4, 4, 6, 6, 7, 7, 8, 8, 10, 10, 11),
+  temp = c(95, 95, 55, 55, 72, 72, 95, 95, 55, 55, 72, 72, 95, 95, 55, 55),
+  cyc  = rep(c("cycle n", "cycle n+1"), each = 8)
+)
+
+ggplot(prof, aes(t, temp)) +
+  geom_step(linewidth = 0.9, colour = "#990000") +
+  scale_y_continuous(breaks = c(55, 72, 95), limits = c(45, 100)) +
+  labs(x = "time (min, schematic)", y = "°C") +
+  theme_minimal(base_size = 13)
+```
+
+## Melting temperature (Tm)
+
+::: {.columns}
+::: {.column width="50%"}
+![](/assets/lecture2/p21_2.jpg)
+:::
+::: {.column width="50%"}
+- The temperature at which **50% of the DNA is denatured**.
+- G–C pairs have **three** hydrogen bonds; A–T pairs only **two**.
+- Matters for **primers** (PCR) and for **probes** (hybridisation).
+
+![](/assets/lecture2/p21_3.jpg)
+
+Rule of thumb: set the annealing temperature **Ta ≈ Tm − 3…5 °C**.
+:::
+:::
+
+## Primer arithmetic
+
+```{r primer-tm, echo=TRUE}
+primers <- c(`16S-27F`  = "AGAGTTTGATCCTGGCTCAG",
+             `16S-1492R`= "TACGGCTACCTTGTTACGACTT",
+             `ITS1`     = "TCCGTAGGTGAACCTGCGG")
+
+tibble::tibble(
+  primer = names(primers),
+  length = nchar(primers),
+  gc     = sapply(primers, gc_pct),
+  tm_wallace = sapply(primers, tm_wallace),   # 2(A+T) + 4(G+C)
+  tm_gc      = sapply(primers, tm_gc),        # 64.9 + 41(GC - 16.4)/length
+  ta_suggested = sapply(primers, tm_gc) - 5
+) |> knitr::kable(digits = 1)
+```
+
+Two rules of thumb, two answers — which is why every new primer pair still needs a **gradient PCR**.
+
+## PCR is exponential
+
+::: {.columns}
+::: {.column width="55%"}
+![](/assets/lecture2/p22_2.jpg)
+:::
+::: {.column width="45%"}
+![](/assets/lecture2/p22_3.jpg)
+
+```{r pcr-copies, echo=TRUE}
+tibble::tibble(cycle = c(10, 20, 30, 40),
+               copies = 2^c(10, 20, 30, 40)) |>
+  knitr::kable(format.args = list(big.mark = " "))
+```
+
+2⁴⁰ ≈ **10¹²** copies — in theory. In practice reagents run out and the curve plateaus.
+:::
+:::
+
+## Evolution of thermal cyclers
+
+::: {.columns}
+::: {.column width="33%"}
+![](/assets/lecture2/p23_2.jpg)
+
+An early PCR machine: three water baths.
+:::
+::: {.column width="33%"}
+![](/assets/lecture2/p23_3.jpg)
+
+1987 — the first commercial thermal cycler, the TC1.
+:::
+::: {.column width="33%"}
+![](/assets/lecture2/p23_4.jpg)
+
+A lab-on-chip cassette for PCR.
+:::
+:::
+
+## qPCR
+
+::: {.columns}
+::: {.column width="55%"}
+![](/assets/lecture2/p24_2.jpg)
+:::
+::: {.column width="45%"}
+**Quantitative PCR** measures DNA *during* amplification.
+
+A DNA dye (e.g. SYBR Green) or a sequence-specific probe is added and **fluorescence is measured every cycle**.
+
+![](/assets/lecture2/p24_3.jpg)
+
+The cycle at which signal crosses the threshold (Cq) is proportional to the log of starting template.
+:::
+:::
+
+## RT-qPCR
+
+![](/assets/lecture2/p25_2.jpg)
+
+**Quantitative reverse transcription PCR** is used when the starting material is **RNA**: reverse transcriptase makes cDNA first, and the qPCR runs on that.
+
+::: {.callout-note}
+"RT" is reverse transcription, not real time. A real-time PCR from DNA is qPCR; from RNA it is RT-qPCR.
+:::
+
+## qPCR: multiplexing
+
+::: {.columns}
+::: {.column width="50%"}
+![](/assets/lecture2/p26_2.jpg)
+
+![](/assets/lecture2/p26_3.jpg)
+:::
+::: {.column width="50%"}
+![](/assets/lecture2/p26_4.jpg)
+
+Combining different **probes and fluorophores**, with different **emission filters and detectors**, lets several targets be quantified in one well.
+:::
+:::
+
+## Droplet digital PCR (ddPCR)
+
+::: {.columns}
+::: {.column width="60%"}
+![](/assets/lecture2/p27_2.jpg)
+:::
+::: {.column width="40%"}
+The reaction is split into ~20,000 **droplets**, each an independent nanoreactor. After endpoint PCR, droplets are counted as positive or negative and the starting concentration follows from the **Poisson distribution** — no standard curve.
+
+Right now: considerably **more expensive** than qPCR.
+:::
+:::
+
+## ddPCR: multiplexing
+
+![](/assets/lecture2/p28_2.jpg)
+
+Two targets, two dyes (FAM and HEX), read as **2D amplitude clusters** — each droplet is assigned to one of four classes.
+
+# Sanger sequencing
+
+## Sanger sequencing (first generation)
+
+::: {.columns}
+::: {.column width="55%"}
+![](/assets/lecture2/p29_2.jpg)
+:::
+::: {.column width="45%"}
+![](/assets/lecture2/p29_3.jpg)
+
+**"Terminator" nucleotides**: a ddNTP has no 3′-OH, so the chain stops the moment one is incorporated. A population of chains of every possible length is the result.
+:::
+:::
+
+## Capillary electrophoresis
+
+::: {.columns}
+::: {.column width="55%"}
+![](/assets/lecture2/p30_2.jpg)
+:::
+::: {.column width="45%"}
+Capillary gel electrophoresis with a **different fluorescent dye linked to each terminator nucleotide**.
+
+One capillary, one laser, one detector — and the four-colour trace we still read today.
+:::
+:::
+
+## Decoding the gel
+
+Four lanes, one per terminator. Read the ladder from the **bottom** (shortest fragment) upwards — that gives the newly synthesised strand 5′ → 3′:
+
+> Your sequence: **5′-TCGAATGTCAGG-3′**
+>
+> Template sequence: **3′-AGCTTACAGTCC-5′**
+
+::: {.callout-tip}
+The gel gives you the *synthesised* strand. The template is its reverse complement — a step people routinely forget under exam conditions.
+:::
+
+## Decode this gel
+
+::: {.columns}
+::: {.column width="55%"}
+![](/assets/lecture2/p32_2.jpg)
+:::
+::: {.column width="45%"}
+```
+ddATP  -
+ddTTP  -
+ddGTP  -
+ddCTP  -
+```
+
+Write out the sequence 5′ → 3′, then give the template strand.
+:::
+:::
+
+# Fragment length polymorphisms
+
+## Restriction nucleases
+
+::: {.columns}
+::: {.column width="50%"}
+![](/assets/lecture2/p34_2.jpg){height="330px"}
+:::
+::: {.column width="50%"}
+![](/assets/lecture2/p34_3.jpg){height="330px"}
+:::
+:::
+
+Enzymes that cut the double helix at sites defined by the **local nucleotide sequence**. *Hpa*I leaves **blunt** ends; *Eco*RI, *Hin*dIII, and *Pst*I cut in a staggered way, leaving **cohesive** ends. Because the recognition site is only **4–6 bp**, any given DNA yields a consistent set of fragments.
+
+## RFLP — restriction fragment length polymorphism
+
+::: {.columns}
+::: {.column width="50%"}
+![](/assets/lecture2/p35_2.jpg)
+:::
+::: {.column width="50%"}
+- Uses the properties of restriction nucleases; requires **separation and sizing of fragments by electrophoresis**.
+- Mutations **destroy or create** cutting sites — that is the polymorphism.
+- RFLP can start from:
+  1. total DNA extracted from samples;
+  2. specific sequences first amplified by PCR.
+:::
+:::
+
+## PCR-RFLP
+
+::: {.columns}
+::: {.column width="45%"}
+![](/assets/lecture2/p36_2.jpg){height="380px"}
+:::
+::: {.column width="55%"}
+Amplifying first and digesting afterwards adds:
+
+- **sensitivity** — tiny amounts of starting material suffice;
+- **simplicity** — no blotting, no probes, no radioactivity.
+
+A single restriction digest of a PCR product remains one of the cheapest species-diagnostic assays available.
+:::
+:::
+
+## AFLP — amplified fragment length polymorphism
+
+::: {.columns}
+::: {.column width="45%"}
+![](/assets/lecture2/p37_2.jpg){height="400px"}
+:::
+::: {.column width="55%"}
+Requires **no sequence information** from the study organism.
+
+1. Digest sample DNA with **two restriction enzymes** giving different overlapping sticky ends.
+2. Ligate double-stranded **linkers** with compatible sticky ends.
+3. PCR with primers matching the linker sequences plus **1–3 arbitrary selective nucleotides** at the 3′ end.
+
+The whole procedure is a selection in which a small, essentially random proportion of the starting DNA is amplified.
+:::
+:::
+
+## RAPD — random amplification of polymorphic DNA
+
+::: {.columns}
+::: {.column width="50%"}
+![](/assets/lecture2/p38_2.jpg)
+:::
+::: {.column width="50%"}
+A PCR in which the amplified segments are **random**: several arbitrary short primers (**8–12 nt**) are run against a large template of genomic DNA, in the hope that fragments amplify.
+
+Resolving the pattern gives a semi-unique profile.
+
+::: {.callout-warning}
+Dominant, and notoriously sensitive to template quality and cycler model — reproducibility between laboratories is the weak point.
+:::
+:::
+:::
+
+## Microsatellite markers
+
+::: {.incremental}
+- **Microsatellites** (1–10 nt motifs) and **minisatellites** (>10 nt) are subcategories of **tandem repeats**, which together with interspersed repeats make up the genome's repetitive fraction.
+- They matter because they are **unstable**: mutation rates of 10⁻³–10⁻⁶ per cell generation, up to ten orders of magnitude above point mutations.
+- SSR, STR, SSLP — the same thing under different names — occur in prokaryotes and eukaryotes, especially in eukaryotic euchromatin, in coding and noncoding, nuclear and organellar DNA.
+- They are **not randomly distributed** along the genome.
+- Mutations that escape mismatch repair create new alleles, so an SSR locus carries many alleles — making it **more informative than a SNP**.
+:::
+
+## Microsatellite markers
+
+::: {.columns}
+::: {.column width="55%"}
+![](/assets/lecture2/p40_2.jpg)
+
+![](/assets/lecture2/p40_3.jpg){height="240px"}
+:::
+::: {.column width="45%"}
+For more than a decade microsatellite loci were the **marker of choice**.
+
+Traditionally, alleles at one locus were:
+
+- **PCR amplified** with locus-specific primers in the flanking regions;
+- **sized by electrophoresis** — the allele *is* the length.
+:::
+:::
+
+## Replication slippage
+
+::: {.columns}
+::: {.column width="55%"}
+![](/assets/lecture2/p41_2.jpg)
+:::
+::: {.column width="45%"}
+**Replication slippage** is the mutational mechanism behind STRs: the nascent strand dissociates and re-anneals out of register, giving **contraction** or **expansion** by whole repeat units.
+
+The high mutation rate is exactly why many microsatellite loci show **high heterozygosity** — and why they make useful markers.
+:::
+:::
+
+## ISSR — inter-simple sequence repeats
+
+::: {.columns}
+::: {.column width="50%"}
+![](/assets/lecture2/p42_2.jpg)
+:::
+::: {.column width="50%"}
+- Highly polymorphic, relatively easy to develop, and **inexpensive**.
+- A PCR-based system using microsatellite loci across the genome — it amplifies the variation found **between two proximate microsatellite loci** with the same repeat.
+- **No sequence information** needed for the study species.
+- Weaknesses: poor reproducibility and time-consuming data analysis.
+:::
+:::
+
+## RADseq — where this is all heading
+
+::: {.columns}
+::: {.column width="60%"}
+![](/assets/lecture2/p43_2.jpg)
+:::
+::: {.column width="40%"}
+**Restriction-site associated DNA sequencing** keeps the restriction enzyme but replaces the gel with a sequencer: digest, size-select, sequence the fragments flanking each cut site, and call SNPs across thousands of loci at once.
+
+The logic of RFLP, with the throughput of NGS — which is Lecture 3.
+:::
+:::
+
+## Choosing a marker
+
+| Marker | Sequence info needed | Dominance | Loci | Main weakness |
+|---|---|---|---|---|
+| Allozymes | no | codominant | tens | sees only charge-changing variation |
+| RFLP | some | codominant | few | needs a lot of clean DNA |
+| RAPD | no | dominant | many | reproducibility |
+| AFLP | no | dominant | hundreds | dominant, complex profiles |
+| Microsatellites | yes (flanks) | codominant | tens | development cost, homoplasy |
+| SNP / RADseq | no (with RADseq) | codominant | thousands | computation, cost per sample |
+
+## Check yourself
+
+<details>
+<summary>Why does agarose separate large molecules better than polyacrylamide?</summary>
+
+Its pore size is much larger, so molecules above ~200 kDa (or above a few kb of DNA) still migrate instead of being trapped at the well.
+
+</details>
+
+<details>
+<summary>Why must Ta be set below Tm?</summary>
+
+At Tm half the duplex is melted; primers need a temperature where they stay annealed long enough for the polymerase to extend them. Too far below and they anneal to near-matches, giving non-specific product.
+
+</details>
+
+<details>
+<summary>Why are AFLP and RAPD dominant, but microsatellites codominant?</summary>
+
+AFLP and RAPD score presence or absence of a band, so a heterozygote looks like a dominant homozygote. A microsatellite locus is amplified with locus-specific primers and each allele has its own length, so both alleles are visible.
+
+</details>
+
+<details>
+<summary>Why does ddPCR not need a standard curve?</summary>
+
+It counts positive and negative droplets at endpoint and converts that fraction to a concentration through the Poisson distribution — an absolute measurement rather than a relative one.
+
+</details>
+
+## Thank you
+
+::: {.callout-important}
+peeter.laas@ut.ee · peeter.laas@taltech.ee
+:::
+
+**Next lecture:** next-generation sequencing — second generation, third generation, and what they made possible in molecular ecology.

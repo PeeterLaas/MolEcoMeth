@@ -1,0 +1,1048 @@
+---
+title: "Introduction: the course and its toolkit"
+subtitle: "MLB7052.LT: Modern Methods in Molecular Ecology"
+title-slide-attributes:
+    data-background-image: ../assets/logos/uu_sigill_right.png
+    data-background-size: contain
+    data-background-opacity: "0.25"
+author: "Peeter Laas"
+institute: "TalTech / UT Institute of Technology"
+format:
+  revealjs: 
+    theme: [serif, ../css/lectures.scss]
+    slide-number: false
+    show-slide-number: all
+    toc: true
+    toc-depth: 1
+    progress: true
+    width: 1200
+    height: 675
+    transition: slide
+    toc-title: "Modern Methods in Molecular Ecology lecture:"
+    smaller: true
+    footer: "Fall 2026"
+    logo: ../assets/logos/uu_sigill_right.png
+    header-logo: ../assets/logos/UUtopleft.png
+    self-contained: true
+    code-line-numbers: true
+filters:
+  - reveal-header
+execute:
+  echo: true
+  eval: false
+---
+
+```{r}
+#| label: locale
+#| echo: false
+#| eval: true
+# Must run in its own chunk: R parses a chunk before executing it, and the
+# Baltic site names below need a UTF-8 locale to survive parsing.
+source("../R/course.R")
+```
+
+```{r}
+#| label: setup
+#| echo: false
+#| eval: true
+
+library(btw)
+library(httr2)
+library(dplyr)
+library(htmltools)
+library(DT)
+library(leaflet)
+
+# Logo paths come from _quarto.yml — change once, applies everywhere.
+logo_tlu     <- file.path("..", course_meta("logo-tlu"))
+logo_taltech <- file.path("..", course_meta("logo-taltech"))
+
+logos_html <- function(height = "70px") {
+  tags$div(
+    style = "display:flex; align-items:center; justify-content:center; gap:60px;",
+    tags$img(src = logo_tlu,     height = height),
+    tags$img(src = logo_taltech, height = height)
+  )
+}
+
+# Small fake bathing water dataset — embedded in slides for live demos
+set.seed(42)
+bw_sample <- tibble::tibble(
+  country  = rep(c("EE", "LV", "LT", "FI", "SE"), each = 8),
+  site     = c(
+    "Pärnu rand", "Pirita rand", "Narva-Jõesuu", "Haapsalu",
+    "Võrtsjärv", "Pühajärv", "Viljandi järv", "Ülemiste",
+    "Jūrmala", "Liepāja", "Ventspils", "Saulkrasti",
+    "Engure", "Rāzna", "Lubāns", "Burtnieks",
+    "Palanga", "Klaipėda", "Neringa", "Šventoji",
+    "Trakai", "Molėtai", "Druskininkai", "Kaunas",
+    "Helsinki/Hietaranta", "Turku/Ruissalo", "Tampere/Kaukajärvi", "Oulu/Nallikari",
+    "Lahti/Mukkulan", "Jyväskylä/Äijälänranta", "Rovaniemi/Ounasranta", "Espoo/Svinö",
+    "Stockholm/Långholmen", "Göteborg/Askimsbadet", "Malmö/Ribersborg",
+    "Uppsala/Flottsund", "Västerås/Lögarängsbadet", "Örebro/Oset",
+    "Linköping/Tinnerö", "Helsingborg/Råå"
+  ),
+  type     = c(
+    "coastal","coastal","coastal","coastal","inland","inland","inland","inland",
+    "coastal","coastal","coastal","coastal","inland","inland","inland","inland",
+    "coastal","coastal","coastal","coastal","inland","inland","inland","inland",
+    "coastal","coastal","inland","coastal","inland","inland","inland","coastal",
+    "inland","coastal","coastal","inland","inland","inland","inland","coastal"
+  ),
+  quality  = sample(
+    c("Excellent","Good","Sufficient","Poor"), 40,
+    replace = TRUE, prob = c(0.55, 0.28, 0.12, 0.05)
+  ),
+  season   = sample(2020:2024, 40, replace = TRUE),
+  lon      = c(
+    24.52, 24.83, 27.97, 23.54, 25.60, 22.70, 25.60, 24.75,
+    23.77, 21.01, 21.54, 24.41, 23.15, 27.74, 26.72, 25.35,
+    21.06, 21.13, 20.95, 21.14, 24.93, 25.52, 23.97, 23.92,
+    25.00, 22.27, 23.76, 25.47, 25.66, 25.75, 25.72, 24.66,
+    18.07, 11.97, 13.00, 17.64, 16.55, 15.22, 15.62, 12.69
+  ),
+  lat      = c(
+    58.38, 59.47, 59.46, 58.95, 58.40, 57.97, 58.36, 59.44,
+    56.97, 56.51, 57.40, 57.24, 57.16, 56.51, 56.85, 57.72,
+    55.92, 55.71, 55.46, 56.02, 54.65, 55.24, 54.02, 54.90,
+    60.17, 60.45, 61.50, 65.01, 60.98, 62.24, 66.50, 60.21,
+    59.33, 57.71, 55.61, 59.86, 59.61, 59.27, 58.41, 56.05
+  )
+)
+
+# Colour palette reused in both DT and map
+quality_colours <- c(
+  "Excellent" = "#2196F3",
+  "Good"      = "#4CAF50",
+  "Sufficient"= "#FF9800",
+  "Poor"      = "#F44336"
+)
+
+# Live weather at render time
+resp <- request("https://api.open-meteo.com/v1/forecast") |>
+  req_url_query(
+    latitude  = 58.38, longitude = 26.72,
+    current   = "temperature_2m,wind_speed_10m",
+    timezone  = "Europe/Tallinn"
+  ) |>
+  req_perform() |>
+  resp_body_json()
+
+temp     <- resp$current$temperature_2m
+wind     <- resp$current$wind_speed_10m
+rendered <- format(Sys.time(), "%Y-%m-%d %H:%M")
+```
+
+
+```{=html}
+<style>
+/* Collapsible "dropdown table" rows */
+.dropdown-table details {
+  border-bottom: 1px solid rgba(0,0,0,.2);
+  padding: .35em 0;
+}
+.dropdown-table summary { cursor: pointer; font-size: .85em; padding: .3em .5em; }
+.dropdown-table summary:hover { background: rgba(0,0,0,.05); }
+.dropdown-table ul, .dropdown-table p { font-size: .72em; margin: .4em 0 .6em 1.2em; }
+</style>
+```
+
+---
+
+## 1. General information
+
+| Field | Proposed specification |
+|---|---|
+| Course code | MLB7052.LT |
+| Course title | Kaasaegsed meetodid molekulaarses ökoloogias / Modern Molecular Methods in Ecology |
+| Semester | 2026/2027 autumn |
+| Language | Estonian teaching; English reading and software documentation |
+| Credits | 10 ECTS, proposed expansion from 6 ECTS |
+| Contact hours | 102 hours: lectures, seminars, demonstrations, and practicals |
+| Independent work | 158 hours |
+| Prerequisites | MLK6922.LT Biochemistry; MLB6013.LT Genetics |
+| Lecturer | Peeter Laas |
+| Assessment | Graded: A, B, C, D, E, F |
+| Intended audience | Advanced undergraduate and master's students in molecular ecology, biology, biotechnology, and related fields |
+
+::: {style="margin-top:1em; font-size:0.78em; color:#777;"}
+Empty folder → 35 slides → shinyapps.io · `r temp`°C in Tartu at render time
+:::
+
+---
+
+##  Course purpose
+
+::: {.incremental}
+1. understand the molecular principles behind DNA, RNA, proteins, genomes, gene expression, and molecular phenotypes;
+2. understand the strengths, weaknesses, and appropriate uses of major molecular methods in ecology and evolutionary biology;
+3. develop practical competence in sample design, nucleic-acid extraction, quantification, PCR, electrophoresis, sequencing, and basic computational analysis;
+4. learn to connect molecular observations with ecological interactions, population structure, phylogeny, and environmental change;
+5. develop reproducible habits for controls, contamination prevention, metadata, quality assessment, and scientific reporting;
+6. design an end-to-end molecular study and defend the limitations of the proposed inference.
+:::
+
+---
+
+## The main aim
+
+The course develops a working understanding of molecular biology and its use in ecological and evolutionary research. Students move from the molecular basis of information to a defensible study design:
+
+**biological question -> sample -> molecule -> assay -> sequence or measurement -> computation -> inference**
+
+::: {.notes}
+The goal isn't to replace thinking — it's to reduce friction. You still need to understand the code.
+:::
+
+---
+
+# The course
+
+---
+
+## 5. Course content {.scrollable}
+
+::: {.dropdown-table}
+
+<details>
+<summary><strong>Block I</strong> — Foundations and measurement</summary>
+
+- evolution, scientific reasoning, and molecular biology as a way of knowing;
+- chemical properties of DNA, RNA, proteins, buffers, enzymes, and molecular interactions;
+- information flow, replication, mutation, repair, recombination, transcription, translation, and regulation;
+- sample representativeness, preservation, extraction, quantification, inhibition, and contamination.
+
+</details>
+
+<details>
+<summary><strong>Block II</strong> — The molecular toolkit</summary>
+
+- electrophoresis, restriction analysis, Southern blotting, PCR, qPCR, ddPCR, Sanger sequencing, probes, FISH, fluorescence, and flow cytometry;
+- molecular markers, barcoding, metabarcoding, allozymes, RFLP, microsatellites, and SNPs;
+- Illumina, PacBio, Oxford Nanopore, library preparation, read quality, assembly, annotation, and data management.
+
+</details>
+
+<details>
+<summary><strong>Block III</strong> — Genomes and molecular phenotypes</summary>
+
+- comparative genomics, assembly, annotation, and public sequence databases;
+- transcriptomics, non-coding RNA, stage- and condition-specific regulation, epigenetics, and functional genomics;
+- proteomics, quantitative proteomics, protein interactions, post-translational modification, and molecular phenotypes;
+- the cell biology behind the traits we measure: life-cycle stages, secretion, transport, and cellular responses to the environment.
+
+</details>
+
+<details>
+<summary><strong>Block IV</strong> — Ecology, evolution, and application</summary>
+
+- phylogeny, phylogeography, population genetics, coalescence, and community-level inference;
+- species interactions, symbiosis, host-associated microbiota, and environmental monitoring;
+- CRISPR, LAMP, microfluidics, lab-on-chip, biosensing, and field-deployable diagnostics;
+- an integrated student capstone from question to inference.
+
+</details>
+
+:::
+
+
+## 11. Proposed workload model
+
+| Activity | Hours |
+|---|---:|
+| Lectures and demonstrations | 30 |
+| Seminars and guided data interpretation | 24 |
+| Practical and computational laboratories | 48 (12 x 4 h sessions) |
+| Reading and preparation | 42 |
+| Practical reports and data analysis | 48 |
+| Capstone project | 48 |
+| Final assessment preparation | 20 |
+| **Total** | **260** |
+
+---
+
+## Copilot limits
+
+```r
+# number of timesteps to iterate the model
+t_max = 10
+# initial population size
+N0 = 20
+# population growth rate
+r = 0.2
+# initialise an empty vector to store the population size
+
+# over time
+Ns = numeric(t_max+1)
+# set the population size in the first timestep to N0
+Ns[1] = N0
+# execute a loop from time t=1 to t=t_max, iterating the
+
+for (t in 1:t_max)
+Ns[t+1] = (1+r)*Ns[t]
+# plot the results
+plot(0:t_max,Ns,pch=19,type='o',xlab='t',ylab='N',
+ylim=c(0,max(Ns)))
+```
+
+
+## Contact
+
+
+::: {.callout-important}
+email: peeter.laas@ut.ee
+:::
+
+## 10. Responsible use of AI
+
+AI tools may be used for brainstorming, terminology support, code explanation, language editing, and generating candidate analysis plans. Students remain responsible for factual accuracy, citations, code correctness, data provenance, and the final interpretation. AI-generated text or code used in a submitted assignment must be declared briefly. AI must not be used to fabricate observations, replace required practical work, or conceal the origin of an analysis.
+
+## 11. Proposed workload model
+
+| Activity | Hours |
+|---|---:|
+| Lectures and demonstrations | 30 |
+| Seminars and guided data interpretation | 24 |
+| Practical and computational laboratories | 48 (12 x 4 h sessions) |
+| Reading and preparation | 42 |
+| Practical reports and data analysis | 48 |
+| Capstone project | 48 |
+| Final assessment preparation | 20 |
+| **Total** | **260** |
+
+## 12. Administrative implementation note
+
+The existing 6 ECTS course can be retained as a compact version by selecting Weeks 1-8, 13, and 15, retaining the current practical sequence, and reducing the capstone. The 10 ECTS version should be adopted only after the timetable, laboratory capacity, staffing, assessment load, and programme-level credit requirements have been confirmed.
+## What you can now ask Claude Code
+
+With R connected as MCP:
+
+```
+> What data frames are currently in my R environment?
+
+> Describe the structure of the `survey_data` object
+
+> What does the REML argument in lme4::lmer do?
+
+> My session has palmerpenguins loaded — fit a mixed
+  model of bill length by species + island
+```
+
+Claude calls your **live R session** for answers — no copy-paste.
+
+---
+
+## Saving tokens — why it matters
+
+LLM APIs charge per token. A sloppy workflow burns money fast:
+
+| Habit | Approx tokens |
+|---|---|
+| link | https://www.stt.msu.edu/~melfi/STT180Text/classification.html#knn-and-the-iris-data |
+| `btw(my_df)` — one data frame | 200–600 |
+| Pasting entire help page | 3,000–8,000 |
+| `btw_tool_docs_help_page("pkg","fn")` | 400–1,200 |
+| Re-explaining project context every session | 500–2,000 |
+| `CLAUDE.md` project file (read once) | 200–500 |
+
+**Rule: describe only what the model needs to answer this specific question.**
+
+---
+
+## Token-saving techniques with btw
+
+```r
+# app.R version 1
+
+library(shiny)
+
+names.df <- read.csv("https://www.finley-lab.com/files/data/name_list.csv")
+
+# Define UI
+ui <- fluidPage(
+  
+  titlePanel("Random Names Analysis"),
+  
+  sidebarLayout(
+    
+    sidebarPanel("our inputs will be here"),
+    
+    mainPanel("our output will appear here")
+  )
+)
+
+# Define server logic
+server <- function(input, output) {}
+
+# Create Shiny app
+shinyApp(ui = ui, server = server)
+```
+
+---
+
+## CLAUDE.md — your project memory
+
+Create a `CLAUDE.md` file in your project root. Claude Code reads it at every session start — **you never re-explain your project**.
+
+```markdown
+# CLAUDE.md
+
+## Project
+EEA bathing water quality analysis, 1990–2024.
+Main data: data/bw_assessment_eea_datahub_1990_2024_data.csv (672k rows)
+
+## Key columns
+- `countryCode`: ISO2 country code
+- `season`: year of assessment
+- `quality`: EEA quality class (Excellent / Good / Sufficient / Poor)
+- `bathingWaterType`: coastalBathingWater | inlandBathingWater
+
+## Conventions
+- Use dplyr + ggplot2
+- Save all plots to plots/ as PNG at 300 dpi
+- All analysis scripts source data/load_data.R first
+```
+
+Zero tokens spent re-orienting the agent.
+
+---
+
+## `btw` — other useful functions
+
+```r
+# Describe one data frame (most common use)
+btw(my_df)
+
+# Targeted function documentation
+btw_tool_docs_help_page("lme4", "lmer")
+
+# All vignettes for a package
+btw_tool_docs_available_vignettes("sf")
+
+# What's in my environment right now?
+btw_tool_env_describe_environment()
+
+# CRAN page and metadata for a package
+btw_tool_cran_package("ggplot2")
+
+# Search CRAN by topic
+btw_tool_cran_search("spatial interpolation")
+```
+
+---
+
+# Quarto templates
+
+Reusable YAML so you never set up the same slide twice
+
+---
+
+## The YAML repetition problem
+
+Every new presentation you write this from scratch:
+
+```yaml
+---
+title: "My Talk"
+author: "Peeter"           # ← type this every time
+institute: "UT / TalTech"  # ← type this every time
+format:
+  revealjs:
+    theme: dark            # ← set this every time
+    slide-number: true     # ← set this every time
+    self-contained: true   # ← forget this every time
+---
+```
+
+**Solution:** a project-level `_quarto.yml` that sets defaults once.
+
+---
+
+## `_quarto.yml` — your personal template
+
+```yaml
+# _quarto.yml — copy to any new project folder
+author:
+  - name: "Peeter"
+    affiliation: "University of Tartu / TalTech"
+    email: "peeter@ut.ee"
+
+format:
+  revealjs:
+    theme: dark
+    highlight-style: github-dark
+    slide-number: true
+    transition: slide
+    self-contained: true
+    logo: assets/ut_logo.svg
+    footer: "{{{< meta author >}}} · {{{< meta date >}}}"
+  html:
+    toc: true
+    embed-resources: true
+
+execute:
+  warning: false
+  message: false
+```
+
+Any `.qmd` in this project inherits everything. New talks need only:
+
+```yaml
+---
+title: "My New Talk"
+date: today
+---
+```
+
+---
+
+## Live data in slides — weather example
+
+Slides fetch real data at **render time**. No manual updates ever.
+
+```{r}
+#| label: weather-demo
+#| echo: true
+#| eval: false
+
+library(httr2)
+
+resp <- request("https://api.open-meteo.com/v1/forecast") |>
+  req_url_query(
+    latitude  = 58.38,   # Tartu
+    longitude = 26.72,
+    current   = "temperature_2m,wind_speed_10m",
+    timezone  = "Europe/Tallinn"
+  ) |>
+  req_perform() |>
+  resp_body_json()
+
+temp <- resp$current$temperature_2m
+wind <- resp$current$wind_speed_10m
+```
+
+Then in slide text:
+
+```markdown
+Temperature in Tartu right now: **`{r} temp`°C**, wind `{r} wind` km/h
+```
+
+**This title slide already does this** — look at the subtitle line.
+
+---
+
+## Template workflow with AI
+
+```bash
+# New talk in 30 seconds
+mkdir ~/talks/my-new-talk && cd ~/talks/my-new-talk
+cp ~/Documents/R/RaiS/_quarto.yml .
+claude
+```
+
+```
+> Create a 10-slide RevealJS presentation titled
+> "Spatial Analysis of Estonian Peatlands".
+> My identity and formatting are in _quarto.yml.
+> Include: intro, methods, 3 results slides, discussion.
+> Add a ggplot2 map example using sf.
+```
+
+Claude reads `_quarto.yml`, inherits your name, affiliation, and all formatting. You write zero boilerplate.
+
+---
+
+# LM Studio
+
+Offline AI — your scripting partner on a plane, in the field, or on an airgapped server
+
+---
+
+## Why run a local LLM?
+
+::: {.incremental}
+- **No internet** — airplane, fieldwork, rural server room
+- **Privacy** — sensitive data that can't leave your machine
+- **No API costs** — unlimited queries once model is downloaded
+- **Reproducibility** — pin to a specific model version, forever
+:::
+
+---
+
+## LM Studio — what it is
+
+LM Studio is a desktop app + CLI that:
+
+- Downloads models from Hugging Face with one click
+- Runs them locally via `llama.cpp` (CPU) or GPU acceleration
+- Exposes an **OpenAI-compatible API** on `localhost:1234`
+- Ships with `lms` — a full command-line interface
+
+**Download:** [lmstudio.ai](https://lmstudio.ai) — Mac, Windows, Linux
+
+---
+
+## Installing the `lms` CLI
+
+::: {.columns}
+::: {.column width="50%"}
+**Mac / Linux:**
+
+```bash
+# LM Studio app → Install CLI tools
+# Or manually:
+export PATH="$PATH:$HOME/.lmstudio/bin"
+
+lms --version
+```
+:::
+::: {.column width="50%"}
+**Windows:**
+
+```powershell
+# LM Studio app → Install CLI tools
+# (adds to user PATH automatically)
+
+lms --version
+```
+:::
+:::
+
+---
+
+## `lms` — essential commands
+
+```bash
+lms server start                          # start the API server
+lms ls                                    # list downloaded models
+lms get "qwen2.5-coder-7b-instruct"      # download a model
+lms load qwen2.5-coder-7b-instruct-q4_k_m  # load into memory
+lms chat                                  # interactive terminal chat
+lms status                                # check what's running
+lms server stop                           # stop the server
+```
+
+---
+
+## Choosing your model — by hardware
+
+| Hardware | Recommended model | Size |
+|---|---|---|
+| CPU only — Linux / Win | `Phi-4-mini` Q4 | ~2.5 GB |
+| CPU only — Linux / Win | `Gemma-3-4B-IT` Q4 | ~3 GB |
+| 8 GB VRAM — Linux / Win | `Qwen2.5-Coder-7B` Q4 | ~5 GB |
+| 16 GB VRAM — Linux / Win | `Qwen2.5-Coder-14B` Q4 | ~10 GB |
+| 24 GB VRAM — Linux / Win | `Mistral-Small-22B` Q4 | ~18 GB |
+| Mac 8 GB (M-series) | `Phi-4-mini` Q4 | ~2.5 GB |
+| Mac 16 GB (M-series) | `Qwen2.5-Coder-7B` Q4 | ~5 GB |
+| Mac 32 GB+ (M-series) | `Qwen2.5-Coder-14B` Q4 | ~10 GB |
+
+::: {.callout-note}
+Apple Silicon uses unified memory — a 32 GB MacBook handles what a 32 GB VRAM GPU handles.
+**Q4_K_M** is the best quality-per-GB quantisation for all platforms.
+:::
+
+---
+
+## Step-by-step: CPU only (Linux / Windows)
+
+```bash
+# 1. Install LM Studio from lmstudio.ai, then:
+lms server start
+
+# 2. Download a small but capable model (~2.5 GB)
+lms get "microsoft/phi-4-mini-instruct-gguf"
+
+# 3. Load it
+lms load phi-4-mini-instruct-q4_k_m
+
+# 4. Test in terminal
+lms chat
+# > Write an R function that reads a CSV and returns
+# > summary statistics per numeric column
+
+# 5. Confirm the API is up
+curl http://localhost:1234/v1/models
+```
+
+Total: ~10 min including download.
+
+---
+
+## Step-by-step: NVIDIA GPU (Linux / Windows)
+
+```bash
+# 1. Verify CUDA
+nvidia-smi
+
+# 2. Install LM Studio — auto-detects CUDA
+
+# 3. Download coder model (~5 GB)
+lms get "qwen2.5-coder-7b-instruct-gguf"
+
+# 4. Load — offload all layers to GPU
+lms load qwen2.5-coder-7b-instruct-q4_k_m \
+  --gpu-layers 999
+
+# 5. Chat or query via API
+lms chat
+
+# 6. Monitor GPU while running
+watch -n1 nvidia-smi
+```
+
+---
+
+## Step-by-step: Mac Apple Silicon
+
+```bash
+# 1. Install LM Studio (Apple Silicon native — uses Metal)
+
+# 2. Download
+lms get "qwen2.5-coder-7b-instruct-gguf"
+
+# 3. Load (Metal acceleration is automatic)
+lms load qwen2.5-coder-7b-instruct-q4_k_m
+
+# 4. Test
+lms chat
+
+# 5. Monitor: Activity Monitor → Window → GPU History
+```
+
+---
+
+## Using LM Studio with R
+
+LM Studio exposes an OpenAI-compatible API on `localhost:1234`:
+
+```r
+library(httr2)
+
+ask_local_llm <- function(prompt, model = "local-model") {
+  request("http://localhost:1234/v1/chat/completions") |>
+    req_body_json(list(
+      model    = model,
+      messages = list(list(role = "user", content = prompt))
+    )) |>
+    req_perform() |>
+    resp_body_json() |>
+    (\(r) r$choices[[1]]$message$content)()
+}
+
+ask_local_llm("Write a dplyr pipeline to count NAs per column")
+```
+
+No API key. No internet. No cost per query.
+
+---
+
+## Using LM Studio with Claude Code offline
+
+Point Claude Code at your local server:
+
+```bash
+export ANTHROPIC_BASE_URL=http://localhost:1234/v1
+export ANTHROPIC_API_KEY=local   # any non-empty string works
+
+claude
+```
+
+::: {.callout-warning}
+Local models are weaker than Claude — great for focused tasks (fix this function, write a plot) but struggle with complex multi-file reasoning. Use offline; switch back when you have internet.
+:::
+
+---
+
+# Practical exercises
+
+---
+
+## Exercise 1 — Copilot warm-up (10 min)
+
+In RStudio with Copilot enabled:
+
+1. Open a new R script
+2. Write this comment — let Copilot complete the rest:
+
+```r
+# Load mtcars, fit a linear model of mpg ~ wt + cyl,
+# and plot residuals vs fitted values
+```
+
+3. **Tab** to accept, **Esc** to reject, **Alt+]** to see alternatives
+4. Run the code — does it actually work?
+
+**Goal:** get comfortable with the accept/reject cycle before trusting it.
+
+---
+
+## Exercise 2 — Claude Code session (20 min)
+
+```bash
+mkdir ~/ai-exercise && cd ~/ai-exercise
+git init && claude
+```
+
+Ask Claude to:
+
+1. Create `data/sample.csv` with student grades (name, subject, score)
+2. Write `analysis.R` that reads it and produces a summary table
+3. Create a ggplot bar chart → `plots/grades.png`
+4. Write a `report.qmd` that includes both
+
+**Inspect each file before accepting. Run `git diff` after each edit. Render the QMD.**
+
+---
+
+## Exercise 3 — btw + API key (10 min)
+
+```r
+# 1. Add your API key
+usethis::edit_r_environ()
+# ANTHROPIC_API_KEY=sk-ant-api03-...
+# Save → restart R
+
+# 2. Verify
+Sys.getenv("ANTHROPIC_API_KEY")
+
+# 3. Use btw with real data
+library(btw)
+library(palmerpenguins)
+penguins_problem <- penguins
+penguins_problem$body_mass_g[sample(nrow(penguins), 20)] <- NA
+btw(penguins_problem)   # copies to clipboard
+```
+
+Paste into Claude.ai:
+
+> *"Impute missing `body_mass_g` using the median within each species. dplyr."*
+
+---
+
+## Getting the dataset
+
+The EEA bathing water dataset (1990–2024) is **99 MB** — too large to embed in these slides.
+
+Scan to download:
+
+::: {style="text-align:center;"}
+![](/assets/photos/QRlink_to_driveshare.png){height=320px}
+
+`bw_assessment_eea_datahub_1990_2024_data.csv`
+672,630 rows · 13 columns · all European bathing waters
+:::
+
+---
+
+## Demo — downloadable table {.scrollable}
+
+```{r}
+#| echo: false
+#| eval: true
+bw_sample |>
+  mutate(quality = factor(quality,
+           levels = c("Excellent","Good","Sufficient","Poor"))) |>
+  datatable(
+    extensions = "Buttons",
+    options    = list(
+      dom        = "Bfrtip",
+      buttons    = list(
+        list(extend = "csv",   text = "Download CSV"),
+        list(extend = "excel", text = "Download Excel")
+      ),
+      pageLength = 8,
+      scrollY    = "340px",
+      scrollCollapse = TRUE
+    ),
+    filter   = "top",
+    rownames = FALSE,
+    colnames = c("Country","Site","Type","Quality","Season","Lon","Lat")
+  ) |>
+  formatStyle(
+    "quality",
+    backgroundColor = styleEqual(
+      names(quality_colours), unname(quality_colours)
+    ),
+    color = "white", fontWeight = "bold"
+  )
+```
+
+---
+
+## Demo — interactive map
+
+```{r}
+#| echo: false
+#| eval: true
+pal <- colorFactor(palette = unname(quality_colours),
+                   levels  = names(quality_colours))
+
+leaflet(bw_sample) |>
+  addProviderTiles(providers$CartoDB.DarkMatter) |>
+  addCircleMarkers(
+    lng         = ~lon,
+    lat         = ~lat,
+    color       = ~pal(quality),
+    fillOpacity = 0.85,
+    radius      = 9,
+    stroke      = FALSE,
+    popup       = ~paste0(
+      "<b>", site, "</b><br>",
+      country, " &middot; ", type, "<br>",
+      "<b style='color:", quality_colours[quality], "'>",
+      quality, "</b> &middot; ", season
+    )
+  ) |>
+  addLegend("bottomright", pal = pal, values = ~quality,
+            title = "Quality", opacity = 0.9)
+```
+
+---
+
+## Exercise 4 — EEA Bathing Water Data (25 min)
+
+**Step 1 — Explore the structure with btw and AI**
+
+```r
+library(btw)
+library(dplyr)
+
+bw <- readr::read_csv("bw_assessment_eea_datahub_1990_2024_data.csv",
+                      show_col_types = FALSE)
+
+# Tell the AI exactly what you have
+btw(head(bw, 20))
+```
+
+Paste into Claude.ai:
+
+> *"Describe what this dataset contains. What analysis questions would make sense with it?"*
+
+---
+
+## Exercise 4 — EEA Data continued
+
+**Step 2 — Filter and explore a country**
+
+```r
+# Filter to your country (or Estonia as example)
+bw_ee <- bw |>
+  filter(countryCode == "EE", season == 2024)
+
+# Ask AI: quality categories in plain English
+btw(bw_ee)
+```
+
+> *"Summarise the distribution of quality ratings for Estonian bathing waters in 2024. Write dplyr + ggplot2 code."*
+
+---
+
+## Exercise 4 — Searchable table with download
+
+A large data frame can be made browsable and downloadable:
+
+```r
+library(DT)
+
+bw_ee |>
+  select(bathingWaterName, bathingWaterType,
+         lon, lat, quality, season) |>
+  datatable(
+    extensions = "Buttons",
+    options = list(
+      dom       = "Bfrtip",
+      buttons   = c("csv", "excel"),
+      pageLength = 15
+    ),
+    filter    = "top",      # per-column filter boxes
+    rownames  = FALSE
+  )
+```
+
+This renders as an interactive HTML table with search, sort, and download — works in any self-contained `.html` or Shiny app.
+
+---
+
+## Exercise 4 — Ask AI to build the full report
+
+```bash
+cd ~/Documents/R/RaiS
+claude
+```
+
+```
+> The file bw_assessment_eea_datahub_1990_2024_data.csv
+> contains EEA bathing water quality data 1990–2024.
+> Columns: countryCode, bathingWaterName, bathingWaterType,
+>          lon, lat, season, quality.
+>
+> Create report.qmd that:
+> 1. Reads the data
+> 2. Filters to Estonia (EE)
+> 3. Shows a DT searchable table with download button
+> 4. Plots quality trend over years as a stacked bar chart
+> 5. Renders as self-contained HTML
+```
+
+---
+
+## Key takeaways
+
+::: {.incremental}
+- **Copilot** = inline completion, fast, no project context
+- **Claude Code** = agentic, reads files, iterates on errors
+- **`btw`** = your live R session as an AI tool — describe only what's needed
+- **`CLAUDE.md`** = free persistent project memory for Claude Code
+- **`_quarto.yml`** = set your identity and style once, reuse forever
+- **LM Studio** = same workflow, offline, weaker model
+- **Git first** — always commit before an AI session
+:::
+
+---
+
+## Resources
+
+::: {.columns}
+::: {.column width="50%"}
+**Tools:**
+
+- [claude.ai/code](https://claude.ai/code) — Claude Code CLI
+- [lmstudio.ai](https://lmstudio.ai) — local LLMs
+- [console.anthropic.com](https://console.anthropic.com) — API keys
+- [github.com/features/copilot](https://github.com/features/copilot)
+
+**R packages:**
+
+- `pak::pak("posit-dev/btw")`
+- `install.packages("DT")`
+- `install.packages("httr2")`
+:::
+::: {.column width="50%"}
+**Learning:**
+
+- [quarto.org](https://quarto.org)
+- [open-meteo.com](https://open-meteo.com) — free weather API
+- [EEA Bathing Water Datahub](https://www.eea.europa.eu/en/datahub/datahubitem-view/3de879df-0935-4b2b-a69e-2571d09d5bc4)
+
+**Slides + source:**
+
+`https://kratt.shinyapps.io/RaiS/`
+
+![](/assets/photos/QRlink_to_driveshare.png){height=120px}
+:::
+:::
+
+---
+
+## Thank you {.center}
+
+```{r}
+#| echo: false
+#| eval: true
+logos_html("60px")
+```
+
+```r
+btw()  # describe your confusion to an AI
+```

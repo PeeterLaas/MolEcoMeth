@@ -1,0 +1,154 @@
+---
+title: "🎤 Seminars"
+subtitle: "Claim a paper, present it, share your slides"
+# Reads a CSV that the bots update; must not be served from the freeze cache.
+execute:
+  freeze: false
+---
+
+```{r}
+#| label: setup
+#| include: false
+library(dplyr)
+library(readr)
+library(knitr)
+source("../R/course.R")
+
+repo  <- course_meta("course-repo")
+regs  <- read_csv("registrations.csv", show_col_types = FALSE,
+                  col_types = cols(.default = col_character()))
+
+claim_issue <- paste0(repo, "/issues/new?template=seminar.yml")
+slides_dir  <- "slides"
+
+# A registration is "delivered" once a matching file has landed in slides/.
+have_file <- function(f) !is.na(f) && nzchar(f) && file.exists(file.path(slides_dir, f))
+```
+
+Each of you presents **one research article**, 15 minutes plus 3–5 for
+questions, in English. It is worth **20%** of the course grade. Pick a paper
+that argues about *how evidence was produced*, not only about what was found —
+the seminar is a methods seminar.
+
+[📝 Claim a paper](`r claim_issue`){.cta}
+[📤 Submit your slides](#submitting-your-slides){.cta .ghost}
+
+# 1. Claim a paper
+
+Open the registration form and give the title and the DOI or URL. A bot checks
+that nobody has claimed that paper already, adds a row to
+`registrations.csv`, and closes the issue confirming it. **First come, first
+served** — if two people claim the same paper, the earlier issue wins and the
+second is told to choose again.
+
+Before you claim, check the table below and skim the journals suggested on the
+[materials page](../materials.qmd).
+
+# 2. The register
+
+```{r}
+#| label: register
+#| echo: false
+#| results: asis
+
+if (nrow(regs) == 0) {
+  cat("Nothing claimed yet — the table fills up as registrations come in.\n")
+} else {
+  regs |>
+    mutate(
+      Paper = ifelse(
+        is.na(paper_doi_or_url) | paper_doi_or_url == "",
+        paper_title,
+        sprintf("[%s](%s)", paper_title, paper_doi_or_url)
+      ),
+      Slides = vapply(slides_file, function(f) {
+        if (have_file(f)) sprintf("[⬇ %s](%s/%s)", f, slides_dir, f) else "—"
+      }, character(1))
+    ) |>
+    transmute(
+      Student = ifelse(is.na(student_name) | student_name == "",
+                       github_user, student_name),
+      `GitHub` = paste0("@", github_user),
+      Paper,
+      Date = ifelse(is.na(presentation_date) | presentation_date == "",
+                    "to be scheduled", presentation_date),
+      Slides
+    ) |>
+    kable() |>
+    print()
+}
+```
+
+# 3. Submitting your slides {#submitting-your-slides}
+
+Slides go into `seminars/slides/` in this repository, as a **pull request**.
+Any of three formats is fine:
+
+| Format | Extension | Note |
+|---|---|---|
+| PDF | `.pdf` | Safest — renders identically everywhere |
+| PowerPoint | `.pptx` | Fine; export a PDF too if you used unusual fonts |
+| Quarto | `.qmd` | Welcome, and the most reproducible. It is linked for download, not rendered by the site |
+
+Name the file `githubusername-shortpapertitle.pdf` — for example
+`jsmith-edna-detection-limits.pdf`.
+
+### With the GitHub website
+
+1. Go to [`seminars/slides/`](`r paste0(repo, "/tree/main/seminars/slides")`) in the repository.
+2. **Add file → Upload files**, drag your slides in.
+3. Choose **Create a new branch and start a pull request**, then **Propose changes**.
+4. Also add the file name to your row's `slides_file` column in
+   `registrations.csv`, in the same pull request.
+
+### With git
+
+```bash
+git clone https://github.com/peeterlaas/MolEcoMeth.git
+cd MolEcoMeth
+git checkout -b slides-yourname
+cp ~/Desktop/yourname-yourpaper.pdf seminars/slides/
+# add the file name to your row in seminars/registrations.csv
+git add seminars/
+git commit -m "Add seminar slides for <paper>"
+git push -u origin slides-yourname
+```
+
+Then open the pull request from the link git prints.
+
+A pull request that only touches `seminars/` is checked and merged
+automatically. One that touches anything else waits for the lecturer — that is
+deliberate, and it is the reason you can be given write access to the repository
+at all.
+
+::: {.callout-important}
+## Deadline
+
+Slides are due **before** your presentation slot. Submit the version you will
+present; if you fix a typo afterwards, open a second pull request rather than
+rewriting history.
+:::
+
+# What makes a good seminar
+
+You are not summarising the paper. You are explaining a method well enough that
+the room can judge it.
+
+- **The question** — what did they want to know, in one sentence?
+- **The evidence chain** — sample → molecule → assay → data → claim. Walk it.
+- **The controls** — what did they run, and what would have failed without them?
+- **The weak joint** — every study has one step where the inference gets
+  fragile. Name it, and say what you would have done instead.
+- **The transfer** — where else does this method apply, and where would it break?
+
+Slides should be readable from the back of the room: few words, one idea per
+slide, and the paper's key figure large enough to actually interpret.
+
+# Grading
+
+| | Weight |
+|---|---:|
+| Understanding of the method and its limits | 40% |
+| Clarity of the evidence chain | 25% |
+| Quality of the slides and delivery | 20% |
+| Handling of questions | 15% |

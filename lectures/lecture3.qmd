@@ -1,0 +1,768 @@
+---
+title: "Lecture 3: Next-generation sequencing"
+subtitle: "MLB7052.LT: Modern Methods in Molecular Ecology"
+title-slide-attributes:
+    data-background-image: ../assets/logos/uu_sigill_right.png
+    data-background-size: contain
+    data-background-opacity: "0.25"
+author: "Peeter Laas"
+institute: "TalTech / UT Institute of Technology"
+format:
+  revealjs: 
+    theme: [serif, ../css/lectures.scss]
+    slide-number: false
+    show-slide-number: all
+    toc: true
+    toc-depth: 1
+    progress: true
+    width: 1200
+    height: 675
+    transition: slide
+    toc-title: "Modern Methods in Molecular Ecology lecture:"
+    smaller: true
+    footer: "Fall 2026"
+    logo: ../assets/logos/uu_sigill_right.png
+    header-logo: ../assets/logos/UUtopleft.png
+    self-contained: true
+filters:
+  - reveal-header
+editor_options: 
+  chunk_output_type: inline
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+knitr::opts_chunk$set(eval=TRUE, cache=F, include=T, echo=F, error=F,
+                      message=FALSE, comment=c(" "), width=90)
+
+# Platform comparison from the slide table, reused in a plot
+platforms <- tibble::tribble(
+  ~platform,               ~generation, ~reads_per_run, ~read_length,
+  "Sanger (96-well)",      "first",              96,          1000,
+  "Roche 454 (FLX)",       "second",         700000,           700,
+  "SOLiD (5500 W)",        "second",      266000000,           100,
+  "Illumina (HiSeq)",      "second",      312000000,           300,
+  "PacBio (Sequel)",       "third",          370000,         20000,
+  "Nanopore (MinION)",     "third",         2000000,         50000
+)
+```
+
+## Today we cover
+
+::: {.incremental}
+- what "next generation" actually means — and the **three generations**;
+- **second generation**: 454, SOLiD, Illumina, MGI — and the workflow they share;
+- **third generation**: HeliScope, PacBio, nanopore — single molecules, long reads;
+- **methodological advances**: hybrid assembly, targeted and deep sequencing;
+- **molecular ecology applications**: markers, SNPs, transcriptomics, epigenomics.
+:::
+
+## Next-generation sequencing (NGS)
+
+::: {.incremental}
+- **First generation** — Sanger's dideoxynucleotide chain-termination method (**1977**); low throughput.
+- **Second generation** — high throughput, **requires amplification**, massively parallel sequencing (MPS).
+- **Third generation** — high throughput, **no amplification required**, single-molecule platforms.
+:::
+
+![](/assets/lecture3/p03_2.jpg){height="230px"}
+
+## Some terms
+
+::: {.columns}
+::: {.column width="52%"}
+- **Read length**; sequence reads and **Gbp** obtained per run;
+- **amplicon** sequencing vs **shotgun** sequencing;
+- **base call**, **depth of coverage**, average read depth;
+- **Phred quality score (Q)** — assigned to every base call;
+- **FASTA vs FASTQ** — FASTQ encodes Q scores alongside the read.
+:::
+::: {.column width="48%"}
+![](/assets/lecture3/p04_3.jpg)
+:::
+:::
+
+## Phred scores are logarithmic
+
+::: {.columns}
+::: {.column width="48%"}
+![](/assets/lecture3/p04_2.jpg)
+:::
+::: {.column width="52%"}
+```{r phred, echo=TRUE}
+tibble::tibble(Q = c(10, 20, 30, 40)) |>
+  mutate(p_error  = 10^(-Q/10),
+         accuracy = scales::percent(1 - p_error,
+                                    accuracy = 0.0001)) |>
+  knitr::kable()
+```
+
+**Q30** — the usual quality threshold — means one wrong base in a thousand. At 300 bp per read that is still, on average, **0.3 errors per read**.
+:::
+:::
+
+## Multiplexing
+
+![](/assets/lecture3/p05_2.jpg)
+
+Multiplexing lets a large number of libraries be **pooled and sequenced together** in a single run. Each library carries an index (barcode); after sequencing, reads are **demultiplexed** back to their sample and aligned.
+
+::: {.notes}
+Index hopping is the failure mode: reads assigned to the wrong sample. It is why dual unique indexes became standard.
+:::
+
+# Second generation
+
+## The workflow they all share
+
+::: {.columns}
+::: {.column width="50%"}
+![](/assets/lecture3/p06_2.jpg)
+:::
+::: {.column width="50%"}
+![](/assets/lecture3/p20_2.jpg)
+:::
+:::
+
+Fragment → adapters → **clonal amplification** → immobilise on a surface → cycle chemistry with imaging → base calls → assembly or mapping.
+
+## Pyrosequencing — Roche 454
+
+::: {.columns}
+::: {.column width="55%"}
+![](/assets/lecture3/p07_2.jpg)
+:::
+::: {.column width="45%"}
+- The **first** commercial next-generation platform: Roche 454 **GenomeSequencer (2005)**; the technology existed from the mid-1990s.
+- **Sequencing by synthesis**:
+  1. ligate 454-specific adapters to fragments;
+  2. bind **one fragment per bead**;
+  3. **emulsion PCR** (emPCR);
+  4. load beads into the **picotiter plate**.
+:::
+:::
+
+## Pyrosequencing — the chemistry
+
+::: {.columns}
+::: {.column width="50%"}
+![](/assets/lecture3/p08_2.jpg)
+
+![](/assets/lecture3/p08_4.jpg){height="150px"}
+:::
+::: {.column width="50%"}
+![](/assets/lecture3/p08_3.jpg){height="300px"}
+
+Cycles of dTTP, dCTP, dGTP — but **dATPαS** instead of dATP, because luciferase would use ATP itself.
+
+**PPi** released on incorporation → **APS** → ATP → luciferase → **light**, read by a CCD camera. **Apyrase** degrades unincorporated nucleotides between cycles.
+:::
+:::
+
+## Pyrosequencing — why it died
+
+::: {.incremental}
+- **Disadvantages**: high sequence error rate — especially in **homopolymers**, where light intensity has to be read as a length — and comparatively few reads per run.
+- Early landmark use: one million base pairs of **Neanderthal DNA** (Green *et al.* 2006).
+- Roche announced **discontinuation in 2013**, and stopped supporting the platform entirely during **2016**.
+:::
+
+::: {.callout-note}
+454 gave 16S researchers their first community-scale datasets. A great deal of early microbial-ecology literature carries its homopolymer errors as OTU inflation.
+:::
+
+## SOLiD
+
+::: {.columns}
+::: {.column width="45%"}
+![](/assets/lecture3/p10_2.jpg){height="70px"}
+
+![](/assets/lecture3/p10_3.jpg)
+
+![](/assets/lecture3/p10_4.jpg)
+
+![](/assets/lecture3/p10_5.jpg)
+:::
+::: {.column width="55%"}
+- Introduced in **autumn 2007**.
+- Parallel sequencing by stepwise **ligation** — *sequencing by ligation*, not synthesis.
+- Extremely high throughput of **short reads**, cheaply.
+- Like 454: **emPCR** — but the beads are then covalently attached to a **glass slide**.
+:::
+:::
+
+## SOLiD — two-base encoding
+
+::: {.columns}
+::: {.column width="60%"}
+![](/assets/lecture3/p11_2.jpg)
+:::
+::: {.column width="40%"}
+Fluorescent-labelled DNA **octamers**, a **di-base colour code**, and **five universal sequencing primers** offset by one position.
+
+Every base is interrogated **twice**, in two different ligation rounds — which is what gave SOLiD its inherent error correction.
+:::
+:::
+
+## Illumina (Solexa)
+
+::: {.columns}
+::: {.column width="55%"}
+![](/assets/lecture3/p12_2.jpg)
+
+![](/assets/lecture3/p12_3.jpg){height="90px"}
+:::
+::: {.column width="45%"}
+- **1998** — Solexa founded by Cambridge-based researchers;
+- **2004** — Solexa acquires molecular clustering technology from Manteia;
+- **2006** — Genome Analyzer, the first Solexa sequencer;
+- **2007** — Illumina acquires Solexa.
+
+Cheaper to produce and more competitively priced than 454.
+
+**Cost of a human genome:** $10M in 2007 → $100k in 2009 → **$1000 in 2014**.
+:::
+:::
+
+## Illumina — library and cluster generation
+
+::: {.columns}
+::: {.column width="50%"}
+![](/assets/lecture3/p13_2.jpg)
+:::
+::: {.column width="50%"}
+**Sequencing by synthesis**, on a flow cell:
+
+- a system of adapters and complementary adapters (**tagmentation**);
+- **cluster generation** on the chip via **bridge amplification**;
+- annealing of the sequencing primer.
+
+Each cluster is ~1000 identical copies — enough photons to see one base.
+:::
+:::
+
+## Illumina — the cycle
+
+::: {.columns}
+::: {.column width="50%"}
+![](/assets/lecture3/p14_2.jpg)
+
+![](/assets/lecture3/p14_5.jpg){height="170px"}
+:::
+::: {.column width="50%"}
+![](/assets/lecture3/p14_3.jpg)
+
+**Reversible terminators** carry a dye and a 3′ blocking group. Extend one base, image, cleave the dye and the block, repeat.
+
+**4-channel** systems use four dyes; **2-channel** systems encode the four bases as red, green, both, or neither.
+:::
+:::
+
+## Illumina — from image to file
+
+::: {.columns}
+::: {.column width="55%"}
+![](/assets/lecture3/p15_2.jpg){height="400px"}
+:::
+::: {.column width="45%"}
+![](/assets/lecture3/p14_4.jpg)
+
+Several million clusters are amplified at distinguishable locations, imaged by camera, and turned into per-cluster base calls in a text file.
+:::
+:::
+
+## Single-end and paired-end
+
+::: {.columns}
+::: {.column width="55%"}
+![](/assets/lecture3/p16_2.jpg)
+
+![](/assets/lecture3/p16_3.jpg){height="200px"}
+:::
+::: {.column width="45%"}
+- **Single-end (SE)** — one read from one end of the insert.
+- **Paired-end (PE)** — a second read from the other end. Reads 1 and 2 must **overlap** if you want the full insert sequence.
+
+The **insert size** and the **inner distance** are the numbers your assembler and your amplicon merger both need.
+:::
+:::
+
+## MGI — a second-generation alternative
+
+::: {.columns}
+::: {.column width="50%"}
+![](/assets/lecture3/p17_2.jpg)
+
+![](/assets/lecture3/p18_2.jpg){height="200px"}
+:::
+::: {.column width="50%"}
+![](/assets/lecture3/p17_4.jpg){height="90px"}
+
+Library preparation ends in **circularisation**: the insert plus barcode is closed into a single-stranded circle with a splint oligo.
+:::
+:::
+
+## MGI — DNA nanoballs
+
+::: {.columns}
+::: {.column width="50%"}
+![](/assets/lecture3/p18_3.jpg)
+
+- linear amplification
+- always from the **original template**
+- low amplification bias
+- **no error accumulation**
+:::
+::: {.column width="50%"}
+![](/assets/lecture3/p17_3.jpg){height="220px"}
+
+**Rolling circle amplification** copies the circle hundreds of times into one long concatemer that folds into a **DNA nanoball** — many copies, one molecule of origin.
+:::
+:::
+
+## MGI — flow cell and chemistry
+
+::: {.columns}
+::: {.column width="50%"}
+![](/assets/lecture3/p19_2.jpg)
+
+![](/assets/lecture3/p19_3.jpg)
+:::
+::: {.column width="50%"}
+![](/assets/lecture3/p19_5.jpg)
+
+Nanoballs are loaded onto a **patterned array flow cell** — one ball per spot, by electrostatic interaction — and read by **cPAS** (combinatorial probe anchor synthesis).
+:::
+:::
+
+# Third generation
+
+## HeliScope
+
+::: {.columns}
+::: {.column width="55%"}
+![](/assets/lecture3/p23_2.jpg){height="380px"}
+:::
+::: {.column width="45%"}
+![](/assets/lecture3/p23_3.jpg){height="230px"}
+
+The Helicos single-molecule device:
+
+- **no clonal amplification**;
+- a highly sensitive fluorescence detection system;
+- sequencing by synthesis, with fragments hybridised to primers anchored at **random positions** on a glass cover slip.
+:::
+:::
+
+## PacBio
+
+::: {.columns}
+::: {.column width="60%"}
+![](/assets/lecture3/p24_2.jpg)
+:::
+::: {.column width="40%"}
+![](/assets/lecture3/p24_3.jpg){height="80px"}
+
+**2010 — Pacific Biosciences real-time sequencing.** A single polymerase sits at the bottom of a zero-mode waveguide; phospholinked nucleotides fluoresce as they are incorporated, and the pulse pattern *is* the sequence.
+
+Because the same circular template is read repeatedly, random error averages out — the basis of HiFi reads.
+:::
+:::
+
+## ZS Genetics
+
+::: {.columns}
+::: {.column width="55%"}
+![](/assets/lecture3/p25_2.jpg)
+:::
+::: {.column width="45%"}
+The ZSG process lets **electron microscopes "see" DNA**, labelled with unique contrast-atom labels.
+
+- automated imaging;
+- **5,000–7,000 bp** per molecule;
+- built-in error checking by comparing information from the **two strands**.
+:::
+:::
+
+## Nanopore technology
+
+::: {.columns}
+::: {.column width="55%"}
+![](/assets/lecture3/p26_2.jpg)
+:::
+::: {.column width="45%"}
+- **Oxford Nanopore Technologies**;
+- **MinION**: about 500 tiny pores on a flow cell;
+- small and cheap;
+- high error rate;
+- **long reads**.
+
+Biological nanopores for DNA sequencing were first proposed in the **1990s** and made commercially available in **May 2014**.
+:::
+:::
+
+## MinION
+
+::: {.columns}
+::: {.column width="45%"}
+![](/assets/lecture3/p27_1.jpg)
+:::
+::: {.column width="55%"}
+The first commercial nanopore sequencing device:
+
+- high-throughput sequencing apparatus;
+- produces **real-time** data;
+- inexpensive;
+- pocket-sized and **portable**.
+
+::: {.callout-tip}
+Portability changes study design, not just logistics: sequencing at the sampling site removes the cold chain and the shipping permit from the critical path.
+:::
+:::
+:::
+
+## How nanopore sequencing works
+
+::: {.columns}
+::: {.column width="50%"}
+![](/assets/lecture3/p29_1.jpg){height="400px"}
+:::
+::: {.column width="50%"}
+1. One protein **unzips** the double helix into two strands.
+2. A second protein forms the **pore** in the membrane and holds an *adapter* molecule.
+3. Negatively charged DNA travels through the channel towards the **positive** charge, changing the membrane's electrical conductance.
+4. Current alternations, in the range of **picoamperes**, are characteristic of the bases in the pore.
+:::
+:::
+
+## Reading the current
+
+::: {.columns}
+::: {.column width="50%"}
+![](/assets/lecture3/p28_2.jpg){height="400px"}
+:::
+::: {.column width="50%"}
+![](/assets/lecture3/p29_2.jpg){height="400px"}
+:::
+:::
+
+The signal is not one base at a time — several bases sit in the constriction together, so basecalling is a model over a **k-mer** of current levels.
+
+## Nanopore data processing
+
+::: {.columns}
+::: {.column width="60%"}
+![](/assets/lecture3/p30_1.jpg)
+:::
+::: {.column width="40%"}
+1. **Segmentation** of the raw current squiggle;
+2. **base calling** — increasingly a neural network;
+3. **alignment** to a genome.
+
+Because basecalling is a model, old data can be recalled with a better model years later.
+:::
+:::
+
+## Devices and flow cells
+
+::: {.columns}
+::: {.column width="50%"}
+![](/assets/lecture3/p31_1.jpg)
+
+Flongle · MinION · SmidgION · GridION · PromethION
+:::
+::: {.column width="50%"}
+![](/assets/lecture3/p31_2.jpg){height="230px"}
+
+Pore chemistry matters as much as the device: **R9.4.1** reads through a single constriction, **R10** through two — better homopolymer accuracy.
+:::
+:::
+
+## Flow cell basics
+
+::: {.columns}
+::: {.column width="45%"}
+![](/assets/lecture3/p32_1.jpg)
+:::
+::: {.column width="55%"}
+![](/assets/lecture3/p32_2.jpg)
+
+Three compartments — common reservoir, bulk buffer, buffer in the wells — shipped with storage buffer in all three, so the running buffer can be changed without changing the electrochemistry.
+:::
+:::
+
+## Comparison
+
+::: {.columns}
+::: {.column width="45%"}
+| Technology | Reads per run | Read length |
+|---|---:|---:|
+| Sanger (96-well plate) | 96 | 1,000 |
+| Roche 454 (FLX) | 700k | 700 |
+| SOLiD (5500 W) | 266M | 100 |
+| Illumina (HiSeq) | 312M | 300 |
+| PacBio (Sequel) | 370k | 20,000 |
+| Nanopore (MinION) | 2M | 1,000–100,000 |
+:::
+::: {.column width="55%"}
+```{r platform-plot, fig.height=4.2}
+ggplot(platforms, aes(read_length, reads_per_run, colour = generation)) +
+  geom_point(size = 3.5) +
+  ggrepel::geom_text_repel(aes(label = platform), size = 3, show.legend = FALSE) +
+  scale_x_log10(labels = scales::comma) +
+  scale_y_log10(labels = scales::comma) +
+  labs(x = "read length (bases, log)", y = "reads per run (log)", colour = NULL) +
+  theme_minimal(base_size = 13)
+```
+
+Nobody is best at both axes — which is the whole argument for hybrid approaches.
+:::
+:::
+
+# Methodological advances
+
+## Platforms side by side
+
+::: {.columns}
+::: {.column width="50%"}
+![](/assets/lecture3/p35_2.jpg){height="400px"}
+:::
+::: {.column width="50%"}
+![](/assets/lecture3/p35_3.jpg){height="400px"}
+
+Human Genome Project · second generation · third generation — the same problem, three amounts of cloning.
+:::
+:::
+
+## Combining short and long reads
+
+::: {.columns}
+::: {.column width="55%"}
+![](/assets/lecture3/p36_2.jpg)
+:::
+::: {.column width="45%"}
+Combining the strengths of different technologies:
+
+- **short**, but low error rate;
+- **long**, but high error rate.
+
+Used for **de novo genome assembly** and for **(meta)transcriptomics**, where long reads resolve isoforms that short reads only imply.
+:::
+:::
+
+## A real hybrid workflow
+
+::: {.columns}
+::: {.column width="55%"}
+![](/assets/lecture3/p37_2.jpg){height="180px"}
+
+15 *Escherichia coli* and 10 *Staphylococcus aureus* isolates from livestock and food; GeneJET genomic DNA purification.
+:::
+::: {.column width="45%"}
+![](/assets/lecture3/p37_6.jpg){height="90px"}
+
+**Short reads** — NextSeq (Illumina), paired-end 2 × 150 bp, 1.9–9.1 M reads per genome, Q > 20, fastp for QC and adapter removal, SPAdes de novo assembly.
+
+![](/assets/lecture3/p37_5.jpg){height="90px"}
+
+**Long reads** — up to 269 kbp, combined with the short-read assembly.
+:::
+:::
+
+## Targeted sequencing
+
+::: {.incremental}
+- **Targeted sequencing (TS)** — sequencing only a subset of genes or genomic regions.
+- **Target enrichment** — capture of regions of interest, e.g. hybridisation to **biotinylated probes** isolated by magnetic pull-down.
+- Fewer targets means **much higher coverage**, and so more information per sample for population analyses.
+- Sequence capture: **NimbleGen** (Roche), **SureSelect** (Agilent); **RainStorm** (up to 4000 primer pairs); **amplicon sequencing**.
+:::
+
+![](/assets/lecture3/p39_3.jpg){height="180px"}
+
+## Exome sequencing
+
+::: {.columns}
+::: {.column width="55%"}
+![](/assets/lecture3/p39_2.jpg)
+:::
+::: {.column width="45%"}
+- **Exome sequencing**, using exon capture, is one of the most widely used targeted methods.
+- The **exome** is the part of the genome formed by exons — the protein-encoding part of genes.
+- It usually represents **less than 2%** of most eukaryotic genomes.
+:::
+:::
+
+## Adaptive sequencing (ONT)
+
+![](/assets/lecture3/p40_2.jpg)
+
+The pore reads the first part of a molecule, the software decides whether it is **in the region of interest**, and if not the voltage is reversed to **eject the strand** and free the pore. Enrichment without any wet-lab capture step.
+
+## Deep sequencing
+
+::: {.incremental}
+- **Ultra-deep sequencing** — coverage of 50×, 100×, or even 500–1000×.
+- Also called **high-sensitivity sequencing**.
+- Used when high-quality sequence is required, or when the target DNA or RNA occurs at **very low frequency** relative to everything else in the sample.
+- The purpose is to identify **rare genetic variation** — somatic variants, minority pathogen strains, low-frequency alleles in a pool.
+:::
+
+# Molecular ecology applications
+
+## Time of the 'omics
+
+::: {.columns}
+::: {.column width="50%"}
+![](/assets/lecture3/p43_2.jpg){height="400px"}
+:::
+::: {.column width="50%"}
+![](/assets/lecture3/p43_3.jpg){height="400px"}
+:::
+:::
+
+DNA, RNA, proteins, metabolites — potential, expression, and activity, each with its own sequencing-based readout.
+
+## Time of 'big data'
+
+::: {.columns}
+::: {.column width="60%"}
+![](/assets/lecture3/p44_2.jpg)
+:::
+::: {.column width="40%"}
+![](/assets/lecture3/p21_2.jpg)
+
+The bottleneck moved from the bench to the pipeline: QC, assembly, annotation, taxonomic and functional profiling, and validation — each a set of choices that change the answer.
+:::
+:::
+
+## Marker discovery and genotyping
+
+::: {.columns}
+::: {.column width="55%"}
+![](/assets/lecture3/p45_2.jpg)
+:::
+::: {.column width="45%"}
+- **SNPs**;
+- **Restriction-site associated DNA (RAD) sequencing**;
+- **microsatellite discovery** and genotyping.
+
+RADseq is Lecture 2's RFLP logic with a sequencer at the end: digest, size-select, sequence around the cut sites, call SNPs at thousands of loci.
+:::
+:::
+
+## Single-nucleotide polymorphism (SNP)
+
+::: {.columns}
+::: {.column width="50%"}
+![](/assets/lecture3/p46_3.jpg)
+
+![](/assets/lecture3/p46_2.jpg){height="200px"}
+:::
+::: {.column width="50%"}
+A **SNP** is a substitution of a single nucleotide at a specific position in the genome that is present in a **sufficiently large fraction of the population — 1% or more**. Rarer than that, and we call it a **mutation**.
+
+SNPs fall in noncoding or coding regions; coding SNPs are **synonymous** or **non-synonymous**, and non-synonymous ones **missense** or **nonsense**.
+:::
+:::
+
+## Transcriptomics
+
+::: {.columns}
+::: {.column width="45%"}
+![](/assets/lecture3/p47_2.jpg){height="400px"}
+:::
+::: {.column width="55%"}
+- The **transcriptome** is the population of RNA molecules; **transcriptomics** is its functional characterisation.
+- **2007–2017**: 575 ecological studies used microarrays or **RNA-seq**.
+- **Reverse transcriptase**: RNA → cDNA.
+- **SAGE** — serial analysis of gene expression — analyses the frequency of genes in a cDNA library.
+- **Gene expression profiling** characterises which genes are expressed in a tissue *and at what level*.
+- **Candidate gene finding** — identifying the genes or regulatory sequences underlying a trait or behaviour.
+:::
+:::
+
+## Single-cell resolution
+
+::: {.columns}
+::: {.column width="60%"}
+![](/assets/lecture3/p47_3.jpg)
+:::
+::: {.column width="40%"}
+![](/assets/lecture3/p47_4.jpg){height="90px"}
+
+Barcoded gel beads in droplets give every cell its own barcode, so one library holds the transcriptional profile of thousands of **individual cells** rather than their average.
+:::
+:::
+
+## Epigenomics
+
+::: {.incremental}
+- **Epigenetics** is the study of changes in gene expression caused by modifications to the bases in a DNA sequence, rather than by differences in the sequence itself.
+- The common modification is addition of a **methyl group** to cytosine or adenine.
+- Methylation patterns differ between species and alter gene expression.
+- Other modifications include **post-translational modification of histones**, which remodels chromatin and alters transcription.
+- **Transgenerational effects** — conditions experienced by the parental generation influence the offspring generation.
+:::
+
+## Epigenomics — the methods
+
+::: {.incremental}
+- **MSAP** — methylation-sensitive amplification polymorphism: two or more endonuclease **isoschizomers** that recognise the same site but differ in sensitivity to methylation.
+- **Methylation sequencing** brings NGS throughput and genome-wide analysis while resolving methylation at the **single-nucleotide level**.
+- **WGBS** — whole-genome bisulphite sequencing: sodium bisulphite converts non-methylated cytosines to uracil (read as thymine), while **methylated cytosines are protected**.
+- **ChIP-seq** — chromatin immunoprecipitation sequencing: studies post-translational modification of histone proteins, particularly methylation and acetylation of N-terminal tail residues.
+:::
+
+## Platform characteristics — short read
+
+![](/assets/lecture3/p51_2.jpg){height="450px"}
+
+## Platform characteristics — long read
+
+![](/assets/lecture3/p51_3.jpg){height="450px"}
+
+## Check yourself
+
+<details>
+<summary>What separates second- from third-generation sequencing?</summary>
+
+Amplification. Second-generation platforms need clonal copies of each fragment to produce enough signal; third-generation platforms read a single molecule, which removes amplification bias and allows very long reads.
+
+</details>
+
+<details>
+<summary>Why did 454 struggle with homopolymers?</summary>
+
+The light signal is proportional to the number of identical bases incorporated in one flow, so a run of, say, seven A's has to be distinguished from six or eight by intensity alone.
+
+</details>
+
+<details>
+<summary>Q30 means what, exactly?</summary>
+
+A 1 in 1000 probability that the base call is wrong — 99.9% accuracy. Q = −10·log₁₀(P_error).
+
+</details>
+
+<details>
+<summary>Why combine short and long reads for a genome assembly?</summary>
+
+Long reads span repeats and structural variants so contigs join up; short reads have far lower per-base error, so they polish the consensus. Neither alone gives a contiguous *and* accurate assembly.
+
+</details>
+
+<details>
+<summary>Why does bisulphite treatment let you read methylation?</summary>
+
+Unmethylated cytosines are deaminated to uracil and then read as thymine, while methylated cytosines are protected and still read as C. Every C remaining in the read was methylated.
+
+</details>
+
+## Thank you
+
+::: {.callout-important}
+Peeter Laas · peeter.laas@taltech.ee · peeter.laas@ut.ee
+:::
+
+**Next:** from reads to inference — quality control, assembly, and the analyses these platforms actually feed.

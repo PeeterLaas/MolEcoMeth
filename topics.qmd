@@ -1,0 +1,119 @@
+---
+title: "🧭 Topics"
+subtitle: "What the course covers, and which method answers which question"
+---
+
+The course is built in four blocks. Each block is a stage in the same chain of
+reasoning: what a molecule *is*, what we can *do* to it, what a genome *says*,
+and what any of that lets us *claim* about an ecological system.
+
+# The four blocks
+
+::: {.dropdown-table}
+
+<details open>
+<summary><strong>Block I</strong> — Foundations and measurement</summary>
+
+- evolution, scientific reasoning, and molecular biology as a way of knowing;
+- chemical properties of DNA, RNA, proteins, buffers, enzymes, and molecular interactions;
+- information flow: replication, mutation, repair, recombination, transcription, translation, and regulation;
+- sample representativeness, preservation, extraction, quantification, inhibition, and contamination.
+
+*Weeks 1–2 and the week 7 practical. Slides:*
+[Introduction](lectures/introduction.html) ·
+[The code of life](lectures/code_of_life.html)
+
+</details>
+
+<details>
+<summary><strong>Block II</strong> — The molecular toolkit</summary>
+
+- electrophoresis, restriction analysis, Southern blotting, PCR, qPCR, ddPCR, Sanger sequencing, probes, FISH, fluorescence, and flow cytometry;
+- molecular markers: barcoding, metabarcoding, allozymes, RFLP, microsatellites, and SNPs;
+- Illumina, PacBio, Oxford Nanopore, library preparation, read quality, assembly, annotation, and data management.
+
+*Weeks 3–7. Slides:*
+[The molecular toolkit](lectures/lecture2.html) ·
+[Sequencing technologies](lectures/lecture3.html) ·
+[Markers and DNA sources](lectures/loeng4.html) ·
+[eDNA and hybridization](lectures/loeng5.html)
+
+</details>
+
+<details>
+<summary><strong>Block III</strong> — Genomes and molecular phenotypes</summary>
+
+- comparative genomics, assembly, annotation, and public sequence databases;
+- transcriptomics, non-coding RNA, condition- and stage-specific regulation, epigenetics, and functional genomics;
+- proteomics, quantitative proteomics, protein interactions, post-translational modification, and molecular phenotypes;
+- the cell biology behind the traits we measure: life-cycle stages, secretion, transport, and cellular responses to the environment.
+
+*Weeks 8–10.*
+
+</details>
+
+<details>
+<summary><strong>Block IV</strong> — Ecology, evolution, and application</summary>
+
+- phylogeny, phylogeography, population genetics, coalescence, and community-level inference;
+- species interactions, symbiosis, host-associated microbiota, and environmental monitoring;
+- CRISPR, LAMP, microfluidics, lab-on-chip, biosensing, and field-deployable diagnostics;
+- an integrated student capstone from question to inference.
+
+*Weeks 11–16.*
+
+</details>
+
+:::
+
+# Which method for which question
+
+A method is only as good as the question it is asked to answer. This table is
+the one to argue with in seminars.
+
+| The question | Typical approach | The thing that usually goes wrong |
+|---|---|---|
+| Is this species present here? | Targeted qPCR or ddPCR assay on eDNA | Assay specificity; a positive means *DNA was present*, not *the animal was* |
+| What is in this community? | Metabarcoding of a marker region | Primer bias and reference-database gaps decide what you can possibly detect |
+| What is this specimen? | Sanger barcoding of COI, ITS, 16S/18S | The reference sequence may be misidentified; barcode gaps vary by group |
+| How are these populations connected? | Microsatellites, SNP panels, RAD-seq | Sampling design, not marker count, limits the inference |
+| What is the evolutionary history? | Multi-locus phylogeny, coalescent models | Gene trees are not species trees |
+| What is this organism doing right now? | Transcriptomics, RT-qPCR, eRNA | RNA degradation and the sampling instant dominate the signal |
+| How much biomass or how many cells? | Flow cytometry, qPCR standard curves | Calibration and gating decisions carry most of the uncertainty |
+| What did this ecosystem look like before? | Sedimentary and ancient DNA | Damage, contamination, and leaching between layers |
+| Which genes are present in this genome? | Assembly and annotation | Assembly errors propagate silently into every downstream count |
+
+# Skills you should leave with
+
+::: {.dropdown-table}
+
+<details>
+<summary><strong>At the bench</strong></summary>
+
+- extract nucleic acids from environmental, tissue, faecal, sediment, or low-biomass material and say why you chose that protocol;
+- design a PCR with the controls that make its result interpretable: extraction blank, no-template control, positive control, technical replicates, inhibition check;
+- read an agarose gel, a Sanger trace, a qPCR amplification curve, and a standard curve;
+- keep a notebook another person could use to repeat what you did.
+
+</details>
+
+<details>
+<summary><strong>At the keyboard</strong></summary>
+
+- assess FASTQ quality and a Nanopore run report, and decide whether the data are usable;
+- run a barcoding or metabarcoding workflow from reads to a taxon table;
+- build and read a phylogenetic tree, and state what the support values do and do not mean;
+- produce a reproducible report that keeps observation, analysis, inference, and speculation visibly separate.
+
+</details>
+
+<details>
+<summary><strong>In an argument</strong></summary>
+
+- compare Sanger, short-read, and long-read sequencing for a stated objective and defend the choice on cost, error profile, and read length;
+- identify the step in someone else's study where the inference actually becomes fragile;
+- state the limitations of your own design before a reviewer does.
+
+</details>
+
+:::

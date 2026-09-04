@@ -1,0 +1,798 @@
+---
+title: "Lecture 4: Markers, barcoding and environmental DNA"
+subtitle: "MLB7052.LT: Modern Methods in Molecular Ecology"
+title-slide-attributes:
+    data-background-image: ../assets/logos/uu_sigill_right.png
+    data-background-size: contain
+    data-background-opacity: "0.25"
+author: "Peeter Laas"
+institute: "TalTech / UT Institute of Technology"
+format:
+  revealjs: 
+    theme: [serif, ../css/lectures.scss]
+    slide-number: false
+    show-slide-number: all
+    toc: true
+    toc-depth: 1
+    progress: true
+    width: 1200
+    height: 675
+    transition: slide
+    toc-title: "Modern Methods in Molecular Ecology lecture:"
+    smaller: true
+    footer: "Fall 2026"
+    logo: ../assets/logos/uu_sigill_right.png
+    header-logo: ../assets/logos/UUtopleft.png
+    self-contained: true
+filters:
+  - reveal-header
+editor_options: 
+  chunk_output_type: inline
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+knitr::opts_chunk$set(eval=TRUE, cache=F, include=T, echo=F, error=F,
+                      message=FALSE, comment=c(" "), width=90)
+```
+
+## Previously ...
+
+The era before "reading the code of life" — discriminating DNA and proteins mainly by their **physical properties**: size and charge.
+
+::: {.incremental}
+- **Gel electrophoresis** — simple, rapid, sensitive;
+- different ways to *create patterns*:
+  - **restrictases** — site-specific cutting;
+  - **PCR** — primer-specific amplification;
+  - **combinations** of the two.
+- These methods are **still relevant today**.
+:::
+
+## Molekulaarsete andmete eelised
+
+::: {.columns}
+::: {.column width="62%"}
+- DNA ja valgu järjestused on rangelt **pärilikud** (arvestada tuleb horisontaalse geeniülekande võimalusega ja sugulise paljunemise puhul homoloogse rekombinatsiooniga);
+- tunnuste — nukleotiidi- või aminohappepositsioonide — ja tunnuse seisundite kirjeldus on **üheselt mõistetav**;
+- tunnused on **sõltumatud**: asendus ühes positsioonis ei mõjuta asendumist teistes;
+- andmed on **kvantitatiivselt kergemini töödeldavad**, saab kasutada matemaatilisi meetodeid;
+- võimaldavad võrrelda **väga kaugeid organisme**;
+- **informatsiooni suur hulk**: imetaja genoom ~3 miljardit nukleotiidipaari, bakteri genoom 0.5 – >10 miljonit.
+:::
+::: {.column width="38%"}
+![](/assets/loeng4/p02_1.jpg)
+
+::: {style="font-size:0.7em; color:#666;"}
+Proportion of phylogeography articles per year, by marker class
+:::
+:::
+:::
+
+## Molecular genetic markers
+
+::: {.incremental}
+- Molecular markers can address ecological questions that are **difficult to pursue in any other way**.
+- A primary advantage: markers and their variation can be **quantified with greater precision** than most other ecological measurements — better data for statistical comparison.
+- They have become instrumental in understanding the patterns and processes behind **extant global biodiversity**.
+- Using a marker means taking a **sample from the whole genome** — and any sample carries **sampling error**.
+- A single marker type and a small number of loci **increases that error** and can lead to misinterpretation.
+:::
+
+## DNA and DNA — different sources
+
+::: {.columns}
+::: {.column width="52%"}
+- **Eukaryotes**: genomic DNA (gDNA), chloroplast DNA (cpDNA), mitochondrial DNA (mtDNA);
+- **Prokaryotes**: chromosomal DNA, plasmids, cloning vectors;
+- **microbial community** — the metagenome;
+- **ncDNA** — non-coding DNA;
+- **eDNA** — environmental DNA;
+- **aDNA** — ancient DNA;
+- **cDNA** — complementary DNA synthesised from an mRNA template.
+:::
+::: {.column width="48%"}
+![](/assets/loeng4/p05_1.jpg)
+:::
+:::
+
+## Genomics
+
+::: {.columns}
+::: {.column width="52%"}
+Whole genome sequences are rapidly becoming available for a wide range of organisms. **Comparative genomics** uses megabases of data — rather than short sequences from a few genes — to build phylogenies and investigate the mechanisms of speciation.
+
+- **Pan genome** — all genes and genetic variation within a species;
+- **Core genome** — the portion common to all individuals;
+- **Dispensable genome** — the portion present only in a subset, or unique to individuals.
+:::
+::: {.column width="48%"}
+![](/assets/loeng4/p06_1.jpg)
+:::
+:::
+
+## Comparative genomics
+
+::: {.columns}
+::: {.column width="50%"}
+![](/assets/loeng4/p07_1.jpg)
+:::
+::: {.column width="50%"}
+![](/assets/loeng4/p07_2.jpg)
+:::
+:::
+
+A large-scale, holistic approach: compare two or more genomes to find similarities and differences, and study the biology of each — a highly detailed view of how organisms are related **at the gene level**.
+
+## Non-nuclear DNA
+
+::: {.columns}
+::: {.column width="55%"}
+::: {.incremental}
+- **High copy number.** A mitochondrion or chloroplast holds multiple copies of its DNA, and a cell holds many organelles — often thousands of copies per cell.
+- **Random segregation.** Organelles are randomly distributed to daughter cells during mitosis and meiosis.
+- **Single-parent inheritance.** Non-nuclear DNA is often inherited uniparentally — in humans, mitochondrial DNA comes from the mother.
+:::
+:::
+::: {.column width="45%"}
+![](/assets/loeng4/p08_1.jpg)
+:::
+:::
+
+## Endosymbiosis
+
+::: {.columns}
+::: {.column width="50%"}
+![](/assets/loeng4/p09_1.jpg)
+:::
+::: {.column width="50%"}
+![](/assets/loeng4/p09_2.jpg)
+:::
+:::
+
+Similarities between the DNA of mitochondria and chloroplasts and the DNA of **bacteria** are an important line of evidence for the **endosymbiont theory** — that both originated as free-living prokaryotic cells.
+
+## Vertical vs horizontal gene transfer
+
+::: {.columns}
+::: {.column width="45%"}
+![](/assets/loeng4/p10_1.jpg){height="400px"}
+:::
+::: {.column width="55%"}
+**Vertical** gene transfer happens between generations.
+
+**Horizontal** gene transfer moves genetic material from one organism to another that is **not its offspring** — most common among prokaryotes.
+
+::: {.callout-warning}
+Horizontal transfer is why a single-gene tree is a **gene tree**, not necessarily a species tree.
+:::
+:::
+:::
+
+# Mitochondrial DNA
+
+## Why mtDNA took over from allozymes
+
+::: {.columns}
+::: {.column width="52%"}
+- Nuclear DNA is problematic in RFLP analysis; the method found much wider ecological application with **mtDNA**.
+- Restriction mapping of mtDNA was an important improvement over allozyme electrophoresis.
+- **No recombination during meiosis** — so networks of relationships among mtDNA lineages within and among populations can be constructed.
+- mtDNA is usually inherited **maternally**, so only the behaviour and movements of females are effectively tracked.
+:::
+::: {.column width="48%"}
+![](/assets/loeng4/p11_1.jpg)
+
+![](/assets/loeng4/p11_2.jpg){height="150px"}
+:::
+:::
+
+## mtDNA — size and organisation
+
+::: {.columns}
+::: {.column width="50%"}
+![](/assets/loeng4/p12_2.jpg){height="400px"}
+:::
+::: {.column width="50%"}
+- Size and organisation vary — **11–28 kbp** in animals.
+- Animal mtDNA: **13 protein-coding**, **22 tRNA**, and **2 rRNA** genes.
+- The mutation rate is relatively high — **5.8 × 10⁻⁸** substitutions per site per year in mammals, about **10× higher** than synonymous substitutions in nuclear protein-coding DNA.
+- A non-coding region contains the **displacement (D) loop**.
+
+![](/assets/loeng4/p12_1.jpg){height="120px"}
+:::
+:::
+
+## Universal primers
+
+::: {.columns}
+::: {.column width="52%"}
+- **Kocher et al. (1989)** were the first to develop what came to be called **universal primers**, for three regions of mtDNA — so a species can be studied **without prior sequence knowledge**.
+- **Cytochrome b** is part of the electron transport chain and the main subunit of the cytochrome *bc*₁ and *b*₆*f* complexes; it is commonly used for phylogenetic relationships.
+- Kocher's cyt *b* primers are the underlying reason sequences of this gene exist for so many species today.
+- Mutation in one or both primer regions means "universal" primers do not work on all species — they are really just **versatile** primers.
+:::
+::: {.column width="48%"}
+![](/assets/loeng4/p13_1.jpg)
+:::
+:::
+
+## Phylogeography
+
+::: {.columns}
+::: {.column width="45%"}
+![](/assets/loeng4/p14_1.jpg){height="420px"}
+:::
+::: {.column width="55%"}
+Because mtDNA does not recombine to any significant extent, lineage **networks** can be built and analysed in a **geographic** context.
+
+**Avise et al. (1987)** coined the term **phylogeography** — encompassing both intraspecific phylogeny and geography.
+
+Phylogeographic studies increased dramatically in the early 1990s and added substantially to our understanding of how current species distributions came into being.
+
+::: {style="font-size:0.75em; color:#666;"}
+Phylogeography of *Genetta genetta* from Bayesian analysis of cytochrome *b* + the left domain of the control region
+:::
+:::
+:::
+
+## Wolf vs coyote — three marker types
+
+::: {.columns}
+::: {.column width="60%"}
+![](/assets/loeng4/p15_1.jpg)
+:::
+::: {.column width="40%"}
+| | mtDNA | Microsat. | SNP |
+|---|---|---|---|
+| Loci | one | 10–20 | millions |
+| Copies/cell | thousands | few | few |
+| Inheritance | maternal | biparental | biparental |
+| Recombination | no | yes | yes |
+:::
+:::
+
+# Identification of species
+
+## How many species are there on Earth?
+
+::: {.incremental}
+- **Catalogue of Life**, 2019 Annual Checklist: information on **1,837,565 living** and **63,418 extinct** species.
+- **Mora et al. (2011)** predicted globally around **8.7 million eukaryotic species**, of which about **2.2 million are marine**.
+- Vertebrates — particularly birds and mammals — are comparatively very well documented.
+- Molecular markers keep revealing **cryptic species** not previously recognised because of similar morphology.
+:::
+
+## The species problem
+
+::: {.incremental}
+- What is a species? Surprisingly, a significant and much-debated question in biology — **the species problem**.
+- Biologists are now reconciled that **no single definition applies** to all species under all circumstances; at least **twenty-two species concepts** are in use.
+- **Frankham et al. (2012)** found that different concepts often yielded different numbers of species and disparate groupings — with financial, legal, biological, and conservation implications.
+- **Urmas Kõljalg** — the *species hypothesis*: more fluid and practical than species assignment.
+:::
+
+## Morphological species concept (MSC)
+
+::: {.incremental}
+- Historically, species were recognised by sharing a similar morphology, with individuals conforming to a **'type'**.
+- Also known as the **typological species concept (TSC)**.
+- A 'common sense' approach, and a frequently used definition in any first assessment.
+- **Problems**: large phenotypic variation within or between populations; marked differences between the sexes, between juveniles and adults, or between developmental stages.
+- **Cryptic species will be very under-recorded.**
+:::
+
+## Biological species concept (BSC)
+
+::: {.incremental}
+- Places emphasis on **reproductive isolation** between populations, not on morphology (Mayr 1942, 1963).
+- A species is *"groups of actually or potentially interbreeding natural populations in the wild"*.
+- Species are recognised on the basis of a **shared gene pool**; individuals are consequently often — but not always — similar in morphology.
+- Rejected by most **botanists**, because of the large number of plants that reproduce asexually (Mayden 1997).
+- The same problem arises in **microbiology**.
+:::
+
+## Phylogenetic species concept (PSC)
+
+::: {.incremental}
+- Places emphasis on **monophyletic genetic lineages**.
+- Increasingly applicable alongside the rise in available molecular data.
+- A species is *the smallest aggregation of populations (sexual) or lineages (asexual) diagnosable by a unique combination of apomorphous (derived) traits in comparable individuals descended from a shared common ancestor*.
+- The difficulty is the **definition of unique traits**: phylogenetic lineages can be divided into ever smaller clades on the basis of trivial — but nonetheless shared and unique — traits.
+:::
+
+## Operational taxonomic unit (OTU)
+
+::: {.incremental}
+- An **OTU** is a group of organisms treated as a distinct evolutionary unit for the purposes of the research underway, which for various reasons has not — or cannot — be given a Linnaean binomial name.
+- Mainly applied to **single-celled microorganisms**, though the concept is sometimes used for larger organisms, e.g. recently discovered sibling species awaiting recognition — **candidate species**.
+- OTUs can be defined on morphology, molecules, or both — usually the latter. Very commonly by **% similarity of the rRNA gene**.
+- **mOTU** — molecular operational taxonomic unit — is also used, particularly for cryptic species.
+:::
+
+## The concepts side by side
+
+| Concept | Criterion | Strength | Where it fails |
+|---|---|---|---|
+| Morphological (MSC) | shared 'type' | fast, no lab | cryptic species, dimorphism, larvae |
+| Biological (BSC) | reproductive isolation | mechanistic | asexual taxa, plants, microbes, fossils |
+| Phylogenetic (PSC) | monophyly, apomorphies | uses molecular data | where to stop splitting |
+| OTU / mOTU | % sequence similarity | operational, scalable | threshold is a convention, not a boundary |
+
+::: {.notes}
+The practical point for this course: the concept you choose determines the number you report. Say which one you used.
+:::
+
+## DNA barcoding
+
+::: {.incremental}
+- **DNA barcoding** (*liikide vöötkodeerimine*) is the use of short gene sequences from a **standardised portion of the genome** to identify species.
+- The concept has been around for well over a decade, but high-throughput technology has moved it into a new phase of application.
+- In the ideal case, a barcode marker **works for all species**.
+- Markers applied to specific taxonomic groups are proving invaluable — and very cost-effective — for species boundaries, community ecology, functional trait evolution, trophic interactions, and conservation.
+- Barcoding identifies a species by **matching the sequence to a reference library**.
+:::
+
+## Universal primers, revisited
+
+::: {.columns}
+::: {.column width="60%"}
+![](/assets/loeng4/p24_1.jpg)
+:::
+::: {.column width="40%"}
+A usable barcode needs **conserved flanking regions** to anchor the primers, and a **variable region** in between that carries the species signal.
+
+That trade-off — conserved enough to amplify, variable enough to discriminate — is the whole design problem.
+:::
+:::
+
+## The barcoding idea
+
+::: {.columns}
+::: {.column width="55%"}
+- The initial idea was simple: select one or a few genes shared by most — if not all — organisms, showing **large interspecific** (*liikide vaheline*) but **small intraspecific** (*liigisisene*) variation.
+- Such sequences are the equivalent of species-specific barcodes.
+- **Future outlook**: portable sequencers allow species identification **in the field**, even by people with little or no taxonomic training — e.g. with Nanopore.
+:::
+::: {.column width="45%"}
+![](/assets/loeng4/p25_1.jpg)
+:::
+:::
+
+## DNA barcoding: COI
+
+::: {.incremental}
+- Early work focused on the mitochondrial **cytochrome oxidase subunit 1** (*cox1*), referred to as **COI** in barcoding studies (**Hebert et al. 2003**).
+- Desirable properties: present in **high copy number** per cell; a partial sequence of about **650 bp** shows high interspecific and low intraspecific variation across organisms from insects to birds.
+- **Problems**: many anaerobic organisms are excluded; interspecific variation of mtDNA in **plants and fungi** is often too low to be useful.
+- **Mitogenomics** — the use of complete mtDNA sequences for identification and evolutionary studies, thanks to NGS.
+:::
+
+## COI — proof of concept
+
+::: {.columns}
+::: {.column width="50%"}
+![](/assets/loeng4/p27_1.jpg)
+
+::: {style="font-size:0.75em; color:#666;"}
+Inter- and intraspecific COI distances among mayflies (Barr et al. 2005): means of 18.1% vs 1.1%
+:::
+:::
+::: {.column width="50%"}
+![](/assets/loeng4/p27_2.jpg){height="150px"}
+![](/assets/loeng4/p27_5.jpg){height="150px"}
+
+Mayflies (*ühepäevikulised*, Ephemeroptera) are widely used in the biomonitoring of aquatic habitats. Identifying adults by morphology requires substantial training, and **larval identification can be highly problematic**.
+:::
+:::
+
+::: {.notes}
+That gap between 1.1% and 18.1% is the "barcode gap". Where it closes, barcoding stops working.
+:::
+
+## DNA barcoding: plants and fungi
+
+::: {.columns}
+::: {.column width="52%"}
+**Chloroplast (cpDNA) loci:**
+
+- the intergenic spacer region **trnH-psbA**;
+- ribulose bisphosphate carboxylase — **rbcL**;
+- maturase K — **matK**.
+
+**Nuclear loci:**
+
+- the ribosomal DNA **internal transcribed spacer (ITS)** — *sisemine transkribeeritav speisser* — also used for fungi.
+:::
+::: {.column width="48%"}
+![](/assets/loeng4/p28_1.jpg)
+:::
+:::
+
+## An aside: nanopore and the IP war
+
+::: {.columns}
+::: {.column width="50%"}
+![](/assets/loeng4/p29_1.jpg){height="230px"}
+
+![](/assets/loeng4/p29_2.jpg){height="180px"}
+:::
+::: {.column width="50%"}
+![](/assets/loeng4/p29_3.jpg){height="180px"}
+
+Claims for breach of contractual obligations, of common law obligations of confidence, of duties under trade secrets regulations, plus an entitlement claim to a licence of certain patents — against BGI Tech Solutions, BGI Group, Beijing Genomics Institute at Shenzhen, and MGI.
+
+::: {.callout-note}
+The tools you plan a decade of monitoring around are commercial products in a contested market.
+:::
+:::
+:::
+
+# DNA metabarcoding and eDNA
+
+## DNA metabarcoding
+
+::: {.columns}
+::: {.column width="52%"}
+- A molecular alternative to classical taxonomic approaches for **high-throughput biodiversity assessment**, becoming a standard in biodiversity research.
+- **DNA metabarcoding** — the use of NGS for automated identification of **multiple species** from a single bulk sample containing entire organisms, or from an environmental sample containing degraded DNA.
+- **eDNA analysis** — presence/absence or quantification of large, multicellular organisms (usually vertebrates) in an environmental sample (usually water) using **species-specific PCR primers**.
+- Metabarcoding also extends into **ancient DNA**.
+:::
+::: {.column width="48%"}
+![](/assets/loeng4/p30_1.jpg){height="180px"}
+
+![](/assets/loeng4/p30_2.jpg){height="230px"}
+:::
+:::
+
+## Limits of metabarcoding
+
+::: {.incremental}
+- Limited by its **dependency on PCR** and by the considerable investment needed to build comprehensive **reference libraries**.
+- PCR problems: errors introduced during amplification from environmental samples (degraded template); primers need **conserved regions**, and PCR is **biased**.
+- **The trade-off**: genes easy to amplify in all species are highly conserved and **underestimate** the true number of species; genes that describe species number better are **harder to amplify**.
+:::
+
+## Environmental DNA and RNA
+
+::: {.incremental}
+- Total eDNA contains **cellular DNA** (living cells or organisms) and **extracellular DNA** (from natural cell death and destruction of cell structure). Organisms shed DNA through mucous, skin cells, faecal matter, and degrading carcasses.
+- It can be collected from essentially **any** environmental sample: soil, freshwater, seawater, snow, air.
+- It lets researchers monitor species presence at **larger spatial scales**, more efficiently — particularly useful for **rare or hard-to-see aquatic organisms**.
+- RNA is likewise found in environmental samples and is termed **eRNA**.
+:::
+
+## Barcoding, eDNA barcoding, eDNA metabarcoding
+
+::: {.columns}
+::: {.column width="50%"}
+![](/assets/loeng4/p33_1.jpg)
+:::
+::: {.column width="50%"}
+![](/assets/loeng4/p33_2.jpg)
+:::
+:::
+
+Same barcode logic, three different starting materials and three different readouts — Sanger, qPCR, and NGS.
+
+## qPCR, RT-qPCR and variations of dPCR
+
+::: {.columns}
+::: {.column width="50%"}
+![](/assets/loeng4/p34_1.jpg){height="200px"}
+
+![](/assets/loeng4/p34_2.jpg){height="200px"}
+:::
+::: {.column width="50%"}
+![](/assets/loeng4/p34_4.jpg){height="120px"}
+
+![](/assets/loeng4/p34_5.jpg){height="230px"}
+:::
+:::
+
+## Case study — marine fishes from seawater
+
+::: {.columns}
+::: {.column width="62%"}
+![](/assets/loeng4/p35_1.jpg)
+:::
+::: {.column width="38%"}
+Number of fish species recorded by **nine conventional survey methods** and by eDNA at The Sound of Elsinore, Denmark — the eDNA bar comes **from 0.5 litre of seawater**.
+:::
+:::
+
+## Many factors affect dropping and picking up eDNA
+
+::: {.columns}
+::: {.column width="50%"}
+![](/assets/loeng4/p36_2.jpg)
+:::
+::: {.column width="50%"}
+![](/assets/loeng4/p36_1.jpg){height="380px"}
+:::
+:::
+
+::: {style="font-size:0.75em; color:#666;"}
+Release, degradation, transportation, and sedimentation — each with its own abiotic and biotic drivers (Takahashi et al. 2023)
+:::
+
+## Running water is an issue
+
+::: {.columns}
+::: {.column width="60%"}
+![](/assets/loeng4/p37_1.jpg)
+:::
+::: {.column width="40%"}
+Environmental DNA detection rates by qPCR in natural freshwater ponds — % positive localities out of the total surveyed for each species.
+
+In **lakes and ponds** the signal stays where the organism is. In **streams** it arrives from upstream, so a detection is a statement about a catchment, not a site.
+:::
+:::
+
+## Stringency and uncertainty
+
+::: {.columns}
+::: {.column width="58%"}
+![](/assets/loeng4/p38_1.jpg)
+:::
+::: {.column width="42%"}
+**What criteria constitute a species detection?**
+
+The lack of consensus results from **context dependency** — total species diversity, sequencing depth, marker specificity — and from the trade-off between **stringency and uncertainty** when interpreting metabarcoding results.
+
+Which markers? What frequency across samples?
+:::
+:::
+
+## Limits of detection and quantification
+
+::: {.columns}
+::: {.column width="52%"}
+![](/assets/loeng4/p39_1.jpg)
+:::
+::: {.column width="48%"}
+- **LOD** — the lowest concentration of target that can be detected with a defined level of confidence; the standard is a **95% detection rate**.
+- **LOQ** — reflects the assay's capacity to **precisely quantify** copy number.
+
+::: {style="font-size:0.75em; color:#666;"}
+Klymus et al. 2019
+:::
+:::
+:::
+
+```{r lod, fig.height=2.8}
+conc <- 10^seq(-0.5, 3, length.out = 200)
+det  <- 1 / (1 + exp(-1.8 * (log10(conc) - 0.7)))   # illustrative logistic model
+lod  <- conc[which.min(abs(det - 0.95))]
+
+ggplot(data.frame(conc, det), aes(conc, det)) +
+  geom_line(linewidth = 1, colour = "#990000") +
+  geom_hline(yintercept = 0.95, linetype = 2, colour = "grey40") +
+  geom_vline(xintercept = lod,  linetype = 3, colour = "grey40") +
+  annotate("text", x = lod, y = 0.35, hjust = -0.1, size = 3.6,
+           label = paste0("LOD(95%) ~ ", round(lod), " copies/reaction")) +
+  scale_x_log10() +
+  labs(x = "target concentration (copies per reaction, log)",
+       y = "detection probability") +
+  theme_minimal(base_size = 13)
+```
+
+## Invasive species
+
+::: {.columns}
+::: {.column width="50%"}
+![](/assets/loeng4/p40_1.jpg){height="400px"}
+:::
+::: {.column width="50%"}
+![](/assets/loeng4/p40_2.jpg){height="400px"}
+:::
+:::
+
+A decision strategy for an eDNA monitoring approach to **non-indigenous species (NIS)**: targeted or whole-community, semi-quantitative or qualitative, lab-based or on-site.
+
+# Ancient DNA
+
+## Ancient DNA
+
+::: {.columns}
+::: {.column width="55%"}
+- **aDNA** — DNA isolated from ancient specimens, sediments, and similar material.
+- It started with museum specimens of extinct species.
+- **Pre-PCR**: Higuchi et al. (1984) studied mtDNA of the extinct **quagga**, whose last captive individual had died the year before — the work that inspired Michael Crichton's 1990 novel *Jurassic Park*.
+- Studies moved from single individuals and populations to **understanding ancient ecosystems**.
+- **Complete genomes of extinct species**: Miller et al. (2008) used 454 pyrosequencing to obtain **4.17 Gbp** from two woolly mammoth specimens.
+:::
+::: {.column width="45%"}
+![](/assets/loeng4/p41_2.jpg){height="230px"}
+
+::: {style="font-size:0.75em; color:#666;"}
+*Equus quagga quagga* — väljasurnud sebrataoline hobuslane
+:::
+
+![](/assets/loeng4/p41_3.jpg){height="150px"}
+:::
+:::
+
+## Sedimentary ancient DNA — sedaDNA
+
+::: {.columns}
+::: {.column width="50%"}
+![](/assets/loeng4/p42_2.jpg){height="380px"}
+:::
+::: {.column width="50%"}
+![](/assets/loeng4/p42_1.jpg)
+
+![](/assets/loeng4/p41_1.jpg){height="180px"}
+:::
+:::
+
+::: {style="font-size:0.75em; color:#666;"}
+Sedimentary ancient DNA sequences reveal marine ecosystem shifts and indicator taxa for glacial–interglacial sea-ice conditions
+:::
+
+## Technically challenging
+
+::: {.columns}
+::: {.column width="50%"}
+![](/assets/loeng4/p43_1.jpg){height="200px"}
+
+![](/assets/loeng4/p43_2.jpg){height="130px"}
+:::
+::: {.column width="50%"}
+- **Everything degrades over time** — fragmentation, chemical modification, and mutation accumulate.
+- **Present-day contamination can lead to false conclusions**: the contaminant amplifies better than the target, every time.
+
+![](/assets/loeng4/p43_3.jpg)
+:::
+:::
+
+## The damage signature is the authentication
+
+```{r adna-damage, fig.height=3.4}
+pos <- 1:25
+ct  <- 0.02 + 0.28 * exp(-0.35 * (pos - 1))     # illustrative C-to-T decay
+oth <- rep(0.02, length(pos))
+
+tibble::tibble(pos, `C-to-T substitutions` = ct, `other substitutions` = oth) |>
+  pivot_longer(-pos) |>
+  ggplot(aes(pos, value, colour = name)) +
+  geom_line(linewidth = 1) +
+  scale_colour_manual(values = c("#2E7D32", "#1565C0")) +
+  labs(x = "position from the 5' end of the read", y = "substitution frequency",
+       colour = NULL) +
+  theme_minimal(base_size = 13)
+```
+
+Cytosine deamination at the fragment ends produces the **C→T excess in the first few positions**. Modern contaminant reads do not show it — which is why the damage pattern is used as *evidence of authenticity*, not just as a nuisance.
+
+# Ribosomal RNA barcoding
+
+## Carl R. Woese
+
+::: {.columns}
+::: {.column width="45%"}
+![](/assets/loeng4/p45_2.jpg){height="280px"}
+
+![](/assets/loeng4/p45_1.jpg)
+:::
+::: {.column width="55%"}
+![](/assets/loeng4/p45_3.jpg)
+
+![](/assets/loeng4/p45_4.jpg){height="230px"}
+:::
+:::
+
+## The tree keeps growing
+
+![](/assets/loeng4/p45_5.jpg){height="440px"}
+
+## 16S ribosomal RNA
+
+::: {.columns}
+::: {.column width="55%"}
+![](/assets/loeng4/p46_1.jpg)
+
+![](/assets/loeng4/p46_3.jpg){height="180px"}
+:::
+::: {.column width="45%"}
+![](/assets/loeng4/p46_2.jpg){height="300px"}
+
+The **16S rRNA** gene is about **1600 bp** long and includes **nine hypervariable regions** (V1–V9) of varying conservation.
+
+**V3 and V4** are the most commonly used — a suitable length for second-generation sequencing, combined with good variability.
+:::
+:::
+
+## 18S ribosomal RNA
+
+::: {.columns}
+::: {.column width="60%"}
+![](/assets/loeng4/p47_1.jpg)
+:::
+::: {.column width="40%"}
+- The **V4** region has the highest length polymorphism and is the **longest** variable region in the rRNA gene — **350 to 450 nt**.
+- The **V9** region is characterised by high nucleotide variability in the centre, covering approximately **60 nt**.
+:::
+:::
+
+## Standardised multi-omics of Earth's microbiomes
+
+::: {.columns}
+::: {.column width="50%"}
+![](/assets/loeng4/p48_2.jpg){height="360px"}
+:::
+::: {.column width="50%"}
+![](/assets/loeng4/p48_3.jpg)
+
+**Earth Microbiome Project Ontology (EMPO)** categories: free-living vs host-associated, saline vs non-saline, and the substrate — a controlled vocabulary that makes thousands of independent studies comparable.
+
+![](/assets/loeng4/p48_1.jpg){height="110px"}
+:::
+:::
+
+## Ribosomal RNA databases
+
+::: {.columns}
+::: {.column width="50%"}
+![](/assets/loeng4/p49_1.jpg){height="170px"}
+
+![](/assets/loeng4/p49_5.jpg){height="160px"}
+
+**SILVA** taxonomy, v138.2 released July 2024.
+:::
+::: {.column width="50%"}
+![](/assets/loeng4/p49_2.jpg){height="230px"}
+
+The **Greengenes2** phylogeny — Bray–Curtis on collapsed genus data, weighted UniFrac at ASV and genome identifier levels.
+
+![](/assets/loeng4/p49_4.jpg){height="110px"}
+
+**EUKARYOME** — a community-curated database for 18S (SSU), ITS, and 28S (LSU) markers for all eukaryotes.
+:::
+:::
+
+## Check yourself
+
+<details>
+<summary>Why is mtDNA so widely used in phylogeography?</summary>
+
+High copy number (so it amplifies from poor material), no recombination (so lineages form a network), and maternal inheritance (so the genealogy is simple). The cost is that it tracks one locus and only the female line.
+
+</details>
+
+<details>
+<summary>Why is COI a poor barcode for plants and fungi?</summary>
+
+Their mitochondrial substitution rates are low, so interspecific COI variation is often too small to separate species. Plants use rbcL, matK, and trnH-psbA; fungi use ITS.
+
+</details>
+
+<details>
+<summary>What is the "barcode gap", and what happens when it closes?</summary>
+
+The gap between intraspecific and interspecific genetic distances — 1.1% vs 18.1% in the mayfly example. Where recent divergence, hybridisation, or introgression closes it, sequences cannot be assigned to species with any threshold.
+
+</details>
+
+<details>
+<summary>Why does a detection near the LOD need more replicates, not more confidence?</summary>
+
+Below the LOD, detection is stochastic: the target may not enter the reaction at all. Replication converts a single uncertain result into a detection frequency, which is the quantity you can actually interpret.
+
+</details>
+
+<details>
+<summary>How is ancient DNA authenticated?</summary>
+
+By its damage: short fragments and an excess of C→T substitutions at the fragment ends from cytosine deamination. Contaminating modern DNA is long and undamaged.
+
+</details>
+
+## Thank you
+
+::: {.callout-important}
+peeter.laas@ut.ee · peeter.laas@taltech.ee
+:::
+
+**Next lecture:** sampling and nucleic acid extraction — how the material that all of this depends on is actually obtained.

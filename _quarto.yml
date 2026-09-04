@@ -1,70 +1,103 @@
-# _quarto.yml
-# Reusable project defaults — copy this file into any new talk/report folder.
-# Individual .qmd files only need: title, date, and content.
+# ---------------------------------------------------------------------------
+# MLB7052.LT — Modern Molecular Methods in Ecology
+# Course website. `quarto render` builds the pages *and* every lecture deck.
+# ---------------------------------------------------------------------------
 
 project:
-  type: default
+  type: website
+  output-dir: _site
+  render:
+    - "*.qmd"
+    - "lectures/*.qmd"
+    - "seminars/index.qmd"
+    # Student uploads are linked for download, never rendered — Quarto must not
+    # execute code that arrives by pull request.
+    - "!seminars/slides/"
+    # Leftovers from an unrelated Shiny app; kept on disk, out of the site.
+    - "!MolEcoMeth/"
+    - "!www/"
 
-# --- Institution logos ---
-# logo-ut:      loaded from URL at render time (embedded into self-contained HTML)
-# logo-taltech: path relative to the .qmd file (copy taltech-logo.png to new projects)
-logo-ut:      "https://www.ut.ee/themes/utheme/assets/img/UT_website_logo_white_est.svg"
-logo-taltech: "taltech-logo.png"
+# --- Course facts, read by the pages so they are stated in exactly one place -
+course-code:     "MLB7052.LT"
+course-title-et: "Kaasaegsed meetodid molekulaarses ökoloogias"
+course-title-en: "Modern Molecular Methods in Ecology"
+course-repo:     "https://github.com/peeterlaas/MolEcoMeth"
+semester:        "2026/2027 autumn"
+# First teaching Friday. Every date on the schedule page is derived from this,
+# so moving the semester is a one-line change.
+semester-start:  "2026-09-04"
 
-author:
-  - name: "Peeter Laas"
-    affiliation: "Institute of Technology at UT; Tallinn University of Technology"
-    email: "peeter.laas@ut.ee"
-    url: "https://peeterlaas.github.io/"
+# Logo paths, project-relative. The decks live one level down and prepend "..".
+logo-tlu:     "assets/logos/UUtopleft.png"
+logo-taltech: "assets/logos/taltech-logo.png"
 
-date-format: "D MMMM YYYY"
+website:
+  title: "MLB7052.LT — Molecular Methods in Ecology"
+  site-url: "https://peeterlaas.github.io/MolEcoMeth"
+  favicon: "assets/logos/favicon.png"
+  page-navigation: true
+  reader-mode: true
+  open-graph: true
+  search:
+    location: navbar
+    type: textbox
+  navbar:
+    background: primary
+    right:
+      - text: "Repository"
+        icon: github
+        href: "https://github.com/peeterlaas/MolEcoMeth"
+  sidebar:
+    style: docked
+    search: false
+    contents:
+      - href: index.qmd
+        text: "🏠 Home"
+      - href: syllabus.qmd
+        text: "📓 Syllabus"
+      - href: schedule.qmd
+        text: "🗓️ Schedule"
+      - href: topics.qmd
+        text: "🧭 Topics"
+      - section: "👨‍🏫 Lectures"
+        contents:
+          - href: lectures/introduction.qmd
+            text: "0 · Introduction & toolkit"
+          - href: lectures/code_of_life.qmd
+            text: "1 · The code of life"
+          - href: lectures/lecture2.qmd
+            text: "2 · The molecular toolkit"
+          - href: lectures/lecture3.qmd
+            text: "3 · Sequencing technologies"
+          - href: lectures/loeng4.qmd
+            text: "4 · Markers, barcoding & eDNA"
+          - href: lectures/loeng5.qmd
+            text: "5 · eDNA, hybridization & cytometry"
+      - href: seminars/index.qmd
+        text: "🎤 Seminars"
+      - href: participation.qmd
+        text: "✅ Participation"
+      - href: materials.qmd
+        text: "📚 Materials"
+  page-footer:
+    background: light
+    left: "MLB7052.LT · Tallinna Ülikool · 2026/2027"
+    right: "Built with [Quarto](https://quarto.org)"
 
 format:
-  # --- Slide presentations ---
-  revealjs:
-    theme: dark
-    highlight-style: github-dark
-    code-fold: false
-    code-line-numbers: true
-    slide-number: true
-    transition: slide
-    self-contained: true
-    scrollable: false
-    footer: "{{< meta author >}} · {{< meta date >}}"
-    logo: "https://www.ut.ee/themes/utheme/assets/img/UT_website_logo_white_est.svg"
-    fig-align: center
-    fig-width: 8
-    fig-height: 4.5
-
-  # --- HTML reports ---
   html:
+    theme:
+      - cosmo
+      - css/site.scss
     toc: true
     toc-depth: 3
-    toc-float: true
-    embed-resources: true
-    theme: cosmo
-    highlight-style: github
-    fig-align: center
-    fig-width: 8
-    fig-height: 5
+    link-external-newwindow: true
+    link-external-icon: true
+    date-format: "D MMMM YYYY"
+    email-obfuscation: javascript
     df-print: kable
-    code-fold: true
-    code-summary: "Show code"
-
-  # --- PDF reports ---
-  pdf:
-    toc: true
-    number-sections: true
-    fig-align: center
-    fig-width: 6
-    fig-height: 4
 
 execute:
-  echo: true
+  freeze: auto
   warning: false
   message: false
-  cache: false         # set to true for slow computations
-
-# Shared bibliography (optional — comment out if not used)
-# bibliography: references.bib
-# csl: apa.csl

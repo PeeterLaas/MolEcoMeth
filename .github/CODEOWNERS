@@ -1,0 +1,8 @@
+# The lecturer owns the course itself.
+*                       @peeterlaas
+
+# Seminar material is the students' to add. The path restriction is actually
+# enforced by the "Seminar guard" required check — CODEOWNERS only routes
+# review requests.
+/seminars/slides/
+/seminars/registrations.csv

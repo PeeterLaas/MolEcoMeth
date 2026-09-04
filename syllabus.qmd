@@ -1,0 +1,188 @@
+---
+title: "📓 Syllabus"
+subtitle: "MLB7052.LT — Kaasaegsed meetodid molekulaarses ökoloogias / Modern Molecular Methods in Ecology"
+---
+
+::: {.callout-note}
+## Status
+
+This page is the **proposed expanded version** of the course, prepared for
+departmental review. The existing 6 ECTS MLB7052.LT programme remains the
+administrative baseline until the expansion is approved — see
+[implementation note](#implementation-note) at the end.
+:::
+
+# 1. General information
+
+| Field | Proposed specification |
+|---|---|
+| Course code | MLB7052.LT |
+| Course title | Kaasaegsed meetodid molekulaarses ökoloogias / Modern Molecular Methods in Ecology |
+| Semester | 2026/2027 autumn |
+| Language | Estonian teaching; English reading and software documentation |
+| Credits | 10 ECTS, proposed expansion from 6 ECTS |
+| Contact hours | 102 hours: lectures, seminars, demonstrations, and practicals |
+| Independent work | 158 hours |
+| Prerequisites | MLK6922.LT Biochemistry; MLB6013.LT Genetics |
+| Lecturer | Peeter Laas |
+| Assessment | Graded: A, B, C, D, E, F |
+| Intended audience | Advanced undergraduate and master's students in molecular ecology, biology, biotechnology, and related fields |
+
+# 2. Course purpose
+
+The course develops a working understanding of molecular biology and its use in
+ecological and evolutionary research. Students move from the molecular basis of
+information to a defensible study design:
+
+**biological question → sample → molecule → assay → sequence or measurement → computation → inference**
+
+Cox, *Molecular Biology: Principles and Practice*, 2nd ed. (2015), provides the
+foundation for the opening weeks and a reference throughout the course. Method
+chapters and primary literature supply the case studies; the full list is on the
+[materials page](materials.qmd).
+
+# 3. Course aims
+
+After completing the course, students should:
+
+1. understand the molecular principles behind DNA, RNA, proteins, genomes, gene expression, and molecular phenotypes;
+2. understand the strengths, weaknesses, and appropriate uses of major molecular methods in ecology and evolutionary biology;
+3. develop practical competence in sample design, nucleic-acid extraction, quantification, PCR, electrophoresis, sequencing, and basic computational analysis;
+4. learn to connect molecular observations with ecological interactions, population structure, phylogeny, and environmental change;
+5. develop reproducible habits for controls, contamination prevention, metadata, quality assessment, and scientific reporting;
+6. design an end-to-end molecular study and defend the limitations of the proposed inference.
+
+# 4. Learning outcomes
+
+On successful completion, students can:
+
+- explain the chemical and informational basis of nucleic acids and proteins;
+- explain replication, mutation, repair, recombination, transcription, translation, RNA processing, and regulation;
+- choose sampling and preservation strategies for environmental, tissue, faecal, sediment, or low-biomass material;
+- design extraction and amplification workflows with appropriate blanks, positive controls, negative controls, technical replicates, and inhibition checks;
+- interpret agarose gels, Sanger traces, qPCR curves, standard curves, FASTQ quality metrics, and Nanopore run reports;
+- compare Sanger, short-read, and long-read sequencing for a stated biological objective;
+- use marker genes, metabarcoding, genome comparisons, phylogenetic analyses, and population-genetic summaries appropriately;
+- interpret selected transcriptomic, proteomic, hybridization, microscopy, and flow-cytometry evidence;
+- connect molecular observations to species interactions, symbiosis, population processes, and environmental monitoring;
+- produce a reproducible report that distinguishes observation, analysis, inference, and speculation.
+
+# 5. Course content
+
+The four blocks are expanded, with the methods each one covers, on the
+[topics page](topics.qmd).
+
+### Block I — Foundations and measurement
+
+- evolution, scientific reasoning, and molecular biology as a way of knowing;
+- chemical properties of DNA, RNA, proteins, buffers, enzymes, and molecular interactions;
+- information flow, replication, mutation, repair, recombination, transcription, translation, and regulation;
+- sample representativeness, preservation, extraction, quantification, inhibition, and contamination.
+
+### Block II — The molecular toolkit
+
+- electrophoresis, restriction analysis, Southern blotting, PCR, qPCR, ddPCR, Sanger sequencing, probes, FISH, fluorescence, and flow cytometry;
+- molecular markers, barcoding, metabarcoding, allozymes, RFLP, microsatellites, and SNPs;
+- Illumina, PacBio, Oxford Nanopore, library preparation, read quality, assembly, annotation, and data management.
+
+### Block III — Genomes and molecular phenotypes
+
+- comparative genomics, assembly, annotation, and public sequence databases;
+- transcriptomics, non-coding RNA, condition- and stage-specific regulation, epigenetics, and functional genomics;
+- proteomics, quantitative proteomics, protein interactions, post-translational modification, and molecular phenotypes;
+- the cell biology behind the traits we measure: life-cycle stages, secretion, transport, and cellular responses to the environment.
+
+### Block IV — Ecology, evolution, and application
+
+- phylogeny, phylogeography, population genetics, coalescence, and community-level inference;
+- species interactions, symbiosis, host-associated microbiota, and environmental monitoring;
+- CRISPR, LAMP, microfluidics, lab-on-chip, biosensing, and field-deployable diagnostics;
+- an integrated student capstone from question to inference.
+
+# 6. Textbook architecture
+
+**Cox — molecular foundation**
+
+- Ch. 1: evolution and scientific reasoning;
+- Ch. 2–8: DNA, RNA, proteins, genes, genomes, transcriptomes, and proteomes;
+- Ch. 11–18: replication, mutation, repair, recombination, transcription, RNA processing, translation, and genetic manipulation;
+- Ch. 19–22: regulation of gene expression.
+
+Book examples are used to demonstrate how methods answer biological questions.
+Students are not expected to read all chapters cover-to-cover. Textbook figures
+should be linked or used under the relevant institutional permissions; teaching
+diagrams should otherwise be redrawn as original explanatory figures.
+
+# 7. Teaching and learning methods
+
+- short lectures followed by structured interpretation of a figure, dataset, or method decision;
+- small-group [seminars](seminars/index.qmd) based on one paper, figure, or case study;
+- wet-lab practicals using approved teaching material and non-pathogenic controls;
+- virtual PCR/qPCR and sequence-analysis exercises;
+- public sequence, genome, and biodiversity databases with open computational tools;
+- a progressive capstone in which each submission becomes the next stage of the final study design.
+
+# 8. Assessment
+
+| Component | Weight | Evidence of achievement |
+|---|---:|---|
+| Reading quizzes and preparation tasks | 15% | Concepts, calculations, terminology, controls, and short method comparisons |
+| Practical notebook and QC reports | 25% | Raw observations, deviations, controls, calculations, data quality, and interpretation |
+| Seminar case study | 20% | Evidence-based presentation connecting a method to an ecological or evolutionary question |
+| Capstone project | 25% | Study design, protocol, analysis plan, limitations, and final report |
+| Integrative final assessment | 15% | Scenario-based written or oral assessment |
+
+### Requirements for admission to the final assessment
+
+- completion of the safety and contamination-control induction;
+- completion of the required practicals or an approved make-up assignment;
+- submission of the capstone study design and analysis plan;
+- no unresolved academic-integrity or data-provenance issue.
+
+Attendance is recorded through the [participation tracker](participation.qmd).
+
+# 9. Biosafety and ethical practice
+
+The course does not require culturing pathogenic organisms. Teaching activities
+use non-pathogenic organisms, preserved material, purified DNA/RNA, commercial
+controls, prepared images, or public datasets. Any live work must follow
+institutional biosafety, waste, ethics, and sample-transfer procedures.
+
+Students must record sample origin, collection date, preservation, extraction
+batch, control status, software version, parameter choices, and any deviation
+from the planned workflow.
+
+# 10. Responsible use of AI
+
+AI tools may be used for brainstorming, terminology support, code explanation,
+language editing, and generating candidate analysis plans. Students remain
+responsible for factual accuracy, citations, code correctness, data provenance,
+and the final interpretation. AI-generated text or code used in a submitted
+assignment must be declared briefly. AI must not be used to fabricate
+observations, replace required practical work, or conceal the origin of an
+analysis.
+
+The [introduction lecture](lectures/introduction.html) covers the tooling in
+detail, including running a local model when a cloud service is not appropriate
+for the data.
+
+# 11. Proposed workload model
+
+| Activity | Hours |
+|---|---:|
+| Lectures and demonstrations | 30 |
+| Seminars and guided data interpretation | 24 |
+| Practical and computational laboratories | 48 (12 × 4 h sessions) |
+| Reading and preparation | 42 |
+| Practical reports and data analysis | 48 |
+| Capstone project | 48 |
+| Final assessment preparation | 20 |
+| **Total** | **260** |
+
+# 12. Administrative implementation note {#implementation-note}
+
+The existing 6 ECTS course can be retained as a compact version by selecting
+weeks 1–8, 13, and 15, retaining the current practical sequence, and reducing
+the capstone. The 10 ECTS version should be adopted only after the timetable,
+laboratory capacity, staffing, assessment load, and programme-level credit
+requirements have been confirmed.

@@ -1,0 +1,64 @@
+# Turns attendance and seminar-registration issues into rows in the CSVs the
+# website reads. Serialised, because a room full of students submits at once.
+name: Issue forms
+
+on:
+  issues:
+    types: [opened]
+
+concurrency:
+  group: course-data
+  cancel-in-progress: false
+
+jobs:
+  record:
+    if: >
+      contains(github.event.issue.labels.*.name, 'attendance') ||
+      contains(github.event.issue.labels.*.name, 'seminar')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      issues: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Record the submission
+        id: bot
+        env:
+          ISSUE_BODY: ${{ github.event.issue.body }}
+          ISSUE_USER: ${{ github.event.issue.user.login }}
+          SESSION_PEPPER: ${{ secrets.SESSION_PEPPER }}
+        run: |
+          if [ "${{ contains(github.event.issue.labels.*.name, 'attendance') }}" = "true" ]; then
+            python3 tools/attendance_bot.py
+          else
+            python3 tools/seminar_bot.py
+          fi
+
+      - name: Commit the change
+        run: |
+          if [ -z "$(git status --porcelain data seminars)" ]; then
+            echo "Nothing to commit."
+            exit 0
+          fi
+          git config user.name  "course-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data seminars
+          git commit -m "Record submission from #${{ github.event.issue.number }}"
+          # Another issue may have landed while this one was processing.
+          for attempt in 1 2 3; do
+            git pull --rebase origin ${{ github.event.repository.default_branch }} && \
+            git push origin HEAD:${{ github.event.repository.default_branch }} && exit 0
+            sleep $((attempt * 5))
+          done
+          exit 1
+
+      - name: Reply on the issue
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh issue comment ${{ github.event.issue.number }} \
+            --body "${{ steps.bot.outputs.comment }}"
+          if [ "${{ steps.bot.outputs.close }}" = "true" ]; then
+            gh issue close ${{ github.event.issue.number }}
+          fi

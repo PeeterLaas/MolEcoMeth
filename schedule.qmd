@@ -1,0 +1,102 @@
+---
+title: "🗓️ Schedule"
+subtitle: "Week-by-week plan for the 2026/2027 autumn semester"
+# Reads a CSV that the bots update; must not be served from the freeze cache.
+execute:
+  freeze: false
+---
+
+```{r}
+#| label: setup
+#| include: false
+library(dplyr)
+library(readr)
+library(knitr)
+source("R/course.R")
+
+schedule <- read_csv("data/schedule.csv", show_col_types = FALSE)
+start    <- as.Date(course_meta("semester-start"))
+
+schedule <- schedule |>
+  mutate(
+    date  = start + 7 * (week - 1),
+    past  = date < Sys.Date(),
+    # A row links to its deck when one exists, otherwise the topic is plain text.
+    topic_cell = ifelse(
+      is.na(lecture) | lecture == "",
+      topic,
+      sprintf("[%s](%s)", topic, lecture)
+    ),
+    state = ifelse(past, "delivered", status)
+  )
+```
+
+::: {.callout-tip appearance="simple"}
+Dates are derived from a single semester-start date in `_quarto.yml`
+(**`r format(start, "%d %B %Y")`**, the first teaching Friday). Confirm it
+against the official timetable — changing that one line moves the whole
+schedule.
+:::
+
+```{r}
+#| label: schedule-table
+#| echo: false
+schedule |>
+  transmute(
+    Week    = week,
+    Date    = format(date, "%a %d %b"),
+    Block   = block,
+    Format  = kind,
+    Topic   = topic_cell,
+    Reading = ifelse(is.na(reading) | reading == "", "—", reading)
+  ) |>
+  kable()
+```
+
+# Blocks
+
+The semester is organised into four blocks; the
+[topics page](topics.qmd) lists what each one covers.
+
+```{r}
+#| label: block-summary
+#| echo: false
+block_names <- c(
+  I   = "Foundations and measurement",
+  II  = "The molecular toolkit",
+  III = "Genomes and molecular phenotypes",
+  IV  = "Ecology, evolution, and application"
+)
+
+schedule |>
+  group_by(block) |>
+  summarise(
+    Weeks = paste0(min(week), "–", max(week)),
+    Sessions = n(),
+    .groups = "drop"
+  ) |>
+  transmute(
+    Block = paste0("Block ", block),
+    Title = block_names[block],
+    Weeks,
+    Sessions
+  ) |>
+  kable()
+```
+
+# What happens in a typical week
+
+| | |
+|---|---|
+| **Before** | Read the assigned chapter or paper; the reading quiz opens with it |
+| **In class** | Lecture, then structured interpretation of one figure, dataset or method decision |
+| **After** | Log your [attendance](participation.qmd); write up any practical from that week |
+
+Weeks 7 and 15 differ: week 7 is a full practical session, and week 15 is given
+over to [student seminar presentations](seminars/index.qmd).
+
+# Changes
+
+The schedule lives in `data/schedule.csv`. Any change to it is a commit, so the
+history of what moved and when is visible in the repository — there is no
+separate announcement channel to miss.

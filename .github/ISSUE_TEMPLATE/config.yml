@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Course website
+    url: https://peeterlaas.github.io/MolEcoMeth
+    about: Schedule, slides, seminar register and the participation record.
+  - name: Ask the lecturer
+    url: mailto:peeter.laas@ut.ee
+    about: Anything that is not attendance or a seminar registration.

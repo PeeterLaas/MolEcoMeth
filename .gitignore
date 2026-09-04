@@ -1,0 +1,37 @@
+# --- Quarto ---
+/.quarto/
+/_site/
+**/*.quarto_ipynb
+
+# --- Rendered decks kept out of the repository; CI builds them ---
+/lectures/*.html
+/lectures/*_files/
+/*.html
+
+# --- Source PDFs the lectures were built from (large, and not ours to share) --
+*.pdf
+!seminars/slides/*.pdf
+
+# --- Bulk data: download it, do not commit it ---
+bw_assessment_eea_datahub_1990_2024_data.csv
+
+# --- R / RStudio ---
+.Rproj.user/
+.Rhistory
+.RData
+.Ruserdata
+rsconnect/
+
+# --- OS ---
+.DS_Store
+Thumbs.db
+
+# --- Leftovers from an unrelated Shiny app in this folder ---
+/www/
+/MolEcoMeth/
+/app.R
+/deploy.R
+/.rscignore
+
+# --- Decorative photos no longer used by any deck (11 MB); kept on disk ---
+/assets/photos/dec_pic_*.jpg

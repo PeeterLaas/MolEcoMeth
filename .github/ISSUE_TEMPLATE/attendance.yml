@@ -1,0 +1,42 @@
+name: "✅ Attendance"
+description: Record that you attended a session of MLB7052.LT
+title: "[attendance] "
+labels: ["attendance"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Submit this **during the session**. Your GitHub username is the record —
+        you do not need to type your name or email anywhere.
+  - type: dropdown
+    id: session
+    attributes:
+      label: Session
+      description: Which session are you logging?
+      options:
+        - "w01 — Introduction and toolkit"
+        - "w02 — The code of life"
+        - "w03 — The molecular toolkit"
+        - "w04 — Sequencing technologies"
+        - "w05 — Markers and DNA sources"
+        - "w06 — eDNA and hybridization methods"
+        - "w07 — Practical: sampling and extraction"
+        - "w08 — Comparative genomics"
+        - "w09 — Transcriptomics"
+        - "w10 — Proteomics and molecular phenotypes"
+        - "w11 — Phylogeny and phylogeography"
+        - "w12 — Population genetics"
+        - "w13 — Species interactions and microbiota"
+        - "w14 — Applied methods"
+        - "w15 — Seminar presentations"
+        - "w16 — Capstone and final assessment"
+    validations:
+      required: true
+  - type: input
+    id: code
+    attributes:
+      label: Session code
+      description: The word given in class. Leave blank if no code was announced.
+      placeholder: e.g. amplicon
+    validations:
+      required: false

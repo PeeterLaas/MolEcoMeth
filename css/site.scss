@@ -1,0 +1,78 @@
+/*-- scss:defaults --*/
+
+// Tallinna Ülikool red — the same accent the lecture decks use for headings,
+// so the site and the slides read as one thing.
+$primary:   #990000;
+$link-color: #990000;
+$body-color: #1c1c1c;
+
+/*-- scss:rules --*/
+
+h1, h2, h3 { color: #990000; }
+
+.navbar-brand { font-weight: 600; }
+
+/* Home-page call-to-action buttons */
+.cta {
+  display: inline-block;
+  margin: 0.3rem 0.5rem 0.3rem 0;
+  padding: 0.55rem 1.1rem;
+  border-radius: 4px;
+  background: $primary;
+  color: #fff !important;
+  text-decoration: none;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  box-shadow: rgba(0, 0, 0, .18) 0 2px 4px -1px;
+}
+.cta:hover { background: darken($primary, 8%); color: #fff !important; }
+.cta.ghost {
+  background: transparent;
+  color: $primary !important;
+  border: 1px solid $primary;
+  box-shadow: none;
+}
+.cta.ghost:hover { background: rgba(153, 0, 0, .07); color: $primary !important; }
+
+/* Lecture cards on the home page */
+.lecture-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1rem;
+  margin: 1.2rem 0;
+}
+.lecture-card {
+  border: 1px solid #e3e3e3;
+  border-left: 4px solid $primary;
+  border-radius: 5px;
+  padding: 0.9rem 1rem;
+  background: #fcfcfc;
+}
+.lecture-card h4 { margin: 0 0 .35rem 0; font-size: 1rem; color: $primary; }
+.lecture-card p  { margin: 0; font-size: .86rem; color: #555; }
+.lecture-card a  { text-decoration: none; }
+
+/* Collapsible topic rows, matching the decks */
+.dropdown-table details {
+  border-bottom: 1px solid rgba(0, 0, 0, .15);
+  padding: .4em 0;
+}
+.dropdown-table summary { cursor: pointer; font-weight: 600; padding: .35em .5em; }
+.dropdown-table summary:hover { background: rgba(153, 0, 0, .06); }
+.dropdown-table ul { margin: .5em 0 .8em 1.4em; }
+
+/* Tables: keep long registry/schedule tables readable */
+table { font-size: .92rem; }
+th { background: #f4f0f0; }
+
+/* Status pills used on the schedule and seminar pages */
+.pill {
+  display: inline-block;
+  padding: .1em .55em;
+  border-radius: 10px;
+  font-size: .78em;
+  font-weight: 600;
+}
+.pill-done    { background: #e5f2e5; color: #1c6b1c; }
+.pill-planned { background: #f0f0f0; color: #666; }
+.pill-open    { background: #fdefdc; color: #8a5200; }

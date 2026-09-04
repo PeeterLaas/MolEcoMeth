@@ -1,0 +1,77 @@
+---
+title: "📚 Materials"
+subtitle: "Books, software, databases and data for the course"
+---
+
+# Books
+
+| Book | Use in the course |
+|---|---|
+| Cox, Doudna & O'Donnell — *Molecular Biology: Principles and Practice*, 2nd ed. (2015) | The molecular foundation. Ch. 1–8 for the opening weeks, ch. 11–22 as a reference throughout |
+| Chisholm — *Theoretical Ecology: Concepts and Models with R* (2025) | Optional. Useful if you want the ecological models behind the inferences we draw |
+
+Textbook figures shown in lectures are used for teaching under institutional
+permissions and are not redistributed from this repository.
+
+# Software
+
+Install these before week 3. All of them are free, and all run on Linux, macOS
+and Windows.
+
+| Tool | What you need it for | Where |
+|---|---|---|
+| R (≥ 4.3) and RStudio | Every computational exercise | [posit.co](https://posit.co/download/rstudio-desktop/) |
+| Quarto | Reports, and the slides you are reading | [quarto.org](https://quarto.org) |
+| Git | Submitting seminar material to this repository | [git-scm.com](https://git-scm.com) |
+| A GitHub account | Attendance, seminar registration, slide submission | [github.com](https://github.com) |
+
+R packages used in the practicals:
+
+```r
+install.packages(c("tidyverse", "readr", "knitr", "DT", "ape", "phangorn", "vegan"))
+```
+
+::: {.callout-tip}
+## Working with AI assistants
+
+The [introduction lecture](lectures/introduction.html) covers GitHub Copilot,
+Claude Code, the `btw` package, Quarto templates, and running a local model with
+LM Studio when the data should not leave your machine. The
+[syllabus](syllabus.qmd#responsible-use-of-ai) sets out what you must declare.
+:::
+
+# Sequence and biodiversity databases
+
+| Database | What it holds |
+|---|---|
+| [NCBI GenBank / SRA](https://www.ncbi.nlm.nih.gov/) | Sequences, genomes and raw reads |
+| [ENA](https://www.ebi.ac.uk/ena) | The European mirror and submission route |
+| [BOLD Systems](https://www.boldsystems.org/) | Curated COI barcodes with specimen metadata |
+| [SILVA](https://www.arb-silva.de/) | Curated rRNA reference alignments |
+| [UNITE](https://unite.ut.ee/) | Fungal ITS reference sequences, hosted at Tartu |
+| [GBIF](https://www.gbif.org/) | Occurrence records, for putting molecular detections in context |
+| [PR2](https://pr2-database.org/) | Protist ribosomal reference database |
+
+# Datasets used in class
+
+| Dataset | Used in |
+|---|---|
+| EEA bathing-water quality, 1990–2024 | Introduction lecture — a large real table to practise on |
+| Course sequencing runs | Weeks 4–7, released as they are generated |
+
+The EEA table is ~100 MB and is **not** stored in this repository. Download it
+from the [EEA data hub](https://www.eea.europa.eu/en/datahub) and place it in
+the project root under its original name; the introduction lecture reads it from
+there.
+
+# Reference material for your seminar
+
+Choose a paper that makes a *methodological* argument, not only a biological
+one — the seminar is about how the evidence was produced. Good hunting grounds:
+
+- *Molecular Ecology* and *Molecular Ecology Resources*
+- *Environmental DNA*
+- *Methods in Ecology and Evolution*
+- *Nucleic Acids Research* — for the method itself rather than its application
+
+See the [seminar page](seminars/index.qmd) for how to claim one.

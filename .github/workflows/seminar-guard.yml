@@ -1,0 +1,72 @@
+# GitHub has no per-directory write permission, so the restriction is enforced
+# as a required check: a pull request from a student may only touch seminars/.
+# Make this check required on the default branch for the rule to have teeth.
+name: Seminar guard
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  guard:
+    runs-on: ubuntu-latest
+    outputs:
+      seminar-only: ${{ steps.check.outputs.seminar_only }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check which paths this pull request touches
+        id: check
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          files=$(gh pr diff ${{ github.event.pull_request.number }} --name-only)
+          echo "Changed files:"; echo "$files"
+
+          # Everything a student is allowed to change lives under seminars/.
+          outside=$(echo "$files" | grep -v '^seminars/' || true)
+
+          if [ -z "$outside" ]; then
+            echo "seminar_only=true" >> "$GITHUB_OUTPUT"
+            echo "Only seminar material — fine."
+            exit 0
+          fi
+
+          echo "seminar_only=false" >> "$GITHUB_OUTPUT"
+
+          # The lecturer and other maintainers may change anything.
+          role=$(gh api "repos/${{ github.repository }}/collaborators/${{ github.event.pull_request.user.login }}/permission" --jq .permission)
+          echo "Author permission: $role"
+          if [ "$role" = "admin" ] || [ "$role" = "maintain" ]; then
+            echo "Author maintains the repository — allowed."
+            exit 0
+          fi
+
+          echo "::error::This pull request changes files outside seminars/:"
+          echo "$outside"
+          exit 1
+
+  automerge:
+    needs: guard
+    if: needs.guard.outputs.seminar-only == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Merge seminar material
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh pr merge ${{ github.event.pull_request.number }} \
+            --repo ${{ github.repository }} \
+            --squash --delete-branch \
+            --body "Seminar material, merged automatically." || \
+          gh pr comment ${{ github.event.pull_request.number }} \
+            --body "This looks like seminar material, but I could not merge it automatically. The lecturer will take a look."
