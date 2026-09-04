@@ -46,7 +46,6 @@ source("../R/course.R")
 #| echo: false
 #| eval: true
 
-library(btw)
 library(httr2)
 library(dplyr)
 library(htmltools)
@@ -149,7 +148,7 @@ rendered <- format(Sys.time(), "%Y-%m-%d %H:%M")
 
 ---
 
-## 1. General information
+## General information
 
 | Field | Proposed specification |
 |---|---|
@@ -200,7 +199,7 @@ The goal isn't to replace thinking — it's to reduce friction. You still need t
 
 ---
 
-## 5. Course content {.scrollable}
+## Course content {.scrollable}
 
 ::: {.dropdown-table}
 
@@ -246,7 +245,7 @@ The goal isn't to replace thinking — it's to reduce friction. You still need t
 :::
 
 
-## 11. Proposed workload model
+## Proposed workload model
 
 | Activity | Hours |
 |---|---:|
@@ -261,173 +260,20 @@ The goal isn't to replace thinking — it's to reduce friction. You still need t
 
 ---
 
-## Copilot limits
+## Administrative implementation note
 
-```r
-# number of timesteps to iterate the model
-t_max = 10
-# initial population size
-N0 = 20
-# population growth rate
-r = 0.2
-# initialise an empty vector to store the population size
+The existing 6 ECTS course can be retained as a compact version by selecting Weeks 1-8, 13, and 15, retaining the current practical sequence, and reducing the capstone. The 10 ECTS version should be adopted only after the timetable, laboratory capacity, staffing, assessment load, and programme-level credit requirements have been confirmed.
 
-# over time
-Ns = numeric(t_max+1)
-# set the population size in the first timestep to N0
-Ns[1] = N0
-# execute a loop from time t=1 to t=t_max, iterating the
-
-for (t in 1:t_max)
-Ns[t+1] = (1+r)*Ns[t]
-# plot the results
-plot(0:t_max,Ns,pch=19,type='o',xlab='t',ylab='N',
-ylim=c(0,max(Ns)))
-```
-
+---
 
 ## Contact
-
 
 ::: {.callout-important}
 email: peeter.laas@ut.ee
 :::
 
-## 10. Responsible use of AI
-
-AI tools may be used for brainstorming, terminology support, code explanation, language editing, and generating candidate analysis plans. Students remain responsible for factual accuracy, citations, code correctness, data provenance, and the final interpretation. AI-generated text or code used in a submitted assignment must be declared briefly. AI must not be used to fabricate observations, replace required practical work, or conceal the origin of an analysis.
-
-## 11. Proposed workload model
-
-| Activity | Hours |
-|---|---:|
-| Lectures and demonstrations | 30 |
-| Seminars and guided data interpretation | 24 |
-| Practical and computational laboratories | 48 (12 x 4 h sessions) |
-| Reading and preparation | 42 |
-| Practical reports and data analysis | 48 |
-| Capstone project | 48 |
-| Final assessment preparation | 20 |
-| **Total** | **260** |
-
-## 12. Administrative implementation note
-
-The existing 6 ECTS course can be retained as a compact version by selecting Weeks 1-8, 13, and 15, retaining the current practical sequence, and reducing the capstone. The 10 ECTS version should be adopted only after the timetable, laboratory capacity, staffing, assessment load, and programme-level credit requirements have been confirmed.
-## What you can now ask Claude Code
-
-With R connected as MCP:
-
-```
-> What data frames are currently in my R environment?
-
-> Describe the structure of the `survey_data` object
-
-> What does the REML argument in lme4::lmer do?
-
-> My session has palmerpenguins loaded — fit a mixed
-  model of bill length by species + island
-```
-
-Claude calls your **live R session** for answers — no copy-paste.
-
----
-
-## Saving tokens — why it matters
-
-LLM APIs charge per token. A sloppy workflow burns money fast:
-
-| Habit | Approx tokens |
-|---|---|
-| link | https://www.stt.msu.edu/~melfi/STT180Text/classification.html#knn-and-the-iris-data |
-| `btw(my_df)` — one data frame | 200–600 |
-| Pasting entire help page | 3,000–8,000 |
-| `btw_tool_docs_help_page("pkg","fn")` | 400–1,200 |
-| Re-explaining project context every session | 500–2,000 |
-| `CLAUDE.md` project file (read once) | 200–500 |
-
-**Rule: describe only what the model needs to answer this specific question.**
-
----
-
-## Token-saving techniques with btw
-
-```r
-# app.R version 1
-
-library(shiny)
-
-names.df <- read.csv("https://www.finley-lab.com/files/data/name_list.csv")
-
-# Define UI
-ui <- fluidPage(
-  
-  titlePanel("Random Names Analysis"),
-  
-  sidebarLayout(
-    
-    sidebarPanel("our inputs will be here"),
-    
-    mainPanel("our output will appear here")
-  )
-)
-
-# Define server logic
-server <- function(input, output) {}
-
-# Create Shiny app
-shinyApp(ui = ui, server = server)
-```
-
----
-
-## CLAUDE.md — your project memory
-
-Create a `CLAUDE.md` file in your project root. Claude Code reads it at every session start — **you never re-explain your project**.
-
-```markdown
-# CLAUDE.md
-
-## Project
-EEA bathing water quality analysis, 1990–2024.
-Main data: data/bw_assessment_eea_datahub_1990_2024_data.csv (672k rows)
-
-## Key columns
-- `countryCode`: ISO2 country code
-- `season`: year of assessment
-- `quality`: EEA quality class (Excellent / Good / Sufficient / Poor)
-- `bathingWaterType`: coastalBathingWater | inlandBathingWater
-
-## Conventions
-- Use dplyr + ggplot2
-- Save all plots to plots/ as PNG at 300 dpi
-- All analysis scripts source data/load_data.R first
-```
-
-Zero tokens spent re-orienting the agent.
-
----
-
-## `btw` — other useful functions
-
-```r
-# Describe one data frame (most common use)
-btw(my_df)
-
-# Targeted function documentation
-btw_tool_docs_help_page("lme4", "lmer")
-
-# All vignettes for a package
-btw_tool_docs_available_vignettes("sf")
-
-# What's in my environment right now?
-btw_tool_env_describe_environment()
-
-# CRAN page and metadata for a package
-btw_tool_cran_package("ggplot2")
-
-# Search CRAN by topic
-btw_tool_cran_search("spatial interpolation")
-```
+Everything for the course — schedule, slides, seminar register, attendance —
+lives at [peeterlaas.github.io/MolEcoMeth](https://peeterlaas.github.io/MolEcoMeth/).
 
 ---
 
@@ -531,292 +377,7 @@ Temperature in Tartu right now: **`{r} temp`°C**, wind `{r} wind` km/h
 
 ---
 
-## Template workflow with AI
-
-```bash
-# New talk in 30 seconds
-mkdir ~/talks/my-new-talk && cd ~/talks/my-new-talk
-cp ~/Documents/R/RaiS/_quarto.yml .
-claude
-```
-
-```
-> Create a 10-slide RevealJS presentation titled
-> "Spatial Analysis of Estonian Peatlands".
-> My identity and formatting are in _quarto.yml.
-> Include: intro, methods, 3 results slides, discussion.
-> Add a ggplot2 map example using sf.
-```
-
-Claude reads `_quarto.yml`, inherits your name, affiliation, and all formatting. You write zero boilerplate.
-
----
-
-# LM Studio
-
-Offline AI — your scripting partner on a plane, in the field, or on an airgapped server
-
----
-
-## Why run a local LLM?
-
-::: {.incremental}
-- **No internet** — airplane, fieldwork, rural server room
-- **Privacy** — sensitive data that can't leave your machine
-- **No API costs** — unlimited queries once model is downloaded
-- **Reproducibility** — pin to a specific model version, forever
-:::
-
----
-
-## LM Studio — what it is
-
-LM Studio is a desktop app + CLI that:
-
-- Downloads models from Hugging Face with one click
-- Runs them locally via `llama.cpp` (CPU) or GPU acceleration
-- Exposes an **OpenAI-compatible API** on `localhost:1234`
-- Ships with `lms` — a full command-line interface
-
-**Download:** [lmstudio.ai](https://lmstudio.ai) — Mac, Windows, Linux
-
----
-
-## Installing the `lms` CLI
-
-::: {.columns}
-::: {.column width="50%"}
-**Mac / Linux:**
-
-```bash
-# LM Studio app → Install CLI tools
-# Or manually:
-export PATH="$PATH:$HOME/.lmstudio/bin"
-
-lms --version
-```
-:::
-::: {.column width="50%"}
-**Windows:**
-
-```powershell
-# LM Studio app → Install CLI tools
-# (adds to user PATH automatically)
-
-lms --version
-```
-:::
-:::
-
----
-
-## `lms` — essential commands
-
-```bash
-lms server start                          # start the API server
-lms ls                                    # list downloaded models
-lms get "qwen2.5-coder-7b-instruct"      # download a model
-lms load qwen2.5-coder-7b-instruct-q4_k_m  # load into memory
-lms chat                                  # interactive terminal chat
-lms status                                # check what's running
-lms server stop                           # stop the server
-```
-
----
-
-## Choosing your model — by hardware
-
-| Hardware | Recommended model | Size |
-|---|---|---|
-| CPU only — Linux / Win | `Phi-4-mini` Q4 | ~2.5 GB |
-| CPU only — Linux / Win | `Gemma-3-4B-IT` Q4 | ~3 GB |
-| 8 GB VRAM — Linux / Win | `Qwen2.5-Coder-7B` Q4 | ~5 GB |
-| 16 GB VRAM — Linux / Win | `Qwen2.5-Coder-14B` Q4 | ~10 GB |
-| 24 GB VRAM — Linux / Win | `Mistral-Small-22B` Q4 | ~18 GB |
-| Mac 8 GB (M-series) | `Phi-4-mini` Q4 | ~2.5 GB |
-| Mac 16 GB (M-series) | `Qwen2.5-Coder-7B` Q4 | ~5 GB |
-| Mac 32 GB+ (M-series) | `Qwen2.5-Coder-14B` Q4 | ~10 GB |
-
-::: {.callout-note}
-Apple Silicon uses unified memory — a 32 GB MacBook handles what a 32 GB VRAM GPU handles.
-**Q4_K_M** is the best quality-per-GB quantisation for all platforms.
-:::
-
----
-
-## Step-by-step: CPU only (Linux / Windows)
-
-```bash
-# 1. Install LM Studio from lmstudio.ai, then:
-lms server start
-
-# 2. Download a small but capable model (~2.5 GB)
-lms get "microsoft/phi-4-mini-instruct-gguf"
-
-# 3. Load it
-lms load phi-4-mini-instruct-q4_k_m
-
-# 4. Test in terminal
-lms chat
-# > Write an R function that reads a CSV and returns
-# > summary statistics per numeric column
-
-# 5. Confirm the API is up
-curl http://localhost:1234/v1/models
-```
-
-Total: ~10 min including download.
-
----
-
-## Step-by-step: NVIDIA GPU (Linux / Windows)
-
-```bash
-# 1. Verify CUDA
-nvidia-smi
-
-# 2. Install LM Studio — auto-detects CUDA
-
-# 3. Download coder model (~5 GB)
-lms get "qwen2.5-coder-7b-instruct-gguf"
-
-# 4. Load — offload all layers to GPU
-lms load qwen2.5-coder-7b-instruct-q4_k_m \
-  --gpu-layers 999
-
-# 5. Chat or query via API
-lms chat
-
-# 6. Monitor GPU while running
-watch -n1 nvidia-smi
-```
-
----
-
-## Step-by-step: Mac Apple Silicon
-
-```bash
-# 1. Install LM Studio (Apple Silicon native — uses Metal)
-
-# 2. Download
-lms get "qwen2.5-coder-7b-instruct-gguf"
-
-# 3. Load (Metal acceleration is automatic)
-lms load qwen2.5-coder-7b-instruct-q4_k_m
-
-# 4. Test
-lms chat
-
-# 5. Monitor: Activity Monitor → Window → GPU History
-```
-
----
-
-## Using LM Studio with R
-
-LM Studio exposes an OpenAI-compatible API on `localhost:1234`:
-
-```r
-library(httr2)
-
-ask_local_llm <- function(prompt, model = "local-model") {
-  request("http://localhost:1234/v1/chat/completions") |>
-    req_body_json(list(
-      model    = model,
-      messages = list(list(role = "user", content = prompt))
-    )) |>
-    req_perform() |>
-    resp_body_json() |>
-    (\(r) r$choices[[1]]$message$content)()
-}
-
-ask_local_llm("Write a dplyr pipeline to count NAs per column")
-```
-
-No API key. No internet. No cost per query.
-
----
-
-## Using LM Studio with Claude Code offline
-
-Point Claude Code at your local server:
-
-```bash
-export ANTHROPIC_BASE_URL=http://localhost:1234/v1
-export ANTHROPIC_API_KEY=local   # any non-empty string works
-
-claude
-```
-
-::: {.callout-warning}
-Local models are weaker than Claude — great for focused tasks (fix this function, write a plot) but struggle with complex multi-file reasoning. Use offline; switch back when you have internet.
-:::
-
----
-
 # Practical exercises
-
----
-
-## Exercise 1 — Copilot warm-up (10 min)
-
-In RStudio with Copilot enabled:
-
-1. Open a new R script
-2. Write this comment — let Copilot complete the rest:
-
-```r
-# Load mtcars, fit a linear model of mpg ~ wt + cyl,
-# and plot residuals vs fitted values
-```
-
-3. **Tab** to accept, **Esc** to reject, **Alt+]** to see alternatives
-4. Run the code — does it actually work?
-
-**Goal:** get comfortable with the accept/reject cycle before trusting it.
-
----
-
-## Exercise 2 — Claude Code session (20 min)
-
-```bash
-mkdir ~/ai-exercise && cd ~/ai-exercise
-git init && claude
-```
-
-Ask Claude to:
-
-1. Create `data/sample.csv` with student grades (name, subject, score)
-2. Write `analysis.R` that reads it and produces a summary table
-3. Create a ggplot bar chart → `plots/grades.png`
-4. Write a `report.qmd` that includes both
-
-**Inspect each file before accepting. Run `git diff` after each edit. Render the QMD.**
-
----
-
-## Exercise 3 — btw + API key (10 min)
-
-```r
-# 1. Add your API key
-usethis::edit_r_environ()
-# ANTHROPIC_API_KEY=sk-ant-api03-...
-# Save → restart R
-
-# 2. Verify
-Sys.getenv("ANTHROPIC_API_KEY")
-
-# 3. Use btw with real data
-library(btw)
-library(palmerpenguins)
-penguins_problem <- penguins
-penguins_problem$body_mass_g[sample(nrow(penguins), 20)] <- NA
-btw(penguins_problem)   # copies to clipboard
-```
-
-Paste into Claude.ai:
-
-> *"Impute missing `body_mass_g` using the median within each species. dplyr."*
 
 ---
 
@@ -900,45 +461,56 @@ leaflet(bw_sample) |>
 
 ---
 
-## Exercise 4 — EEA Bathing Water Data (25 min)
-
-**Step 1 — Explore the structure with btw and AI**
+## Exercise 1 — Explore the data (15 min)
 
 ```r
-library(btw)
+library(readr)
 library(dplyr)
 
-bw <- readr::read_csv("bw_assessment_eea_datahub_1990_2024_data.csv",
-                      show_col_types = FALSE)
+bw <- read_csv("bw_assessment_eea_datahub_1990_2024_data.csv",
+               show_col_types = FALSE)
 
-# Tell the AI exactly what you have
-btw(head(bw, 20))
+glimpse(bw)
+count(bw, countryCode, sort = TRUE)
+count(bw, quality)
 ```
 
-Paste into Claude.ai:
+Answer from the output, not from memory:
 
-> *"Describe what this dataset contains. What analysis questions would make sense with it?"*
+- how many bathing waters does Estonia report, and over which years?
+- which quality categories exist, and how are they distributed?
+- which columns would you need to put a site on a map?
 
 ---
 
-## Exercise 4 — EEA Data continued
-
-**Step 2 — Filter and explore a country**
+## Exercise 2 — Filter and summarise (15 min)
 
 ```r
-# Filter to your country (or Estonia as example)
 bw_ee <- bw |>
   filter(countryCode == "EE", season == 2024)
 
-# Ask AI: quality categories in plain English
-btw(bw_ee)
+bw_ee |>
+  count(quality) |>
+  mutate(share = round(100 * n / sum(n), 1)) |>
+  arrange(desc(n))
 ```
 
-> *"Summarise the distribution of quality ratings for Estonian bathing waters in 2024. Write dplyr + ggplot2 code."*
+Then plot how the ratings have moved over time:
+
+```r
+library(ggplot2)
+
+bw |>
+  filter(countryCode == "EE") |>
+  count(season, quality) |>
+  ggplot(aes(season, n, fill = quality)) +
+  geom_col(position = "fill") +
+  labs(x = NULL, y = "share of sites", fill = NULL)
+```
 
 ---
 
-## Exercise 4 — Searchable table with download
+## Exercise 3 — A searchable, downloadable table (15 min)
 
 A large data frame can be made browsable and downloadable:
 
@@ -960,43 +532,47 @@ bw_ee |>
   )
 ```
 
-This renders as an interactive HTML table with search, sort, and download — works in any self-contained `.html` or Shiny app.
+This renders as an interactive HTML table with search, sort, and download — it
+works in any self-contained `.html` and in a Shiny app.
 
 ---
 
-## Exercise 4 — Ask AI to build the full report
+## Exercise 4 — Build the report (25 min)
 
-```bash
-cd ~/Documents/R/RaiS
-claude
+Put the three previous steps into one `report.qmd`:
+
+```yaml
+---
+title: "Estonian bathing waters, 1990-2024"
+format:
+  html:
+    toc: true
+    embed-resources: true
+execute:
+  echo: false
+---
 ```
 
-```
-> The file bw_assessment_eea_datahub_1990_2024_data.csv
-> contains EEA bathing water quality data 1990–2024.
-> Columns: countryCode, bathingWaterName, bathingWaterType,
->          lon, lat, season, quality.
->
-> Create report.qmd that:
-> 1. Reads the data
-> 2. Filters to Estonia (EE)
-> 3. Shows a DT searchable table with download button
-> 4. Plots quality trend over years as a stacked bar chart
-> 5. Renders as self-contained HTML
-```
+1. read the data;
+2. filter to Estonia;
+3. show the searchable table;
+4. plot the quality trend as a stacked bar chart;
+5. `quarto render report.qmd`.
+
+The output is a single HTML file you can email, and the `.qmd` beside it says
+exactly how every number in it was produced.
 
 ---
 
 ## Key takeaways
 
 ::: {.incremental}
-- **Copilot** = inline completion, fast, no project context
-- **Claude Code** = agentic, reads files, iterates on errors
-- **`btw`** = your live R session as an AI tool — describe only what's needed
-- **`CLAUDE.md`** = free persistent project memory for Claude Code
 - **`_quarto.yml`** = set your identity and style once, reuse forever
-- **LM Studio** = same workflow, offline, weaker model
-- **Git first** — always commit before an AI session
+- **Live data at render time** — slides and reports that never go stale
+- **`DT`** turns a 600,000-row table into something searchable and downloadable
+- **`leaflet`** puts sampling sites on a map in a dozen lines
+- **Self-contained HTML** travels as one file — no folder of assets to lose
+- **Commit first** — you cannot break what is already in git
 :::
 
 ---
@@ -1005,29 +581,26 @@ claude
 
 ::: {.columns}
 ::: {.column width="50%"}
-**Tools:**
+**Learning:**
 
-- [claude.ai/code](https://claude.ai/code) — Claude Code CLI
-- [lmstudio.ai](https://lmstudio.ai) — local LLMs
-- [console.anthropic.com](https://console.anthropic.com) — API keys
-- [github.com/features/copilot](https://github.com/features/copilot)
+- [quarto.org](https://quarto.org) — documentation and guides
+- [r4ds.hadley.nz](https://r4ds.hadley.nz) — R for Data Science
+- [open-meteo.com](https://open-meteo.com) — free weather API
 
 **R packages:**
 
-- `pak::pak("posit-dev/btw")`
 - `install.packages("DT")`
 - `install.packages("httr2")`
+- `install.packages("leaflet")`
 :::
 ::: {.column width="50%"}
-**Learning:**
+**Data:**
 
-- [quarto.org](https://quarto.org)
-- [open-meteo.com](https://open-meteo.com) — free weather API
 - [EEA Bathing Water Datahub](https://www.eea.europa.eu/en/datahub/datahubitem-view/3de879df-0935-4b2b-a69e-2571d09d5bc4)
 
-**Slides + source:**
+**Course site:**
 
-`https://kratt.shinyapps.io/RaiS/`
+[peeterlaas.github.io/MolEcoMeth](https://peeterlaas.github.io/MolEcoMeth/)
 
 ![](/assets/photos/QRlink_to_driveshare.png){height=120px}
 :::
@@ -1043,6 +616,6 @@ claude
 logos_html("60px")
 ```
 
-```r
-btw()  # describe your confusion to an AI
-```
+::: {style="text-align:center; margin-top:1em;"}
+peeter.laas@ut.ee
+:::

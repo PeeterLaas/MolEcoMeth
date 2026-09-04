@@ -152,21 +152,7 @@ Students must record sample origin, collection date, preservation, extraction
 batch, control status, software version, parameter choices, and any deviation
 from the planned workflow.
 
-# 10. Responsible use of AI
-
-AI tools may be used for brainstorming, terminology support, code explanation,
-language editing, and generating candidate analysis plans. Students remain
-responsible for factual accuracy, citations, code correctness, data provenance,
-and the final interpretation. AI-generated text or code used in a submitted
-assignment must be declared briefly. AI must not be used to fabricate
-observations, replace required practical work, or conceal the origin of an
-analysis.
-
-The [introduction lecture](lectures/introduction.html) covers the tooling in
-detail, including running a local model when a cloud service is not appropriate
-for the data.
-
-# 11. Proposed workload model
+# 10. Proposed workload model
 
 | Activity | Hours |
 |---|---:|
@@ -179,7 +165,7 @@ for the data.
 | Final assessment preparation | 20 |
 | **Total** | **260** |
 
-# 12. Administrative implementation note {#implementation-note}
+# 11. Administrative implementation note {#implementation-note}
 
 The existing 6 ECTS course can be retained as a compact version by selecting
 weeks 1–8, 13, and 15, retaining the current practical sequence, and reducing

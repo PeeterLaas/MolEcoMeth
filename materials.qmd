@@ -31,15 +31,6 @@ R packages used in the practicals:
 install.packages(c("tidyverse", "readr", "knitr", "DT", "ape", "phangorn", "vegan"))
 ```
 
-::: {.callout-tip}
-## Working with AI assistants
-
-The [introduction lecture](lectures/introduction.html) covers GitHub Copilot,
-Claude Code, the `btw` package, Quarto templates, and running a local model with
-LM Studio when the data should not leave your machine. The
-[syllabus](syllabus.qmd#responsible-use-of-ai) sets out what you must declare.
-:::
-
 # Sequence and biodiversity databases
 
 | Database | What it holds |
