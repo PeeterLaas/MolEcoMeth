@@ -14,8 +14,10 @@ if ! command -v gh >/dev/null 2>&1; then
   echo "The GitHub CLI (gh) is not installed: https://cli.github.com" >&2
   exit 1
 fi
-if ! gh auth status >/dev/null 2>&1; then
-  echo "Not logged in to GitHub. Run:  gh auth login" >&2
+# `gh auth status` exits 0 even when the stored token has expired, so make a
+# real API call instead.
+if ! gh api user >/dev/null 2>&1; then
+  echo "GitHub token is missing or expired. Run:  gh auth login -h github.com" >&2
   exit 1
 fi
 
