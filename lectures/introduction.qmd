@@ -156,10 +156,6 @@ rendered <- format(Sys.time(), "%Y-%m-%d %H:%M")
 | Course title | Kaasaegsed meetodid molekulaarses ökoloogias / Modern Molecular Methods in Ecology |
 | Semester | 2026/2027 autumn |
 | Language | Estonian teaching; English reading and software documentation |
-| Credits | 10 ECTS, proposed expansion from 6 ECTS |
-| Contact hours | 102 hours: lectures, seminars, demonstrations, and practicals |
-| Independent work | 158 hours |
-| Prerequisites | MLK6922.LT Biochemistry; MLB6013.LT Genetics |
 | Lecturer | Peeter Laas |
 | Assessment | Graded: A, B, C, D, E, F |
 | Intended audience | Advanced undergraduate and master's students in molecular ecology, biology, biotechnology, and related fields |
@@ -238,38 +234,20 @@ The goal isn't to replace thinking — it's to reduce friction. You still need t
 - phylogeny, phylogeography, population genetics, coalescence, and community-level inference;
 - species interactions, symbiosis, host-associated microbiota, and environmental monitoring;
 - CRISPR, LAMP, microfluidics, lab-on-chip, biosensing, and field-deployable diagnostics;
-- an integrated student capstone from question to inference.
 
 </details>
 
 :::
 
 
-## Proposed workload model
-
-| Activity | Hours |
-|---|---:|
-| Lectures and demonstrations | 30 |
-| Seminars and guided data interpretation | 24 |
-| Practical and computational laboratories | 48 (12 x 4 h sessions) |
-| Reading and preparation | 42 |
-| Practical reports and data analysis | 48 |
-| Capstone project | 48 |
-| Final assessment preparation | 20 |
-| **Total** | **260** |
-
----
-
-## Administrative implementation note
-
-The existing 6 ECTS course can be retained as a compact version by selecting Weeks 1-8, 13, and 15, retaining the current practical sequence, and reducing the capstone. The 10 ECTS version should be adopted only after the timetable, laboratory capacity, staffing, assessment load, and programme-level credit requirements have been confirmed.
-
 ---
 
 ## Contact
 
+[Mõned kasulikud raamatud](/drive.google.com/drive/folders/1O4cTmBxDmfk80coZbs7u1YtSVNmmd-Bt?usp=drive_link)
+
 ::: {.callout-important}
-email: peeter.laas@ut.ee
+email: peeter.laas@ut.ee; peeter.laas@taltech.ee; peeter.laas@gmail.com
 :::
 
 Everything for the course — schedule, slides, seminar register, attendance —
@@ -277,70 +255,6 @@ lives at [peeterlaas.github.io/MolEcoMeth](https://peeterlaas.github.io/MolEcoMe
 
 ---
 
-# Quarto templates
-
-Reusable YAML so you never set up the same slide twice
-
----
-
-## The YAML repetition problem
-
-Every new presentation you write this from scratch:
-
-```yaml
----
-title: "My Talk"
-author: "Peeter"           # ← type this every time
-institute: "UT / TalTech"  # ← type this every time
-format:
-  revealjs:
-    theme: dark            # ← set this every time
-    slide-number: true     # ← set this every time
-    self-contained: true   # ← forget this every time
----
-```
-
-**Solution:** a project-level `_quarto.yml` that sets defaults once.
-
----
-
-## `_quarto.yml` — your personal template
-
-```yaml
-# _quarto.yml — copy to any new project folder
-author:
-  - name: "Peeter"
-    affiliation: "University of Tartu / TalTech"
-    email: "peeter@ut.ee"
-
-format:
-  revealjs:
-    theme: dark
-    highlight-style: github-dark
-    slide-number: true
-    transition: slide
-    self-contained: true
-    logo: assets/ut_logo.svg
-    footer: "{{{< meta author >}}} · {{{< meta date >}}}"
-  html:
-    toc: true
-    embed-resources: true
-
-execute:
-  warning: false
-  message: false
-```
-
-Any `.qmd` in this project inherits everything. New talks need only:
-
-```yaml
----
-title: "My New Talk"
-date: today
----
-```
-
----
 
 ## Live data in slides — weather example
 

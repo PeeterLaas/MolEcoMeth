@@ -88,12 +88,15 @@ schedule |>
 
 | | |
 |---|---|
-| **Before** | Read the assigned chapter or paper; the reading quiz opens with it |
+| **Before** | Read the assigned chapter or paper |
 | **In class** | Lecture, then structured interpretation of one figure, dataset or method decision |
-| **After** | Log your [attendance](participation.qmd); write up any practical from that week |
+| **After** | Log your [attendance](participation.qmd) — it is what your oral examination is scaled against |
 
-Weeks 7 and 15 differ: week 7 is a full practical session, and week 15 is given
-over to [student seminar presentations](seminars/index.qmd).
+The last four weeks differ. Week 13 is given over to
+[student seminar presentations](seminars/index.qmd), and weeks 14–16 are the
+practical laboratory block — sampling and extraction, then amplification and
+sequencing, then analysis and write-up. Together the practicals are 25% of the
+grade; the [syllabus](syllabus.qmd#assessment) has the rest.
 
 # Changes
 

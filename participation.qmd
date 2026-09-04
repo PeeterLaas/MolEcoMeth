@@ -1,6 +1,6 @@
 ---
 title: "✅ Participation"
-subtitle: "Attendance is recorded through this repository — no forms, no sign-ups"
+subtitle: "Attendance sets the shape of your oral examination — and it is recorded here, in the open"
 # Reads a CSV that the bots update; must not be served from the freeze cache.
 execute:
   freeze: false
@@ -24,6 +24,16 @@ attendance <- read_csv("data/attendance.csv", show_col_types = FALSE,
 open_sessions <- sessions |> filter(tolower(open) == "yes")
 new_issue     <- paste0(repo, "/issues/new?template=attendance.yml")
 ```
+
+::: {.callout-important}
+## Why this matters
+
+The oral examination is 50% of the grade, and it is scaled against this record.
+Attend the sessions, present your seminar and do the practical work, and the
+examination is a short conversation. Where there are gaps, the examination
+covers the topics of the sessions you missed. See the
+[syllabus](syllabus.qmd#assessment) for the full breakdown.
+:::
 
 # How to log a session
 

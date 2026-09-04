@@ -19,7 +19,7 @@ and what any of that lets us *claim* about an ecological system.
 - information flow: replication, mutation, repair, recombination, transcription, translation, and regulation;
 - sample representativeness, preservation, extraction, quantification, inhibition, and contamination.
 
-*Weeks 1–2 and the week 7 practical. Slides:*
+*Weeks 1–2, and the practical block in weeks 14–16. Slides:*
 [Introduction](lectures/introduction.html) ·
 [The code of life](lectures/code_of_life.html)
 
@@ -32,7 +32,7 @@ and what any of that lets us *claim* about an ecological system.
 - molecular markers: barcoding, metabarcoding, allozymes, RFLP, microsatellites, and SNPs;
 - Illumina, PacBio, Oxford Nanopore, library preparation, read quality, assembly, annotation, and data management.
 
-*Weeks 3–7. Slides:*
+*Weeks 3–6. Slides:*
 [The molecular toolkit](lectures/lecture2.html) ·
 [Sequencing technologies](lectures/lecture3.html) ·
 [Markers and DNA sources](lectures/loeng4.html) ·
@@ -48,7 +48,7 @@ and what any of that lets us *claim* about an ecological system.
 - proteomics, quantitative proteomics, protein interactions, post-translational modification, and molecular phenotypes;
 - the cell biology behind the traits we measure: life-cycle stages, secretion, transport, and cellular responses to the environment.
 
-*Weeks 8–10.*
+*Weeks 7–9.*
 
 </details>
 
@@ -57,10 +57,9 @@ and what any of that lets us *claim* about an ecological system.
 
 - phylogeny, phylogeography, population genetics, coalescence, and community-level inference;
 - species interactions, symbiosis, host-associated microbiota, and environmental monitoring;
-- CRISPR, LAMP, microfluidics, lab-on-chip, biosensing, and field-deployable diagnostics;
-- an integrated student capstone from question to inference.
+- CRISPR, LAMP, microfluidics, lab-on-chip, biosensing, and field-deployable diagnostics.
 
-*Weeks 11–16.*
+*Weeks 10–12.*
 
 </details>
 

@@ -97,7 +97,6 @@ The four blocks are expanded, with the methods each one covers, on the
 - phylogeny, phylogeography, population genetics, coalescence, and community-level inference;
 - species interactions, symbiosis, host-associated microbiota, and environmental monitoring;
 - CRISPR, LAMP, microfluidics, lab-on-chip, biosensing, and field-deployable diagnostics;
-- an integrated student capstone from question to inference.
 
 # 6. Textbook architecture
 
@@ -120,26 +119,52 @@ diagrams should otherwise be redrawn as original explanatory figures.
 - wet-lab practicals using approved teaching material and non-pathogenic controls;
 - virtual PCR/qPCR and sequence-analysis exercises;
 - public sequence, genome, and biodiversity databases with open computational tools;
-- a progressive capstone in which each submission becomes the next stage of the final study design.
 
 # 8. Assessment
 
-| Component | Weight | Evidence of achievement |
+The course is graded A–F on three components, and all three have to be there.
+
+| Component | Weight | How it is judged |
 |---|---:|---|
-| Reading quizzes and preparation tasks | 15% | Concepts, calculations, terminology, controls, and short method comparisons |
-| Practical notebook and QC reports | 25% | Raw observations, deviations, controls, calculations, data quality, and interpretation |
-| Seminar case study | 20% | Evidence-based presentation connecting a method to an ecological or evolutionary question |
-| Capstone project | 25% | Study design, protocol, analysis plan, limitations, and final report |
-| Integrative final assessment | 15% | Scenario-based written or oral assessment |
+| Seminar presentation | 25% | Pass / no pass — one research article, presented to the group in week 13 |
+| Practical laboratory work | 25% | The three laboratory sessions in weeks 14–16 and the work handed in from them |
+| Oral examination | 50% | A conversation about the course material, in the examination period |
 
-### Requirements for admission to the final assessment
+### The seminar is pass or no pass
 
-- completion of the safety and contamination-control induction;
-- completion of the required practicals or an approved make-up assignment;
-- submission of the capstone study design and analysis plan;
-- no unresolved academic-integrity or data-provenance issue.
+There is no scale and no rubric score behind this 25%: you either present a
+paper and show that you understood how its evidence was produced, or you do
+not. A presentation that falls short can be repeated once. What makes a good
+one, and the registration form, are on the [seminars page](seminars/index.qmd).
 
-Attendance is recorded through the [participation tracker](participation.qmd).
+### The practicals are the bench work
+
+The last three sessions of the semester are laboratory sessions, running the
+chain the whole course has been describing — sampling and extraction, then
+amplification and sequencing, then the analysis and the write-up. They are
+assessed together, on what you did at the bench and what you made of the result:
+controls run, deviations recorded, numbers interpreted honestly.
+
+Attendance at the practicals is not optional in the way a lecture is. A session
+you miss has to be made up, and the laboratory safety induction has to be done
+before you can be in the room at all.
+
+### The oral examination is scaled to what you already did
+
+The examination is a conversation, and how long a conversation depends on the
+record you bring to it.
+
+- **You attended, presented, and did the practical work.** The examination is a
+  short discussion of what you found interesting and what you would do
+  differently — a confirmation, not an interrogation.
+- **You have gaps.** The examination covers the topics of the sessions you
+  missed and the work you did not finish. Nothing exotic: the material of those
+  weeks, at the level it was taught.
+
+That is the entire reason attendance is recorded. It is not a compliance
+exercise — it is the thing the examination is measured against, and it is kept
+in the open where you can check it yourself through the
+[participation tracker](participation.qmd).
 
 # 9. Biosafety and ethical practice
 
@@ -152,23 +177,26 @@ Students must record sample origin, collection date, preservation, extraction
 batch, control status, software version, parameter choices, and any deviation
 from the planned workflow.
 
-# 10. Proposed workload model
+# 10. Workload model
 
-| Activity | Hours |
-|---|---:|
-| Lectures and demonstrations | 30 |
-| Seminars and guided data interpretation | 24 |
-| Practical and computational laboratories | 48 (12 × 4 h sessions) |
-| Reading and preparation | 42 |
-| Practical reports and data analysis | 48 |
-| Capstone project | 48 |
-| Final assessment preparation | 20 |
-| **Total** | **260** |
+The semester is sixteen weekly sessions:
+
+| Activity | Sessions | When |
+|---|---:|---|
+| Lectures and demonstrations | 12 | Weeks 1–12 |
+| Student seminar presentations | 1 | Week 13 |
+| Practical laboratories | 3 | Weeks 14–16 |
+| Oral examination | — | Examination period |
+
+Independent work is the reading for each lecture, the preparation of one seminar
+paper, and the write-up of the practicals. The hour split behind these sessions
+follows whichever credit volume is approved; the totals proposed for the
+expanded version are in section 1.
 
 # 11. Administrative implementation note {#implementation-note}
 
 The existing 6 ECTS course can be retained as a compact version by selecting
-weeks 1–8, 13, and 15, retaining the current practical sequence, and reducing
-the capstone. The 10 ECTS version should be adopted only after the timetable,
-laboratory capacity, staffing, assessment load, and programme-level credit
-requirements have been confirmed.
+weeks 1–8 and 12, keeping the seminar, and reducing the practical block from
+three sessions to one. The 10 ECTS version should be adopted only after the
+timetable, laboratory capacity, staffing, assessment load, and programme-level
+credit requirements have been confirmed.

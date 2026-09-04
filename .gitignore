@@ -35,3 +35,9 @@ Thumbs.db
 
 # --- Decorative photos no longer used by any deck (11 MB); kept on disk ---
 /assets/photos/dec_pic_*.jpg
+
+# --- Session-code pepper: a secret, never committed ---
+/.session_pepper
+
+# --- Python byte-cache from running the tools/ scripts ---
+__pycache__/

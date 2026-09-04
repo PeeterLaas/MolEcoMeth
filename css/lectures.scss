@@ -27,7 +27,7 @@ $mainFont: 'TeXGyreAdventor', sans-serif;
   font-size: 1.5em;
   color: #990000;
   font-weight: normal;
-  padding-bottom: 50px;
+  padding-bottom: 18px;
 }
 
 .reveal .slide .toc-title h2 {
@@ -68,4 +68,39 @@ $mainFont: 'TeXGyreAdventor', sans-serif;
 
 .reveal #TOC li {
   font-family: 'TeXGyreAdventor', sans-serif;
+}
+
+
+/* ---------------------------------------------------------------------------
+   Layer 1 of keeping slides inside the frame: cap anything that has no natural
+   bound. Reveal itself puts no max-width or max-height on images, and a good
+   third of the figures lifted out of the source PDFs are taller than the whole
+   1200x675 slide, so they used to run straight off the bottom.
+
+   Images carrying an explicit {height="..."} keep it; the caps only bite when
+   the image would otherwise be too big. object-fit absorbs the aspect-ratio
+   change so a clamped image is letterboxed rather than stretched.
+
+   Layer 2 is fit-slides.html, which shrinks whatever still does not fit.
+--------------------------------------------------------------------------- */
+
+.reveal .slides section img:not(.slide-logo),
+.reveal .slides section video {
+  max-width: 100%;
+  max-height: 470px;
+  object-fit: contain;
+}
+
+/* Inside a column there is usually a caption or a second figure under it. */
+.reveal .slides section .columns img:not(.slide-logo) {
+  max-height: 400px;
+}
+
+/* The other two habitual overflows: wide tables and long code listings. */
+.reveal .slides section table {
+  font-size: 0.8em;
+}
+
+.reveal .slides section pre code {
+  max-height: 440px;
 }

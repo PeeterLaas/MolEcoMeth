@@ -5,13 +5,13 @@ week,block,kind,topic,lecture,reading,status
 4,II,Lecture,"Sequencing technologies: from 454 to nanopore",lectures/lecture3.html,"",planned
 5,II,Lecture,"Markers and DNA sources: mtDNA, barcoding, metabarcoding, ancient DNA",lectures/loeng4.html,"",planned
 6,II,Lecture,"eDNA in monitoring, hybridization methods and flow cytometry",lectures/loeng5.html,"",planned
-7,II,Practical,"Sampling design, nucleic-acid extraction, quantification and inhibition checks",,"",planned
-8,III,Lecture,"Comparative genomics: assembly, annotation and public sequence databases",,"",planned
-9,III,Lecture,"Transcriptomics, non-coding RNA and the regulation of gene expression",,"Cox ch. 19-22",planned
-10,III,Lecture,"Proteomics, post-translational modification and molecular phenotypes",,"",planned
-11,IV,Lecture,"Phylogeny, phylogeography and tree thinking",,"",planned
-12,IV,Lecture,"Population genetics, coalescence and community-level inference",,"",planned
-13,IV,Lecture,"Species interactions, symbiosis, host-associated microbiota and environmental monitoring",,"",planned
-14,IV,Lecture,"Applied methods: CRISPR, LAMP, microfluidics, lab-on-chip and biosensing",,"",planned
-15,IV,Seminar,"Student seminar presentations",,"Your chosen article",planned
-16,IV,Assessment,"Capstone presentations and integrative final assessment",,"",planned
+7,III,Lecture,"Comparative genomics: assembly, annotation and public sequence databases",,"",planned
+8,III,Lecture,"Transcriptomics, non-coding RNA and the regulation of gene expression",,"Cox ch. 19-22",planned
+9,III,Lecture,"Proteomics, post-translational modification and molecular phenotypes",,"",planned
+10,IV,Lecture,"Phylogeny, phylogeography and tree thinking",,"",planned
+11,IV,Lecture,"Population genetics, coalescence and community-level inference",,"",planned
+12,IV,Lecture,"Species interactions, environmental monitoring and applied field methods",,"",planned
+13,IV,Seminar,"Student seminar presentations",,"Your chosen article",planned
+14,IV,Practical,"Sampling design, nucleic-acid extraction, quantification and inhibition checks",,"",planned
+15,IV,Practical,"PCR, electrophoresis and Sanger sequencing with the full control set",,"",planned
+16,IV,Practical,"Sequence analysis, quality assessment and writing up the result",,"",planned

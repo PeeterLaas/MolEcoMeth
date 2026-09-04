@@ -41,7 +41,7 @@ course follows one chain of reasoning all semester:
 
 1. Send me your **GitHub username** so you can be added to this repository.
 2. Read [how seminars work](seminars/index.qmd) and start looking for a paper.
-   Registration is first-come, first-served.
+   Registration is first-come, first-served, and everyone presents in week 13.
 :::
 
 # What the course is about
@@ -104,7 +104,7 @@ tibble::tribble(
   "Language",      "Estonian teaching; English reading and software documentation",
   "Prerequisites", "MLK6922.LT Biochemistry; MLB6013.LT Genetics",
   "Lecturer",      "Peeter Laas, PhD — peeter.laas@ut.ee",
-  "Assessment",    "Graded A–F; see the syllabus for the component weights"
+  "Assessment",    "Graded A–F: seminar 25% (pass/no pass), practicals 25%, oral examination 50%"
 ) |> knitr::kable()
 ```
 

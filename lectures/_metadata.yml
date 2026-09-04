@@ -1,0 +1,5 @@
+# Applies to every deck in this directory, so the fit behaviour is configured
+# in one place. Paths are relative to this file.
+format:
+  revealjs:
+    include-after-body: ../tools/fit-slides.html

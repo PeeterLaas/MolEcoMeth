@@ -1,0 +1,105 @@
+<script>
+/* ---------------------------------------------------------------------------
+   Layer 2 of keeping slides inside the frame.
+
+   Once the CSS caps in css/lectures.scss have bounded the figures, some slides
+   still run past the bottom — usually a column of bullets beside a stack of two
+   images. This shrinks those slides until they fit.
+
+   It uses CSS `zoom` rather than a transform, so the slide re-flows at the
+   smaller size instead of being photographed and squashed: text re-wraps and
+   the layout stays honest. Slides that already fit are left alone, and nothing
+   shrinks past MIN_ZOOM — below that, reading it from the back of the room
+   stops being realistic, so such a slide stays scrollable instead.
+
+   Opt a slide out with `## Title {.no-fit}`.
+--------------------------------------------------------------------------- */
+(function () {
+  var MIN_ZOOM = 0.55;   // hard floor on legibility
+  var GUTTER   = 40;     // slide px kept clear at the bottom for the footer band
+
+  function slideHeight() {
+    try { return Reveal.getConfig().height || 675; } catch (e) { return 675; }
+  }
+
+  function revealScale() {
+    try { return Reveal.getScale() || 1; } catch (e) { return 1; }
+  }
+
+  /* Visual height of the slide's content in slide coordinates, including any
+     zoom already applied. Every descendant is measured, not just the direct
+     children: Quarto lays ::: {.columns} out as `display: inline`, so the
+     wrapper's own box says nothing about how tall the columns really are.
+     getBoundingClientRect is used because it is the one measurement whose
+     behaviour under `zoom` is consistent across browsers. */
+  function contentHeight(sec) {
+    var top = sec.getBoundingClientRect().top;
+    var bottom = top;
+    var all = sec.querySelectorAll('*');
+    for (var i = 0; i < all.length; i++) {
+      var el = all[i];
+      if (el.closest('aside, .notes, .footer, .slide-logo, .header-logo, .reveal-header')) continue;
+      var cs = getComputedStyle(el);
+      if (cs.display === 'none' || cs.position === 'fixed') continue;
+      var r = el.getBoundingClientRect();
+      if (r.width === 0 && r.height === 0) continue;
+      if (r.bottom > bottom) bottom = r.bottom;
+    }
+    return (bottom - top) / revealScale();
+  }
+
+  function fit(sec) {
+    if (!sec || sec.classList.contains('no-fit')) return;
+    if (sec.querySelector(':scope > section')) return;   // a vertical stack, not a slide
+    if (sec.classList.contains('title-slide')) return;
+
+    sec.style.zoom = '';
+    var avail = slideHeight() - GUTTER;
+    var need = contentHeight(sec);
+    if (!need || need <= avail) return;
+
+    var k = Math.max(MIN_ZOOM, avail / need);
+    sec.style.zoom = k;
+
+    /* Re-flowing at the smaller size moves the line breaks, so the first guess
+       is only approximate. Two correction passes settle it. */
+    for (var pass = 0; pass < 2 && k > MIN_ZOOM; pass++) {
+      var after = contentHeight(sec);
+      if (after <= avail) break;
+      k = Math.max(MIN_ZOOM, k * (avail / after) * 0.995);
+      sec.style.zoom = k;
+    }
+  }
+
+  /* Reveal keeps every slide but the current one at display:none, and a hidden
+     element cannot be measured. Show each one behind the curtain just long
+     enough to size it, so slides are already correct when you arrive at them
+     rather than visibly snapping into place. */
+  function fitAll() {
+    var secs = document.querySelectorAll('.reveal .slides section');
+    for (var i = 0; i < secs.length; i++) {
+      var sec = secs[i];
+      if (sec.querySelector(':scope > section')) continue;
+      if (sec.getBoundingClientRect().height > 0) { fit(sec); continue; }
+      var display = sec.style.display, visibility = sec.style.visibility;
+      sec.style.visibility = 'hidden';
+      sec.style.display = 'block';
+      fit(sec);
+      sec.style.display = display;
+      sec.style.visibility = visibility;
+    }
+  }
+
+  function start() {
+    fitAll();
+    Reveal.on('slidechanged', function (e) { fit(e.currentSlide); });
+    /* Embedded images decode after 'ready' and change the heights. */
+    window.addEventListener('load', fitAll);
+    setTimeout(fitAll, 1500);
+  }
+
+  if (window.Reveal && Reveal.isReady && Reveal.isReady()) start();
+  else if (window.Reveal) Reveal.on('ready', start);
+  else window.addEventListener('load', function () { if (window.Reveal) start(); });
+})();
+</script>
