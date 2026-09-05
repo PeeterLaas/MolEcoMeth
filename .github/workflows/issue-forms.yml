@@ -20,7 +20,11 @@ jobs:
       contents: write
       issues: write
     steps:
-      - uses: actions/checkout@v4
+      # Pinned to v5 rather than the newest major: v6 moved where checkout
+      # persists the git credentials, and the commit step below pushes with
+      # them. v5 is the Node 24 release, which is all the deprecation notice
+      # asked for.
+      - uses: actions/checkout@v5
 
       - name: Record the submission
         id: bot
