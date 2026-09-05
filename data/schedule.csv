@@ -9,7 +9,7 @@ week,block,kind,topic,lecture,reading,status
 8,III,Lecture,"Transcriptomics, non-coding RNA and the regulation of gene expression",,"Cox ch. 19-22",planned
 9,III,Lecture,"Proteomics, post-translational modification and molecular phenotypes",,"",planned
 10,IV,Lecture,"Phylogeny, phylogeography and tree thinking",,"",planned
-11,IV,Lecture,"Population genetics, coalescence and community-level inference",,"",planned
+11,IV,Lecture,"Population genetics, coalescence and community-level inference",lectures/population_genetics.html,"",planned
 12,IV,Lecture,"Species interactions, environmental monitoring and applied field methods",,"",planned
 13,IV,Seminar,"Student seminar presentations",,"Your chosen article",planned
 14,IV,Practical,"Sampling design, nucleic-acid extraction, quantification and inhibition checks",,"",planned

@@ -73,6 +73,8 @@ website:
             text: "4 · Markers, barcoding & eDNA"
           - href: lectures/loeng5.qmd
             text: "5 · eDNA, hybridization & cytometry"
+          - href: lectures/population_genetics.qmd
+            text: "10 · Population genetics"
       - href: seminars/index.qmd
         text: "🎤 Seminars"
       - href: participation.qmd

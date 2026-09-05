@@ -1,0 +1,1026 @@
+---
+title: "Lecture 10: Population genetics"
+subtitle: "MLB7052.LT: Modern Methods in Molecular Ecology"
+title-slide-attributes:
+    data-background-image: ../assets/logos/uu_sigill_right.png
+    data-background-size: contain
+    data-background-opacity: "0.25"
+author: "Peeter Laas"
+institute: "TalTech / UT Institute of Technology"
+format:
+  revealjs: 
+    theme: [serif, ../css/lectures.scss]
+    slide-number: false
+    show-slide-number: all
+    toc: true
+    toc-depth: 1
+    progress: true
+    width: 1200
+    height: 675
+    transition: slide
+    toc-title: "Modern Methods in Molecular Ecology lecture:"
+    smaller: true
+    footer: "Fall 2026"
+    logo: ../assets/logos/uu_sigill_right.png
+    header-logo: ../assets/logos/UUtopleft.png
+    self-contained: true
+    html-math-method: mathml
+filters:
+  - reveal-header
+editor_options: 
+  chunk_output_type: inline
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+knitr::opts_chunk$set(eval=TRUE, cache=F, include=T, echo=F, error=F,
+                      message=FALSE, comment=c(" "), width=90)
+```
+
+## Kaasaegsed molekulaarsed meetodid ökoloogias
+
+**Loeng 10 — populatsioonigeneetika (*population genetics*).**
+
+Every method in this course produces genotypes. This lecture is about what you are allowed to conclude from them — how allele frequencies behave when nothing is happening, and how each thing that *is* happening leaves its own signature in the numbers.
+
+::: {.notes}
+The mathematics here is not decoration. It is the only reason a table of genotypes becomes a statement about migration, isolation or population size.
+:::
+
+## Mathematical statistics and models are methods in ecology
+
+::: {.columns}
+::: {.column width="55%"}
+![](/assets/population_genetics/p01_1.jpg){height="330px"}
+:::
+::: {.column width="45%"}
+Population genetics is where molecular ecology stops being descriptive.
+
+A marker on its own tells you that two individuals differ. **Frequencies across a population**, compared against an explicit null model, tell you *why*.
+
+Everything in this lecture is one idea repeated: write down what the frequencies would do if nothing were acting, then read the departure.
+:::
+:::
+
+# Populations, metapopulations and demes
+
+## Populatsioonid
+
+::: {.columns}
+::: {.column width="62%"}
+A **population** (*populatsioon*) is a group of individuals of one species, freely interbreeding, occupying a defined territory and separated from other groups of the same species by some form of isolation.
+
+- **Panmixis** (*panmixia*) — free interbreeding within the population. The degree varies between periods, but always: within-population mating > between-population mating.
+- **Closed** (isolated) vs **open** populations.
+- **Relative persistence** is a defining feature — the population holds that territory for many generations.
+- The **elementary evolutionary unit**: the smallest group of individuals capable of independent evolution.
+- **Divergence** — ecological splitting into isolated populations — is the starting point for the origin of a new species, together with heritable variation, selection and isolation.
+:::
+::: {.column width="38%"}
+![](/assets/population_genetics/p02_2.jpg){height="200px"}
+
+![](/assets/population_genetics/p02_1.jpg){height="180px"}
+:::
+:::
+
+::: {.callout-note}
+The set of all gene variants across the genotypes of all individuals in a population is the **gene pool** — *geenifond*, *genofond*.
+:::
+
+## Metapopulatsioonid ja deemid
+
+::: {.columns}
+::: {.column width="58%"}
+**1970 — Richard Levins**: "populations of populations".
+
+**Metapopulations** exist where a population is divided into subpopulations whose dynamics are set by the **balance between local extinction and recolonisation**.
+
+Divided into **core** and **satellite** populations, and also:
+
+- **Source population** (*lättepopulatsioon*) — net exporter of individuals.
+- **Sink population** (*mülgaspopulatsioon*) — net importer; would go extinct without immigration.
+
+A **deme** (*deem*) is a local, isolated subpopulation — an interbreeding group of related individuals that is **unstable and short-lived** (1–3 generations, no independent evolution of its own).
+:::
+::: {.column width="42%"}
+![](/assets/population_genetics/p03_2.jpg){height="180px"}
+
+![](/assets/population_genetics/p03_1.jpg){height="230px"}
+:::
+:::
+
+## Subpopulations are the unit that gets managed
+
+::: {.columns}
+::: {.column width="32%"}
+![](/assets/population_genetics/p04_2.jpg){height="180px"}
+
+![](/assets/population_genetics/p04_3.jpg){height="180px"}
+:::
+::: {.column width="68%"}
+![](/assets/population_genetics/p04_1.jpg){height="400px"}
+:::
+:::
+
+::: {style="font-size:0.75em; color:#666;"}
+Polar bear subpopulations and their trends (WWF Canada). Conservation status is assigned **per subpopulation** — which only means something if the subpopulations are genetically real.
+:::
+
+# Hardy–Weinberg: the null model
+
+## Populatsioonigeneetika
+
+**Population genetics studies change in the gene pool**: the origin of variation, the transmission of genes, the inheritance of traits from generation to generation, and the effect of natural selection on the genetic structure of a population — the regularities that hold for the population *as a whole*.
+
+::: {.incremental}
+- It grew out of applying **Mendel's laws** to populations: the **Hardy–Weinberg (HW)** law for monogenic traits.
+- Its subject is **allele frequencies in populations**.
+- "Statistical genetics": **mathematical statistics and probability theory are the methodological tools** by which genetic regularities in populations are analysed.
+- **If allele frequencies do not obey the HW law, something biologically interesting is happening.** That sentence is the whole of what follows.
+:::
+
+## Hardy–Weinbergi seadus
+
+::: {.columns}
+::: {.column width="72%"}
+The British mathematician **Godfrey H. Hardy** (1877–1947) and the German physician **Wilhelm Weinberg** (1862–1939) published independently in **1908**, describing the relationship between allele and genotype frequencies in populations.
+
+It lets you predict **genotype frequencies** in the next generation from the **allele frequencies** of the parental generation — under the assumptions of an "ideal" population.
+
+In a **panmictic population** (*tasakaaluline e. panmiktiline populatsioon*):
+
+- **Panmixis** — random mating (*random mating*);
+- all genotypes have **equal fertility and viability** — no selection;
+- the number of individuals is statistically infinite, $N \rightarrow \infty$;
+- **no mutation and no migration**.
+:::
+::: {.column width="28%"}
+![](/assets/population_genetics/p06_1.jpg){height="180px"}
+
+::: {style="font-size:0.7em; color:#666;"}
+W. Weinberg
+:::
+
+![](/assets/population_genetics/p06_2.jpg){height="180px"}
+
+::: {style="font-size:0.7em; color:#666;"}
+G. H. Hardy
+:::
+:::
+:::
+
+## HW võrrand
+
+::: {.columns}
+::: {.column width="52%"}
+For a single **autosomal, diallelic** gene:
+
+- the two allelic forms are **A** and **a**;
+- $p$ — frequency of allele **A**;
+- $q$ — frequency of allele **a**;
+- the allele frequencies sum to one:
+
+$$p + q = 1$$
+
+- and the HW law — the law of population equilibrium — is:
+
+$$p^2 + 2pq + q^2 = 1$$
+
+where $p^2$ is the frequency of **AA**, $2pq$ of **Aa**, and $q^2$ of **aa**.
+:::
+::: {.column width="48%"}
+![](/assets/population_genetics/p07_2.jpg){height="230px"}
+
+![](/assets/population_genetics/p07_3.jpg){height="200px"}
+:::
+:::
+
+## HW võrrand — beyond one autosomal locus
+
+**Sex-linked genes** (*suguliitelised geenid*):
+
+- in the homogametic sex the usual $p^2_{AA} + 2pq_{Aa} + q^2_{aa} = 1$ still holds;
+- in the heterogametic sex, genotype frequency *is* allele frequency: $p + q = 1$.
+- **Colour blindness** (*daltonism*) is X-linked in humans: with $q = 0.12$, about **2% of women** and **12% of men** are affected.
+
+**One autosomal, polyallelic gene** — the ABO blood groups have three main alleles ($I^A$, $I^B$, $i$); $I^A$ and $I^B$ are codominant with each other and dominant over $i$. For three alleles:
+
+$$(p + q + r)^2 = p^2 + q^2 + r^2 + 2pq + 2pr + 2qr = 1$$
+
+::: {style="font-size:0.85em;"}
+$$(p\,I^A + q\,I^B + r\,i)^2 = p^2(\text{A}) + q^2(\text{B}) + r^2(\text{O}) + 2pq(\text{AB}) + 2pr(\text{A}) + 2qr(\text{B})$$
+:::
+
+## Estimating HW equilibrium
+
+::: {.columns}
+::: {.column width="50%"}
+![](/assets/population_genetics/p10_1.jpg){height="150px"}
+
+30 individuals scored on a gel: 10 PP, 13 PQ, 7 QQ.
+
+$p = 33/(33+27) = 0.55$, so $q = 0.45$.
+
+Expected under HW, out of 30:
+
+- $PP = 0.55^2 \times 30 = 9.0$
+- $PQ = 2 \times 0.55 \times 0.45 \times 30 = 14.9$
+- $QQ = 0.45^2 \times 30 = 6.1$
+:::
+::: {.column width="50%"}
+A $\chi^2$ test asks whether expected and observed differ significantly:
+
+$$\chi^2 = \sum \frac{(\text{observed} - \text{expected})^2}{\text{expected}}$$
+
+$$\chi^2 = \frac{(10-9)^2}{9} + \frac{(13-14.9)^2}{14.9} + \frac{(7-6.1)^2}{6.1} = 0.48$$
+
+$df = [\text{genotypes} - 1] - [\text{alleles} - 1] = 2 - 1 = 1$.
+
+$\chi^2 = 0.48$ at 1 df gives $P > 0.5$: the null hypothesis cannot be rejected, and **this sample is in HW equilibrium**.
+
+![](/assets/population_genetics/p10_2.jpg){height="140px"}
+:::
+:::
+
+## Lähemale reaalsusele — mittetasakaaluline populatsioon
+
+Natural populations are, to a greater or lesser degree, **changing and out of equilibrium**. The causes are, above all:
+
+::: {.incremental}
+1. **Non-random mating** (*mittejuhuslik ristumine*) — individuals choose similar or dissimilar mates;
+2. **Unequal survival** (*ebavõrdne ellujäävus*) — different survival and therefore different success in leaving offspring; natural selection, especially in small populations;
+3. **Population subdivision** (*populatsiooni liigendatus*) and geographic isolation;
+4. **Migration** (*migratsioon*) and the formation of merged populations (*ühendpopulatsioonid*).
+:::
+
+::: {.callout-important}
+Each of these four is a *deviation from an assumption of HW* — which is exactly why HW is worth stating. The rest of this lecture takes them one at a time.
+:::
+
+## Milleks HW? — what the departures buy you
+
+::: {.columns}
+::: {.column width="58%"}
+**Effective population size** ($N_e$) refers to the number of individuals in a population who actually contribute offspring to the next generation. It is an **idealised** number reflecting genetic diversity, not a headcount.
+
+Unlike the **actual population size** ($N$), $N_e$ accounts for factors that reduce genetic diversity:
+
+- **Unequal sex ratios** — if only a few individuals of one sex reproduce, $N_e$ falls.
+- **Variation in reproductive success** — a few individuals producing most offspring skews $N_e$.
+- **Fluctuations in population size** — bottlenecks and small-population periods greatly reduce $N_e$.
+- **Inbreeding** — the effective gene pool is smaller than it looks.
+:::
+::: {.column width="42%"}
+![](/assets/population_genetics/p11_1.jpg){height="270px"}
+:::
+:::
+
+## Run it yourself before you trust it
+
+::: {.callout-tip}
+## populatoR-Aa
+Everything from here on can be simulated in the course app:
+
+### <https://kratt.shinyapps.io/populator-aa>
+:::
+
+::: {.columns}
+::: {.column width="50%"}
+The app runs replicate populations forward under the controls you set:
+
+- **starting allele frequency A**, **population size**, **number of generations**, **number of populations**;
+- **infinite population (no drift)** — the HW case;
+- **migration rate**, **mutation rate**;
+- **fitness of AA, AB and BB**;
+- **replicate runs**.
+:::
+::: {.column width="50%"}
+And it plots exactly the quantities defined in this lecture:
+
+$p$ · $H_e$ · $H_s$ · $H_t$ · $F_{ST}$ · $W$
+
+**Start here:** tick *Infinite population (no drift)*, leave migration, mutation and the fitnesses neutral, and watch $p$ stay flat. That flat line **is** Hardy–Weinberg. Every later section is a way of bending it.
+:::
+:::
+
+# Drift, gene flow and mutation
+
+## Geenitriiv
+
+::: {.columns}
+::: {.column width="50%"}
+**Genetic drift** (*geenitriiv*; *genetic drift, random genetic drift, allelic drift*) is the change in allele frequencies across successive generations caused by **random sampling**.
+
+A population does not form all possible mating pairs with equal probability — and **the smaller the population, the more sensitive it is**.
+
+Special cases:
+
+- the **founder effect** (*rajaja- e. asutajaefekt*) — a new population started by few individuals carries only their sample of the variation;
+- the **bottleneck** — the same sampling applied to a population that crashes.
+:::
+::: {.column width="50%"}
+![](/assets/population_genetics/p12_3.jpg){height="170px"}
+
+![](/assets/population_genetics/p12_1.jpg){height="200px"}
+:::
+:::
+
+## Drift is a sampling process — 20 replicate populations
+
+```{r}
+#| label: drift-sim
+#| fig-width: 11
+#| fig-height: 3.6
+#| fig-align: center
+set.seed(42)
+
+drift <- function(N, p0 = 0.5, gens = 100, reps = 20) {
+  map_dfr(seq_len(reps), function(r) {
+    p <- numeric(gens + 1)
+    p[1] <- p0
+    for (g in seq_len(gens)) p[g + 1] <- rbinom(1, 2 * N, p[g]) / (2 * N)
+    tibble(rep = r, gen = 0:gens, p = p)
+  })
+}
+
+bind_rows(
+  drift(N = 25)  |> mutate(panel = "N = 25"),
+  drift(N = 250) |> mutate(panel = "N = 250")
+) |>
+  mutate(panel = factor(panel, c("N = 25", "N = 250"))) |>
+  ggplot(aes(gen, p, group = rep)) +
+  geom_line(alpha = 0.55, colour = "#990000", linewidth = 0.4) +
+  facet_wrap(~panel) +
+  scale_y_continuous(limits = c(0, 1)) +
+  labs(x = "Generation", y = "Frequency of A (p)") +
+  theme_minimal(base_size = 13) +
+  theme(panel.grid.minor = element_blank(),
+        strip.text = element_text(face = "bold"))
+```
+
+Same starting frequency, same neutral alleles, no selection whatsoever. **Only the sample size differs.** In the small populations alleles reach fixation or loss within a century; in the large ones they wander and persist.
+
+::: {style="font-size:0.75em; color:#666;"}
+Each line is one replicate population, $p_0 = 0.5$, binomial sampling of $2N$ gametes per generation — the same process populatoR-Aa runs interactively.
+:::
+
+## Geenivool (migratsioon)
+
+::: {.columns}
+::: {.column width="50%"}
+**Gene flow** (*geenivool*, *geenisiire*) is the exchange of genetic material between populations, or between parts of a population, through the **migration and interbreeding** of individuals — or, in plants, the movement of pollen into another population.
+
+![](/assets/population_genetics/p13_2.jpg){height="200px"}
+
+::: {style="font-size:0.75em; color:#666;"}
+Recent separation with no gene flow, versus old separation with continuous low gene flow — two histories that can leave similar distances.
+:::
+:::
+::: {.column width="50%"}
+![](/assets/population_genetics/p13_1.jpg){height="180px"}
+
+![](/assets/population_genetics/p13_3.jpg){height="230px"}
+:::
+:::
+
+## Gene flow and migration rates
+
+::: {.columns}
+::: {.column width="55%"}
+Gene flow is the **movement of alleles**, mediated by individuals or their gametes, between populations.
+
+Allele frequency data permit inferences of gene flow, ultimately based on **how much migration disturbs Hardy–Weinberg expectations**. **F-statistics — particularly $F_{ST}$ — provide the basis of most approaches.**
+
+$N_m$, the average number of successfully reproducing migrants per generation, is classically derived from $F_{ST}$:
+
+$$N_m = \frac{1}{4}\left(\frac{1}{F_{ST}} - 1\right)
+\qquad
+N_m = \frac{1}{2}\left(\frac{1}{F_{ST}} - 1\right)$$
+
+on the left for **diploid nuclear** genes, on the right for **uniparentally inherited haploid** genomes such as mtDNA.
+:::
+::: {.column width="45%"}
+![](/assets/population_genetics/p14_1.jpg){height="230px"}
+
+$F_{ST} = 0.2$ is equivalent to $N_m = 1$ — and **one migrant per generation** is the classic threshold above which subpopulations will not diverge by drift alone.
+
+It is theoretically independent of population size, but simulations show this is not strictly true; in practice **more than one migrant per generation** is usually needed to prevent inbreeding in natural populations (Vucetich & Waite 2001).
+:::
+:::
+
+::: {.callout-warning}
+That formula assumes an **island model** — movement between all subpopulations equally probable, distance irrelevant, and equilibrium between migration and drift. Real landscapes rarely oblige.
+:::
+
+# Measuring genetic diversity
+
+## Geneetilise mitmekesisuse hindamine
+
+::: {.incremental}
+- **$H_o$ — observed heterozygosity** (*populatsiooni heterosügootsus*). The fraction of heterozygotes in the population. With 56 heterozygotes out of 100: $H_o = 56/100 = 0.56$.
+- **$H_e$ — average expected heterozygosity**. The frequency of heterozygotes *if the population were in HW equilibrium*. Usually calculated per locus over many loci, then averaged.
+- **$A$ — allelic richness / diversity**. The mean number of alleles per locus, averaged over the loci used and compensated for sample size. With 4 alleles at one locus and 6 at another, $A = (4+6)/2 = 5$. **Not a good indicator below sample sizes of about 40** (Winker 2008).
+- **$P$ — proportion of polymorphic loci**. Screen 10 loci, find 6 polymorphic: $P = 6/10 = 0.6$. Some markers are only chosen *because* they are polymorphic — microsatellites, where $P = 1.0$ by construction.
+:::
+
+## Heterozygosity
+
+::: {.columns}
+::: {.column width="52%"}
+In a small population, allele frequencies change through random drift — and with them the frequency of heterozygotes, which is what **population heterozygosity** expresses.
+
+The **equilibrium heterozygosity** under a balance of **mutation and drift** depends on the **effective population size**. The mutation rate is of the order of $10^{-6}$.
+
+![](/assets/population_genetics/p16_1.jpg){height="215px"}
+:::
+::: {.column width="48%"}
+![](/assets/population_genetics/p16_2.jpg){height="180px"}
+
+![](/assets/population_genetics/p16_3.jpg){height="180px"}
+:::
+:::
+
+::: {style="font-size:0.75em; color:#666;"}
+Mutation pressure raises variability, drift lowers it; selection removes deleterious recessives. Heterozygosity settles where these balance.
+:::
+
+## Heterozygosity in practice
+
+::: {.columns}
+::: {.column width="30%"}
+![](/assets/population_genetics/p17_2.jpg){height="230px"}
+
+::: {style="font-size:0.75em; color:#666;"}
+Common ash, *Fraxinus excelsior* (harilik saar)
+:::
+:::
+::: {.column width="70%"}
+![](/assets/population_genetics/p17_1.jpg){height="250px"}
+:::
+:::
+
+Papers typically report several measures of genetic diversity, and these usually include $H_o$ and $H_e$. **Comparing the two tells you whether heterozygosity within a population differs significantly from the HW expectation** — here, across three ash populations at five microsatellite loci (Moran et al. 2002).
+
+::: {.callout-note}
+Look at Population 1, locus 1: $H_e = 0.938$ but $H_o = 0.385$. A large heterozygote *deficit* — inbreeding, a null allele, or unrecognised substructure. The comparison is the diagnostic.
+:::
+
+# Population structure and F-statistics
+
+## Population structure: historical structure
+
+::: {.incremental}
+- Older methods are **based on allele frequencies**, and so reflect population structure averaged over (usually unknown) periods of historical time.
+- They require initial decisions about the number of populations or subpopulations in the sample — although there are ways of testing those assumptions.
+- Most approaches derive conceptually from **Wright's F-statistics**, which measure **the partitioning of genetic diversity within and among subpopulations**.
+- **$H_T$** is the average gene diversity for the whole data set (by the formula of $H_e$) across several populations; **$H_S$** is the mean of the average gene diversity calculated for each of those populations.
+:::
+
+$$F_{ST} = 1 - H_S / H_T$$
+
+## Population structure: the three F-statistics
+
+::: {.columns}
+::: {.column width="47%"}
+**$F_{IS}$** — inbreeding coefficient of an **I**ndividual relative to the **S**ubpopulation:
+
+- the probability that two alleles in an individual are identical by descent;
+- the level of inbreeding within a subpopulation.
+
+**$F_{ST}$** — fixation index of a **S**ubpopulation relative to the **T**otal population:
+
+- genetic differentiation between subpopulations;
+- ranges 0 to 1: **0 = no differentiation** (complete gene flow), **1 = complete separation** (no gene flow).
+
+**$F_{IT}$** — inbreeding coefficient of an **I**ndividual relative to the **T**otal population: overall inbreeding.
+:::
+::: {.column width="53%"}
+$$F_{IS} = \frac{H_s - H_i}{H_s} \qquad F_{IT} = \frac{H_t - H_i}{H_t} \qquad F_{ST} = \frac{H_t - H_s}{H_t}$$
+
+![](/assets/population_genetics/p22_1.jpg){height="250px"}
+
+::: {style="font-size:0.75em; color:#666;"}
+$H_i$ = average observed heterozygosity across subpopulations; $H_s$ = average expected heterozygosity across subpopulations; $H_t$ = expected heterozygosity of the total population.
+:::
+:::
+:::
+
+## Worked example — Situation 1
+
+::: {.columns}
+::: {.column width="50%"}
+![](/assets/population_genetics/p24_1.jpg){height="290px"}
+:::
+::: {.column width="50%"}
+![](/assets/population_genetics/p24_2.jpg){height="230px"}
+
+Two subpopulations, each with $A$ at 0.8 and $a$ at 0.2, each in HW proportions. $H_i = H_s = H_t = 0.32$, so
+
+$$F_{IS} = F_{IT} = F_{ST} = 0$$
+
+**No inbreeding, and no structure** — the subdivision is a line on a map, not a genetic boundary.
+:::
+:::
+
+::: {.callout-warning}
+## Situation 2
+We worked Situation 2 through in the lecture. **The version printed in the book is wrong** — use the lecture calculation, not the table.
+:::
+
+## Estimating gene flow and genetic drift
+
+::: {.columns}
+::: {.column width="58%"}
+**Gene flow** and **genetic drift** are two fundamental processes influencing genetic variation across populations, and they pull $F_{ST}$ in opposite directions:
+
+- **Gene flow** — transfer of genetic material between populations. High gene flow reduces genetic differentiation: **low $F_{ST}$**.
+- **Genetic drift** — random change in allele frequencies, more pronounced in small populations, increasing differentiation: **high $F_{ST}$**.
+
+Wright's equation relates $F_{ST}$ to gene flow, where $N$ is the effective population size and $m$ the migration rate:
+
+$$F_{ST} \approx \frac{1}{4Nm + 1}$$
+:::
+::: {.column width="42%"}
+- **Low $F_{ST}$** — high gene flow; populations are not genetically distinct.
+- **High $F_{ST}$** — low gene flow; drift is more influential, giving greater differentiation.
+
+::: {.callout-important}
+$F_{ST}$ alone cannot separate "much migration" from "recent separation". Both give a small number. You need an independent handle on time.
+:::
+:::
+:::
+
+## Practical applications
+
+::: {.columns}
+::: {.column width="45%"}
+In practice, researchers use **pairwise $F_{ST}$ values against geographic distance** to visualise and analyse genetic structure.
+
+Shown here among collared lizard populations:
+
+a) equilibrium;
+b) gene flow dominant over drift;
+c) drift dominant over gene flow;
+d) gene flow dominant at small spatial scales, drift dominant at large ones.
+
+![](/assets/population_genetics/p21_2.jpg){height="120px"}
+:::
+::: {.column width="55%"}
+![](/assets/population_genetics/p21_1.jpg){height="360px"}
+:::
+:::
+
+## Population structure: assessing subdivisions
+
+::: {.incremental}
+- Assignment tests **based on clustering multilocus genotypes** into genetically discrete groups offer the most objective way of determining population structure.
+- Programs such as **STRUCTURE** estimate proportions via **Markov chain Monte Carlo**, modelling allele frequencies at each locus with a **Dirichlet distribution**.
+- They estimate the **most likely number of actual clusters ($K$)** from the full set of genotype data, comparing posterior probabilities across a range of possible population numbers.
+- The model assumes each population is in HW equilibrium, but **uses no information about the source (sample site) of each individual** — which is what makes it a test rather than a description.
+:::
+
+## Population structure: STRUCTURE analyses
+
+::: {.columns}
+::: {.column width="66%"}
+![](/assets/population_genetics/p26_1.jpg){height="330px"}
+:::
+::: {.column width="34%"}
+Varying $K$ illustrates **different scales** of population structure.
+
+Clustering methods are popular, but open to misinterpretation: for non-simulated data there is **never a "true" value of $K$**, only an approximation that is useful for a given question.
+:::
+:::
+
+## Testing of metapopulations
+
+::: {.columns}
+::: {.column width="42%"}
+Differentiated demes of Atlantic salmon *Salmo salar* (Garant et al. 2000).
+
+- Differentiation may arise because selection favoured **locally adapted individuals that remain in deme-specific spawning and nursery zones**.
+- **Polymorphisms at five microsatellite loci** were compared across space and time, demonstrating significant substructuring in both dimensions.
+:::
+::: {.column width="58%"}
+![](/assets/population_genetics/p27_1.jpg){height="230px"}
+
+::: {style="font-size:0.75em; color:#666;"}
+Hierarchical analysis of molecular variance (AMOVA). Note where the variance actually sits: 96.6% within samples — and yet the among-year and among-site components are the significant ones.
+:::
+:::
+:::
+
+# Effective population size
+
+## Population size
+
+::: {.incremental}
+- **Actual population size ($N$)** — the total number of individuals present, regardless of breeding status, age or reproductive potential.
+- **Census population size ($N_c$)** — the adult, sexually mature census size.
+- **Breeding population size ($N_b$)** — effective adult breeding number **per season**.
+- **Effective population size ($N_e$)** — introduced by **Fisher and Wright in 1931**: the size of an ideal population showing the same amount of genetic drift as the real population under study, **per generation**. It approximates the number of individuals that reproduce successfully each generation, and is complicated to estimate because of age structure, generation overlap and iteroparity.
+:::
+
+::: {.callout-note}
+## The idealised population
+Random mating, simultaneous birth of each new generation, constant population size, equal numbers of children per parent. **Generally:** $N_e$ is the number of individuals an idealised population would need for **some specified quantity of interest** to match the real population.
+:::
+
+## Populatsiooni pudelikael
+
+::: {.columns}
+::: {.column width="50%"}
+A **population bottleneck** is a radical reduction in population size, usually accompanied by a loss of genetic diversity.
+
+- The extent of the loss depends on the **severity and duration** of the bottleneck.
+- The severe reduction can be **exacerbated by** loss of diversity through **ongoing random genetic drift** during the bottleneck.
+- The impact of a severe bottleneck may remain detectable **over many subsequent generations**.
+:::
+::: {.column width="50%"}
+![](/assets/population_genetics/p29_2.jpg){height="150px"}
+
+![](/assets/population_genetics/p29_1.jpg){height="200px"}
+:::
+:::
+
+## Genetic tests for bottlenecks
+
+::: {.columns}
+::: {.column width="55%"}
+- During a bottleneck **rare alleles are lost quickly**, but they contribute little to total heterozygosity, which is dictated by the commoner alleles.
+- So **during a bottleneck there should be a transient increase in heterozygosity** relative to the expectation for the observed allele numbers — persisting only until a new equilibrium is reached at the lower $N_e$.
+- The apparent excess should persist for $0.2$–$4 \times N_e$ generations, where $N_e$ is the post-bottleneck effective size.
+- Simulations are most sensitive $2 \times N_e$ generations after the bottleneck; detection then needs at least **ten polymorphic loci** and **thirty individuals** for a >80% chance, when the before/after ratio is 100 or more.
+:::
+::: {.column width="45%"}
+![](/assets/population_genetics/p30_1.jpg){height="150px"}
+
+![](/assets/population_genetics/p30_2.jpg){height="160px"}
+
+::: {style="font-size:0.75em; color:#666;"}
+Northern hairy-nosed wombat (*põhja-karvikvombat*): $H$-obs exceeds $H$-exp at eight of nine microsatellite loci.
+:::
+:::
+:::
+
+## Effective population size: mutations
+
+::: {.columns}
+::: {.column width="42%"}
+**More mutations** occur in total per unit time **in a large population** than in a small one.
+
+The average time between the mutation and the fixation of a new allele is **proportional to $N_e$**.
+
+Shown: (a) the expected relationship between $H$ and $N_e$, and (b) the actual relationship for a range of animal species.
+:::
+::: {.column width="58%"}
+![](/assets/population_genetics/p31_1.jpg){height="180px"}
+
+![](/assets/population_genetics/p31_2.jpg){height="180px"}
+:::
+:::
+
+## Types of effective population size
+
+$N_e$ is defined as the number of individuals in an idealised population that has a value of **any given population genetic quantity** equal to the value of that quantity in the population of interest. **Which quantity you pick gives you a different $N_e$.**
+
+The two quantities identified by **Wright**:
+
+- one-generation increase in variance across replicate populations — **variance effective population size**;
+- one-generation change in the inbreeding coefficient — **inbreeding effective population size**.
+
+Today $N_e$ is usually estimated empirically with respect to sojourn or coalescence time, as within-species genetic diversity divided by the mutation rate — the **coalescent effective population size**, the one used in conservation ecology. It has been extended to overlapping generations and structured populations.
+
+::: {.callout-important}
+$N_e$ is affected by sex ratios and variance in reproductive success, and **over time it varies as a harmonic average** over multiple generations — which is why one bad year dominates.
+:::
+
+## Non-Fisherian sex ratios
+
+::: {.columns}
+::: {.column width="50%"}
+When the sex ratio departs from the Fisherian 1:1, effective population size is given by
+
+$$N_e^{(v)} = N_e^{(F)} = \frac{4 N_m N_f}{N_m + N_f}$$
+
+with $N_m$ the number of males and $N_f$ the number of females.
+
+With 80 males and 20 females:
+
+$$N_e = \frac{4 \times 80 \times 20}{80 + 20} = \frac{6400}{100} = 64$$
+:::
+::: {.column width="50%"}
+![](/assets/population_genetics/p38_2.jpg){height="150px"}
+
+**100 adult zebras**: 60 females, 12 males with harems, 28 bachelor males.
+
+$$N_e = \frac{4 \times 12 \times 60}{12 + 60} = 40$$
+
+So even with 100 animals, this is equivalent to **20 males and 20 females** in an ideal, randomly mating population.
+:::
+:::
+
+## $N_e$ and age structure
+
+::: {.columns}
+::: {.column width="40%"}
+![](/assets/population_genetics/p39_1.jpg){height="200px"}
+
+::: {style="font-size:0.75em; color:#666;"}
+Grizzly bear, Yellowstone National Park
+:::
+:::
+::: {.column width="60%"}
+Suppose the abundance of grizzly bears is $N = 245$, with age structure data:
+
+- **$G$** (generation time) = **10.25 years**, from the life table;
+- of 245 bears, 36 are females of reproductive age;
+- each female has a litter of 1.9 cubs every 3 years;
+- cub survival to breeding age = 0.25.
+
+$N_a$, the number born every year that survive to reproductive age:
+
+$$N_a = 36 \times \tfrac{1}{3} \times 1.9 \times 0.25 = 5.70$$
+
+Adjusting for generation time:
+
+$$N_e = G \times N_a = 10.25 \times 5.70 = 58$$
+
+— **only about a quarter of the total bears.**
+:::
+:::
+
+## Populatsiooni arvukuse varieerumine
+
+::: {.columns}
+::: {.column width="52%"}
+Population size varies over time. For $t$ non-overlapping generations, effective population size is given by the **harmonic mean** of the population sizes — the reciprocal of the arithmetic mean of the reciprocals:
+
+$$\frac{1}{N_e} = \frac{1}{t} \sum_{i=1}^{t} \frac{1}{N_i}$$
+
+For $N$ = 10, 100, 50, 80, 20, 500 over six generations:
+:::
+::: {.column width="48%"}
+$$\frac{1}{N_e} = \frac{\frac{1}{10} + \frac{1}{100} + \frac{1}{50} + \frac{1}{80} + \frac{1}{20} + \frac{1}{500}}{6} = \frac{0.1945}{6} = 0.0324$$
+
+$$N_e = 30.8$$
+
+The **arithmetic** mean is **126.7**. The harmonic mean is **30.8**.
+:::
+:::
+
+::: {.callout-important}
+The smallest generation dominates. A single crash to $N = 10$ sets the genetic fate of the lineage, no matter how good the other five years were.
+:::
+
+## Variance in reproductive success
+
+::: {.columns}
+::: {.column width="58%"}
+If population size is to remain constant, **each individual must contribute on average two gametes to the next generation**.
+
+An idealised population assumes this follows a Poisson distribution, so the variance in the number of gametes contributed, $k$, equals the mean, i.e. $\mathrm{var}(k) = \bar{k} = 2$.
+
+In natural populations the variance is often larger: the vast majority of individuals may have no offspring at all, and the next generation stems from a small number of individuals, so $\mathrm{var}(k) > 2$.
+
+If the variance of $k$ is **less** than 2, $N_e$ is **greater** than $N$.
+:::
+::: {.column width="42%"}
+With $D$ for dioeciousness (having separate females and males):
+
+$$N_e^{(v)} = \frac{4N - 2D}{2 + \mathrm{var}(k)}$$
+
+![](/assets/population_genetics/p41_3.jpg){height="90px"}
+:::
+:::
+
+## Estimating effective population size
+
+::: {.columns}
+::: {.column width="52%"}
+**Maximum likelihood and coalescent-based approaches** using repeat sampling estimate $N_e$ as the size of the population that best explains the **variance in allele frequencies observed between samplings**.
+
+In theory $N_e$ can also be estimated from its expected relationship to heterozygosity:
+
+$$H_e = \frac{4 N_e \mu}{4 N_e \mu + 1}$$
+
+where $\mu$ is the mutation rate. But $N_e$ obtained this way can rarely be attached to specific isolated populations, because their diversity usually includes alleles that arose **before** the current structure — it averages over long time periods, and is more appropriate for entire species over evolutionary time.
+:::
+::: {.column width="48%"}
+![](/assets/population_genetics/p34_2.jpg){height="180px"}
+
+**Temporal method** (Waples 1989) — based on the expectation that drift increases as $N_e$ decreases, measuring temporal change in allele frequencies between generations. It requires sampling a population on two successive occasions:
+
+$$N_e = \frac{t}{2\left[F_k - \frac{1}{2S_o} - \frac{1}{2S_t}\right]}$$
+:::
+:::
+
+::: {style="font-size:0.75em; color:#666;"}
+$F_k$ is a statistic reflecting the amount of drift between the two sampling times; $t$ is the time in generations between samplings, and $S_o$, $S_t$ the sample sizes in the two generations, for organisms with non-overlapping generations.
+:::
+
+# Non-random mating, selection and extinction
+
+## Mittejuhuslik ristumine
+
+If matings in a population are not random, the population does not obey the HW law. Two types of non-random mating are distinguished:
+
+1. **consanguineous mating** (*sugulasristumine*) — **inbreeding**;
+2. **assortative mating** (*sorteeriv ristumine*) — preference for the similar, or for the different.
+
+Consanguineous and assortative mating both **raise the level of homozygosity** and reduce the number of heterozygotes:
+
+$$\text{Aa} = 2pq(1 - F)$$
+
+**$F$ — the inbreeding coefficient** — is the selection effect from mating between individuals of similar genotype and shared ancestry. $F = 0$ means no inbreeding; $F = 1$ is complete inbreeding.
+
+::: {.callout-note}
+Note what inbreeding does *not* do: it does not change $p$ and $q$. It only repackages the same alleles into more homozygotes — which is why it shows up as a heterozygote deficit against $H_e$, exactly the signature seen in the ash data.
+:::
+
+## Inbreeding and genetic load
+
+::: {.columns}
+::: {.column width="55%"}
+- **Inbreeding depression** — fitness reduction in the offspring of close relatives ($F$).
+- **Genetic purging** — reduction of major deleterious alleles, prompted by inbreeding, through increased efficiency of natural selection.
+- Increasing homozygosity of **slightly** deleterious recessive alleles will still reduce fitness.
+- Mutations permit alleles of this type to accumulate and progressively increase the **genetic load** — the decline in fitness relative to an optimal genotype.
+- **Mutational meltdown** — accumulation of harmful mutations in a small population, leading to an extinction vortex.
+:::
+::: {.column width="45%"}
+![](/assets/population_genetics/p33_1.jpg){height="230px"}
+
+::: {style="font-size:0.75em; color:#666;"}
+Absolute fitness ($W$) against number of generations ($t$). $W$ is the proportional change in the abundance of a genotype over one generation attributable to selection.
+:::
+:::
+:::
+
+## Loodusliku valiku tüübid
+
+::: {.columns}
+::: {.column width="42%"}
+Traits are usually affected by the alleles of many genes. Fitness then measures **quantitative traits** — body size and weight, disease susceptibility, fecundity and so on.
+
+Selection acts on quantitative traits in three ways:
+
+1. **directional selection** (*suunav valik*);
+2. **disruptive selection** (*lõhestav valik*);
+3. **stabilizing selection** (*stabiliseeriv valik*).
+:::
+::: {.column width="58%"}
+![](/assets/population_genetics/p42_1.jpg){height="200px"}
+
+![](/assets/population_genetics/p42_2.jpg){height="150px"}
+:::
+:::
+
+## Looduslik valik geeni tasemel
+
+::: {.columns}
+::: {.column width="45%"}
+Simplified, fitness can be determined at the level of the gene:
+
+- **relative fitness** (*suhteline kohasus*, $w$);
+- **selective pressure** (*selektiivne surve*);
+- the **selection coefficient** (*selektsioonikoefitsient*);
+- **$s$** — the selection coefficient — measures the strength of the negative effect of natural selection on the genotypes present in the population.
+
+$$w = 1 - s$$
+:::
+::: {.column width="55%"}
+![](/assets/population_genetics/p43_2.jpg){height="270px"}
+:::
+:::
+
+## Kohasus
+
+::: {.columns}
+::: {.column width="50%"}
+The **fitness** (*kohasus*, $\hat{w}$) of individuals — the ability to survive and produce viable offspring — is a quantitative trait.
+
+- If $\hat{w} = 0$, the individual dies without offspring.
+- If $\hat{w} = 1$, the individual leaves one offspring, and so on.
+
+The mean fitness of the population is:
+
+$$\hat{w} = p^2 \hat{w}_1 + 2pq\, \hat{w}_2 + q^2 \hat{w}_3$$
+:::
+::: {.column width="50%"}
+![](/assets/population_genetics/p44_2.jpg){height="240px"}
+
+::: {style="font-size:0.75em; color:#666;"}
+$\hat{w} > 1$ growing, $\hat{w} = 1$ stable, $\hat{w} < 1$ declining population.
+:::
+:::
+:::
+
+## 'Survival of the not-so-fit'
+
+::: {.columns}
+::: {.column width="48%"}
+- Inbreeding depression, loss of genetic diversity and mutation accumulation **might not be the end**.
+- The **cheetah** has survived despite very low genetic diversity.
+- The contribution of mutation accumulation requires very many generations.
+- **Chance (stochastic) or catastrophic events**, rather than a loss of genetic variation, can be **more important in a species' final demise** — particularly for island species and others with a restricted geographic range.
+
+![](/assets/population_genetics/p45_2.jpg){height="150px"}
+:::
+::: {.column width="52%"}
+![](/assets/population_genetics/p45_1.jpg){height="360px"}
+
+::: {style="font-size:0.75em; color:#666;"}
+Dobrynin et al. 2015
+:::
+:::
+:::
+
+# The simulator
+
+## populatoR-Aa — the whole lecture in one screen
+
+::: {.callout-tip}
+## Open it and work through these
+### <https://kratt.shinyapps.io/populator-aa>
+:::
+
+::: {.columns}
+::: {.column width="50%"}
+**1 · Hardy–Weinberg.** Tick *Infinite population (no drift)*, set all three fitnesses equal, migration and mutation to zero. Plot $p$. Nothing moves — that is the null model.
+
+**2 · Drift.** Untick it. Set population size to 25 and run 20 populations for 100 generations. Then set size to 500. Compare how many replicates hit fixation.
+
+**3 · Bottleneck.** Small population size, many replicates: watch $H_e$ fall and see how variable the outcome is between runs.
+:::
+::: {.column width="50%"}
+**4 · Gene flow.** Several populations, then raise the **migration rate** from 0. Plot $F_{ST}$ — check the collapse against $F_{ST} \approx 1/(4Nm+1)$.
+
+**5 · Structure.** Plot $H_s$ and $H_t$ together. Watch $F_{ST}$ grow as the gap opens between them.
+
+**6 · Selection.** Set the fitness of **BB** below AA and AB and plot $W$ alongside $p$. Then make the heterozygote **AB** the fittest and see what stops $p$ from reaching 1.
+:::
+:::
+
+::: {.callout-important}
+Every quantity the app plots — $p$, $H_e$, $H_s$, $H_t$, $F_{ST}$, $W$ — is defined somewhere in this lecture. If one of them is not yet meaningful to you, that is the section to go back to.
+:::
+
+## Check yourself
+
+<details>
+<summary>Why is Hardy–Weinberg useful when no real population satisfies it?</summary>
+
+Because it is a null model, not a description. It states exactly what the genotype frequencies would be if nothing were acting, so any significant departure is evidence that something specific — selection, drift, inbreeding, migration or hidden structure — is acting, and the direction of the departure narrows down which.
+
+</details>
+
+<details>
+<summary>A population shows $H_o$ far below $H_e$ at one locus only. What are the candidate explanations?</summary>
+
+Inbreeding, a null allele at that locus, or unrecognised substructure within the sample (a Wahlund effect). Inbreeding and substructure would affect most loci; a deficit at a single locus points to the marker itself, or to selection at a linked site.
+
+</details>
+
+<details>
+<summary>Two populations have $F_{ST} = 0.02$. Why can you not conclude that migrants move between them?</summary>
+
+Because a low $F_{ST}$ is equally consistent with a recent common origin and no gene flow at all. $F_{ST}$ measures how far apart the frequencies are, not how they got there, and the island-model conversion to $N_m$ assumes an equilibrium between migration and drift that a recently separated pair has not reached.
+
+</details>
+
+<details>
+<summary>Census size is 245 bears, $N_e$ is 58. Which number belongs in a conservation assessment, and why?</summary>
+
+$N_e$, for anything about genetic diversity, inbreeding or the rate of drift — it is the size the population behaves as, genetically. The census size still matters for demography and extinction risk. They answer different questions and quoting one for the other is the common error.
+
+</details>
+
+<details>
+<summary>Population sizes over six generations were 10, 100, 50, 80, 20, 500. Why does the mean of 126.7 mislead?</summary>
+
+Because effective size across generations is the harmonic mean, which is dominated by the smallest terms — here 30.8. Genetic diversity lost in the crash generation is not restored by the good years that follow; drift is not averaged, it is accumulated.
+
+</details>
+
+## Thank you for your attention! Questions?
+
+::: {.columns}
+::: {.column width="55%"}
+![](/assets/population_genetics/p12_2.jpg){height="250px"}
+:::
+::: {.column width="45%"}
+::: {.callout-important}
+peeter.laas@taltech.ee · peeter.laas@ut.ee
+:::
+
+**Try the simulator:**
+
+### <https://kratt.shinyapps.io/populator-aa>
+
+**Also worth your time:**
+
+- Genie — <https://cartwrig.ht/apps/genie/>
+- <https://www.duckdna.org/softwares/>
+:::
+:::
