@@ -1,7 +1,7 @@
 ---
-title: "🎤 Seminars"
-subtitle: "Claim a paper, present it, share your slides"
-# Reads a CSV that the bots update; must not be served from the freeze cache.
+title: "🎤 Seminarid"
+subtitle: "Broneeri artikkel, esita see, jaga oma slaide"
+# Loeb CSV-d, mida robotid uuendavad; ei tohi tulla freeze-vahemälust.
 execute:
   freeze: false
 ---
@@ -21,31 +21,31 @@ regs  <- read_csv("registrations.csv", show_col_types = FALSE,
 claim_issue <- paste0(repo, "/issues/new?template=seminar.yml")
 slides_dir  <- "slides"
 
-# A registration is "delivered" once a matching file has landed in slides/.
+# Registreering loetakse "esitatuks", kui vastav fail on jõudnud kausta slides/.
 have_file <- function(f) !is.na(f) && nzchar(f) && file.exists(file.path(slides_dir, f))
 ```
 
-Each of you presents **one research article**, 15 minutes plus 3–5 for
-questions, in English, in **week 13**. It is worth **25% of the course grade,
-marked pass or no pass** — there is no scale to optimise, so pick a paper that
-argues about *how evidence was produced*, not only about what was found. This is
-a methods seminar.
+Igaüks teist esitab **ühe teadusartikli**, 15 minutit pluss 3–5 minutit
+küsimusteks, eesti keeles, **13. nädalal**. See annab **25% aine hindest ja
+hinnatakse arvestatud / mittearvestatud** — optimeerida ei ole midagi, seega
+vali artikkel, mis vaidleb selle üle, *kuidas tõendus tekkis*, mitte ainult
+selle üle, mis leiti. See on metoodikaseminar.
 
-[📝 Claim a paper](`r claim_issue`){.cta}
-[📤 Submit your slides](#submitting-your-slides){.cta .ghost}
+[📝 Broneeri artikkel](`r claim_issue`){.cta}
+[📤 Esita oma slaidid](#submitting-your-slides){.cta .ghost}
 
-# 1. Claim a paper
+# 1. Broneeri artikkel
 
-Open the registration form and give the title and the DOI or URL. A bot checks
-that nobody has claimed that paper already, adds a row to
-`registrations.csv`, and closes the issue confirming it. **First come, first
-served** — if two people claim the same paper, the earlier issue wins and the
-second is told to choose again.
+Ava registreerimisvorm ning anna pealkiri ja DOI või URL. Robot kontrollib, et
+keegi poleks seda artiklit juba broneerinud, lisab rea faili
+`registrations.csv` ja sulgeb issue kinnitusega. **Kes ees, see mees** — kui
+kaks inimest broneerivad sama artikli, võidab varasem issue ja teisel palutakse
+uus valida.
 
-Before you claim, check the table below and skim the journals suggested on the
-[materials page](../materials.qmd).
+Enne broneerimist vaata allolevat tabelit ja sirvi ajakirju, mida soovitab
+[materjalide leht](../materials.qmd).
 
-# 2. The register
+# 2. Register
 
 ```{r}
 #| label: register
@@ -53,115 +53,116 @@ Before you claim, check the table below and skim the journals suggested on the
 #| results: asis
 
 if (nrow(regs) == 0) {
-  cat("Nothing claimed yet — the table fills up as registrations come in.\n")
+  cat("Veel ei ole midagi broneeritud — tabel täitub, kui registreerimised saabuvad.\n")
 } else {
   regs |>
     mutate(
-      Paper = ifelse(
+      Artikkel = ifelse(
         is.na(paper_doi_or_url) | paper_doi_or_url == "",
         paper_title,
         sprintf("[%s](%s)", paper_title, paper_doi_or_url)
       ),
-      Slides = vapply(slides_file, function(f) {
+      Slaidid = vapply(slides_file, function(f) {
         if (have_file(f)) sprintf("[⬇ %s](%s/%s)", f, slides_dir, f) else "—"
       }, character(1))
     ) |>
     transmute(
-      Student = ifelse(is.na(student_name) | student_name == "",
-                       github_user, student_name),
-      `GitHub` = paste0("@", github_user),
-      Paper,
-      Date = ifelse(is.na(presentation_date) | presentation_date == "",
-                    "to be scheduled", presentation_date),
-      Slides
+      Üliõpilane = ifelse(is.na(student_name) | student_name == "",
+                          github_user, student_name),
+      GitHub = paste0("@", github_user),
+      Artikkel,
+      Kuupäev = ifelse(is.na(presentation_date) | presentation_date == "",
+                       "aeg lahtine", presentation_date),
+      Slaidid
     ) |>
     kable() |>
     print()
 }
 ```
 
-# 3. Submitting your slides {#submitting-your-slides}
+# 3. Slaidide esitamine {#submitting-your-slides}
 
-Slides go into `seminars/slides/` in this repository, as a **pull request**.
-Any of three formats is fine:
+Slaidid lähevad selle repositooriumi kausta `seminars/slides/`, **pull
+request'ina**. Sobib ükskõik milline neist kolmest vormingust:
 
-| Format | Extension | Note |
+| Vorming | Laiend | Märkus |
 |---|---|---|
-| PDF | `.pdf` | Safest — renders identically everywhere |
-| PowerPoint | `.pptx` | Fine; export a PDF too if you used unusual fonts |
-| Quarto | `.qmd` | Welcome, and the most reproducible. It is linked for download, not rendered by the site |
+| PDF | `.pdf` | Kõige kindlam — näeb kõikjal ühesugune välja |
+| PowerPoint | `.pptx` | Sobib; ebatavaliste fontide korral ekspordi ka PDF |
+| Quarto | `.qmd` | Teretulnud ja kõige reprodutseeritavam. See lingitakse allalaadimiseks, sait ei renderda seda |
 
-Name the file `githubusername-shortpapertitle.pdf` — for example
+Nimeta fail `githubikasutajanimi-luhikeartiklipealkiri.pdf` — näiteks
 `jsmith-edna-detection-limits.pdf`.
 
-### With the GitHub website
+### GitHubi veebiliidesega
 
-1. Go to [`seminars/slides/`](`r paste0(repo, "/tree/main/seminars/slides")`) in the repository.
-2. **Add file → Upload files**, drag your slides in.
-3. Choose **Create a new branch and start a pull request**, then **Propose changes**.
-4. Also add the file name to your row's `slides_file` column in
-   `registrations.csv`, in the same pull request.
+1. Mine repositooriumis kausta [`seminars/slides/`](`r paste0(repo, "/tree/main/seminars/slides")`).
+2. **Add file → Upload files**, lohista oma slaidid sisse.
+3. Vali **Create a new branch and start a pull request**, seejärel **Propose changes**.
+4. Lisa samas pull request'is faili nimi ka oma rea veergu `slides_file` failis
+   `registrations.csv`.
 
-### With git
+### Gitiga
 
 ```bash
 git clone https://github.com/peeterlaas/MolEcoMeth.git
 cd MolEcoMeth
-git checkout -b slides-yourname
-cp ~/Desktop/yourname-yourpaper.pdf seminars/slides/
-# add the file name to your row in seminars/registrations.csv
+git checkout -b slides-sinunimi
+cp ~/Desktop/sinunimi-sinuartikkel.pdf seminars/slides/
+# lisa faili nimi oma reale failis seminars/registrations.csv
 git add seminars/
-git commit -m "Add seminar slides for <paper>"
-git push -u origin slides-yourname
+git commit -m "Add seminar slides for <artikkel>"
+git push -u origin slides-sinunimi
 ```
 
-Then open the pull request from the link git prints.
+Seejärel ava pull request lingilt, mille git välja trükib.
 
-A pull request that only touches `seminars/` is checked and merged
-automatically. One that touches anything else waits for the lecturer — that is
-deliberate, and it is the reason you can be given write access to the repository
-at all.
+Pull request, mis puudutab ainult kausta `seminars/`, kontrollitakse ja
+liidetakse automaatselt. See, mis puudutab midagi muud, jääb õppejõudu ootama —
+see on meelega nii ja just seetõttu saab sulle repositooriumi kirjutusõiguse
+üldse anda.
 
 ::: {.callout-important}
-## Deadline
+## Tähtaeg
 
-Slides are due **before** your presentation slot. Submit the version you will
-present; if you fix a typo afterwards, open a second pull request rather than
-rewriting history.
+Slaidid tuleb esitada **enne** oma esinemisaega. Esita see versioon, mille sa
+ette kannad; kui parandad hiljem trükivea, ava teine pull request, mitte ära
+kirjuta ajalugu ümber.
 :::
 
-# What makes a good seminar
+# Mis teeb seminari heaks
 
-You are not summarising the paper. You are explaining a method well enough that
-the room can judge it.
+Sa ei tee artiklist kokkuvõtet. Sa selgitad meetodit nii hästi, et ruum suudab
+seda hinnata.
 
-- **The question** — what did they want to know, in one sentence?
-- **The evidence chain** — sample → molecule → assay → data → claim. Walk it.
-- **The controls** — what did they run, and what would have failed without them?
-- **The weak joint** — every study has one step where the inference gets
-  fragile. Name it, and say what you would have done instead.
-- **The transfer** — where else does this method apply, and where would it break?
+- **Küsimus** — mida nad tahtsid teada, ühe lausega?
+- **Tõendusahel** — proov → molekul → analüüs → andmed → väide. Käi see läbi.
+- **Kontrollid** — mida nad tegid ja mis oleks ilma nendeta untsu läinud?
+- **Nõrk lüli** — igas uuringus on üks samm, kus järeldus muutub hapraks.
+  Nimeta see ja ütle, mida sa ise teisiti oleksid teinud.
+- **Ülekanne** — kus mujal see meetod töötab ja kus see katki läheks?
 
-Slides should be readable from the back of the room: few words, one idea per
-slide, and the paper's key figure large enough to actually interpret.
+Slaidid peavad olema loetavad ruumi tagumisest otsast: vähe sõnu, üks mõte
+slaidi kohta ja artikli võtmejoonis piisavalt suur, et seda saaks tegelikult
+tõlgendada.
 
-# Pass or no pass
+# Arvestatud või mittearvestatud
 
-This component is not scored on a scale. It is 25% of the grade, and you either
-earn it or you do not.
+Seda komponenti ei hinnata skaalal. See annab 25% hindest ja kas sa teenid selle
+välja või mitte.
 
-**A pass** means the room can now judge the method. Concretely:
+**Arvestatud** tähendab, et ruum oskab nüüd meetodit hinnata. Konkreetsemalt:
 
-- the question and the evidence chain are stated clearly enough to follow;
-- the controls are identified, and you can say what each one rules out;
-- you name the step where the inference gets fragile, rather than presenting the
-  paper as unassailable;
-- you answer questions about the method honestly, including "I don't know".
+- küsimus ja tõendusahel on esitatud piisavalt selgelt, et neid saab jälgida;
+- kontrollid on välja toodud ja sa oskad öelda, mida igaüks neist välistab;
+- sa nimetad selle sammu, kus järeldus hapraks muutub, selle asemel et esitada
+  artiklit vaieldamatuna;
+- sa vastad meetodit puudutavatele küsimustele ausalt, kaasa arvatud "ma ei tea".
 
-**A no pass** is a presentation that summarises the findings without engaging
-with how they were produced, or one that cannot answer basic questions about the
-paper it presented. It is not a verdict on your delivery, your English, or your
-slide design.
+**Mittearvestatud** on ettekanne, mis teeb tulemustest kokkuvõtte, tegelemata
+sellega, kuidas need tekkisid, või selline, mis ei suuda vastata esitatud
+artikli kohta lihtsatele küsimustele. See ei ole hinnang sinu esinemisoskusele
+ega slaidide kujundusele.
 
-If you do not pass, you present again once, on a date agreed with the lecturer.
-Nobody fails the course on the first attempt at a seminar.
+Kui sa arvestust ei saa, esined veel ühe korra, õppejõuga kokku lepitud ajal.
+Keegi ei kuku ainest välja esimese seminarikatse pärast.

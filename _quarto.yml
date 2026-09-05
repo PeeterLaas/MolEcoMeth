@@ -1,6 +1,10 @@
 # ---------------------------------------------------------------------------
-# MLB7052.LT — Modern Molecular Methods in Ecology
-# Course website. `quarto render` builds the pages *and* every lecture deck.
+# MLB7052.LT — Kaasaegsed meetodid molekulaarses ökoloogias
+# Kursuse veebileht. `quarto render` ehitab nii lehed kui ka kõik loenguslaidid.
+#
+# Sait on eestikeelne (2026/2027 lend on tervikuna eestikeelne). Loenguslaidid
+# ise on endiselt ingliskeelsed — need on eraldi asi, mitte selle failiga
+# tõlgitavad.
 # ---------------------------------------------------------------------------
 
 project:
@@ -10,29 +14,60 @@ project:
     - "*.qmd"
     - "lectures/*.qmd"
     - "seminars/index.qmd"
-    # Student uploads are linked for download, never rendered — Quarto must not
-    # execute code that arrives by pull request.
+    # Üliõpilaste üleslaaditud failid on allalaadimiseks lingitud, mitte kunagi
+    # renderdatud — Quarto ei tohi käivitada koodi, mis saabub pull request'iga.
     - "!seminars/slides/"
-    # Leftovers from an unrelated Shiny app; kept on disk, out of the site.
+    # Jäänused mitteseotud Shiny rakendusest; kettal alles, saidilt väljas.
     - "!MolEcoMeth/"
     - "!www/"
 
-# --- Course facts, read by the pages so they are stated in exactly one place -
+# --- Kursuse faktid, mida lehed loevad, et need oleksid kirjas ühes kohas ----
 course-code:     "MLB7052.LT"
 course-title-et: "Kaasaegsed meetodid molekulaarses ökoloogias"
 course-title-en: "Modern Molecular Methods in Ecology"
 course-repo:     "https://github.com/peeterlaas/MolEcoMeth"
-semester:        "2026/2027 autumn"
-# First teaching Friday. Every date on the schedule page is derived from this,
-# so moving the semester is a one-line change.
+semester:        "2026/2027 sügis"
+# Esimene õppereede. Kõik saidi kuupäevad tuletatakse sellest, nii et semestri
+# nihutamine on ühe rea muudatus.
 semester-start:  "2026-09-04"
 
-# Logo paths, project-relative. The decks live one level down and prepend "..".
+# Logode teed, projekti suhtes. Slaidid on ühe taseme võrra all ja lisavad "..".
 logo-tlu:     "assets/logos/UUtopleft.png"
 logo-taltech: "assets/logos/taltech-logo.png"
 
+lang: et
+
+# Quarto 1.5 ei sisalda eestikeelset _language-et.yml faili, seega antakse
+# liidese sõned siin. Ilma nendeta jääksid kõrvalriba pealkiri, otsing ja
+# callout'ide päised ingliskeelseks.
+language:
+  toc-title-document: "Sisukord"
+  toc-title-website: "Sellel lehel"
+  callout-tip-title: "Nõuanne"
+  callout-note-title: "Märkus"
+  callout-warning-title: "Hoiatus"
+  callout-important-title: "Tähtis"
+  callout-caution-title: "Ettevaatust"
+  section-title-footnotes: "Allmärkused"
+  section-title-references: "Viidatud kirjandus"
+  code-summary: "Kood"
+  copy-button-tooltip: "Kopeeri lõikelauale"
+  copy-button-tooltip-success: "Kopeeritud!"
+  back-to-top: "Tagasi üles"
+  search-label: "Otsi"
+  search-text-placeholder: "Otsi saidilt"
+  search-submit-button-title: "Otsi"
+  search-clear-button-title: "Tühjenda"
+  search-detached-cancel-button-title: "Loobu"
+  search-no-results-text: "Vasteid ei leitud"
+  search-matching-documents-text: "sobivat lehte"
+  search-copy-link-title: "Kopeeri otsingu link"
+  search-hide-matches-text: "Peida ülejäänud vasted"
+  search-more-match-text: "veel üks vaste sellel lehel"
+  search-more-matches-text: "veel vasteid sellel lehel"
+
 website:
-  title: "MLB7052.LT — Molecular Methods in Ecology"
+  title: "MLB7052.LT — Molekulaarökoloogia meetodid"
   site-url: "https://peeterlaas.github.io/MolEcoMeth"
   favicon: "assets/logos/favicon.png"
   page-navigation: true
@@ -44,7 +79,7 @@ website:
   navbar:
     background: primary
     right:
-      - text: "Repository"
+      - text: "Repositoorium"
         icon: github
         href: "https://github.com/peeterlaas/MolEcoMeth"
   sidebar:
@@ -52,39 +87,39 @@ website:
     search: false
     contents:
       - href: index.qmd
-        text: "🏠 Home"
+        text: "🏠 Avaleht"
       - href: syllabus.qmd
-        text: "📓 Syllabus"
+        text: "📓 Ainekava"
       - href: schedule.qmd
-        text: "🗓️ Schedule"
+        text: "🗓️ Ajakava"
       - href: topics.qmd
-        text: "🧭 Topics"
-      - section: "👨‍🏫 Lectures"
+        text: "🧭 Teemad"
+      - section: "👨‍🏫 Loengud"
         contents:
           - href: lectures/introduction.qmd
-            text: "0 · Introduction & toolkit"
+            text: "0 · Sissejuhatus ja töövahendid"
           - href: lectures/code_of_life.qmd
-            text: "1 · The code of life"
+            text: "1 · Elu kood"
           - href: lectures/lecture2.qmd
-            text: "2 · The molecular toolkit"
+            text: "2 · Molekulaarne tööriistakast"
           - href: lectures/lecture3.qmd
-            text: "3 · Sequencing technologies"
+            text: "3 · Sekveneerimistehnoloogiad"
           - href: lectures/loeng4.qmd
-            text: "4 · Markers, barcoding & eDNA"
+            text: "4 · Markerid, vöötkoodid ja eDNA"
           - href: lectures/loeng5.qmd
-            text: "5 · eDNA, hybridization & cytometry"
+            text: "5 · eDNA, hübridisatsioon ja tsütomeetria"
           - href: lectures/population_genetics.qmd
-            text: "10 · Population genetics"
+            text: "10 · Populatsioonigeneetika"
       - href: seminars/index.qmd
-        text: "🎤 Seminars"
+        text: "🎤 Seminarid"
       - href: participation.qmd
-        text: "✅ Participation"
+        text: "✅ Osalemine"
       - href: materials.qmd
-        text: "📚 Materials"
+        text: "📚 Materjalid"
   page-footer:
     background: light
     left: "MLB7052.LT · Tallinna Ülikool · 2026/2027"
-    right: "Built with [Quarto](https://quarto.org)"
+    right: "Tehtud [Quarto](https://quarto.org) abil"
 
 format:
   html:
@@ -95,7 +130,7 @@ format:
     toc-depth: 3
     link-external-newwindow: true
     link-external-icon: true
-    date-format: "D MMMM YYYY"
+    date-format: "D. MMMM YYYY"
     email-obfuscation: javascript
     df-print: kable
 

@@ -8,28 +8,32 @@ body:
       value: |
         Submit this **during the session**. Your GitHub username is the record —
         you do not need to type your name or email anywhere.
+  # Option text mirrors the topic column of data/sessions.csv. Only the
+  # first token (w01…w16) is read by the bot, so the label after the dash
+  # is free text. The field labels below stay English — attendance_bot.py
+  # looks values up by label, and renaming one breaks every submission.
   - type: dropdown
     id: session
     attributes:
       label: Session
       description: Which session are you logging?
       options:
-        - "w01 — Introduction and toolkit"
-        - "w02 — The code of life"
-        - "w03 — The molecular toolkit"
-        - "w04 — Sequencing technologies"
-        - "w05 — Markers and DNA sources"
-        - "w06 — eDNA and hybridization methods"
-        - "w07 — Comparative genomics"
-        - "w08 — Transcriptomics"
-        - "w09 — Proteomics and molecular phenotypes"
-        - "w10 — Phylogeny and phylogeography"
-        - "w11 — Population genetics"
-        - "w12 — Species interactions and applied methods"
-        - "w13 — Seminar presentations"
-        - "w14 — Practical: sampling and extraction"
-        - "w15 — Practical: PCR and sequencing"
-        - "w16 — Practical: analysis and reporting"
+        - "w01 — Sissejuhatus ja töövahendid"
+        - "w02 — Elu kood"
+        - "w03 — Molekulaarne tööriistakast"
+        - "w04 — Sekveneerimistehnoloogiad"
+        - "w05 — Markerid ja DNA allikad"
+        - "w06 — eDNA ja hübridisatsioonimeetodid"
+        - "w07 — Võrdlev genoomika"
+        - "w08 — Transkriptoomika"
+        - "w09 — Proteoomika ja molekulaarsed fenotüübid"
+        - "w10 — Fülogenees ja fülogeograafia"
+        - "w11 — Populatsioonigeneetika"
+        - "w12 — Liikidevahelised suhted ja rakenduslikud meetodid"
+        - "w13 — Seminariettekanded"
+        - "w14 — Praktikum: proovivõtt ja ekstraktsioon"
+        - "w15 — Praktikum: PCR ja sekveneerimine"
+        - "w16 — Praktikum: analüüs ja aruandlus"
     validations:
       required: true
   - type: input

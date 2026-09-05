@@ -1,17 +1,17 @@
 week,block,kind,topic,lecture,reading,status
-1,I,Lecture,"Introduction: the course, its toolkit and reproducible workflows",lectures/introduction.html,"Cox ch. 1",planned
-2,I,Lecture,"The code of life: molecules, information flow and the roots of molecular ecology",lectures/code_of_life.html,"Cox ch. 2-8",planned
-3,II,Lecture,"The molecular toolkit: electrophoresis, allozymes, PCR, Sanger, fragment-length polymorphisms",lectures/lecture2.html,"Cox ch. 18",planned
-4,II,Lecture,"Sequencing technologies: from 454 to nanopore",lectures/lecture3.html,"",planned
-5,II,Lecture,"Markers and DNA sources: mtDNA, barcoding, metabarcoding, ancient DNA",lectures/loeng4.html,"",planned
-6,II,Lecture,"eDNA in monitoring, hybridization methods and flow cytometry",lectures/loeng5.html,"",planned
-7,III,Lecture,"Comparative genomics: assembly, annotation and public sequence databases",,"",planned
-8,III,Lecture,"Transcriptomics, non-coding RNA and the regulation of gene expression",,"Cox ch. 19-22",planned
-9,III,Lecture,"Proteomics, post-translational modification and molecular phenotypes",,"",planned
-10,IV,Lecture,"Phylogeny, phylogeography and tree thinking",,"",planned
-11,IV,Lecture,"Population genetics, coalescence and community-level inference",lectures/population_genetics.html,"",planned
-12,IV,Lecture,"Species interactions, environmental monitoring and applied field methods",,"",planned
-13,IV,Seminar,"Student seminar presentations",,"Your chosen article",planned
-14,IV,Practical,"Sampling design, nucleic-acid extraction, quantification and inhibition checks",,"",planned
-15,IV,Practical,"PCR, electrophoresis and Sanger sequencing with the full control set",,"",planned
-16,IV,Practical,"Sequence analysis, quality assessment and writing up the result",,"",planned
+1,I,Loeng,"Sissejuhatus: kursus, selle töövahendid ja reprodutseeritavad töövood",lectures/introduction.html,Cox ptk 1,planeeritud
+2,I,Loeng,"Elu kood: molekulid, info liikumine ja molekulaarse ökoloogia juured",lectures/code_of_life.html,Cox ptk 2–8,planeeritud
+3,II,Loeng,"Molekulaarne tööriistakast: elektroforees, allosüümid, PCR, Sanger, fragmendipikkuse polümorfismid",lectures/lecture2.html,Cox ptk 18,planeeritud
+4,II,Loeng,Sekveneerimistehnoloogiad: 454-st nanopoorini,lectures/lecture3.html,,planeeritud
+5,II,Loeng,"Markerid ja DNA allikad: mtDNA, vöötkoodistamine, metavöötkoodistamine, vana DNA",lectures/loeng4.html,,planeeritud
+6,II,Loeng,"eDNA seires, hübridisatsioonimeetodid ja voolutsütomeetria",lectures/loeng5.html,,planeeritud
+7,III,Loeng,"Võrdlev genoomika: assembleerimine, annoteerimine ja avalikud järjestusandmebaasid",,,planeeritud
+8,III,Loeng,"Transkriptoomika, mittekodeeriv RNA ja geeniekspressiooni regulatsioon",,Cox ptk 19–22,planeeritud
+9,III,Loeng,"Proteoomika, translatsioonijärgsed modifikatsioonid ja molekulaarsed fenotüübid",,,planeeritud
+10,IV,Loeng,"Fülogenees, fülogeograafia ja fülogeneetiline mõtlemine",,,planeeritud
+11,IV,Loeng,"Populatsioonigeneetika, koalestsents ja koosluse tasemel järeldused",lectures/population_genetics.html,,planeeritud
+12,IV,Loeng,"Liikidevahelised suhted, keskkonnaseire ja rakenduslikud välimeetodid",,,planeeritud
+13,IV,Seminar,Üliõpilaste seminariettekanded,,Sinu valitud artikkel,planeeritud
+14,IV,Praktikum,"Proovivõtu kavandamine, nukleiinhapete eraldamine, kvantifitseerimine ja inhibitsioonikontrollid",,,planeeritud
+15,IV,Praktikum,"PCR, elektroforees ja Sangeri sekveneerimine täieliku kontrollikomplektiga",,,planeeritud
+16,IV,Praktikum,"Järjestusanalüüs, kvaliteedihindamine ja tulemuse kirjapanek",,,planeeritud

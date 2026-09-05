@@ -1,34 +1,33 @@
 # Kaasaegsed meetodid molekulaarses ökoloogias
 
 **MLB7052.LT — Modern Molecular Methods in Ecology**, Tallinna Ülikool,
-2026/2027 autumn.
+2026/2027 sügis.
 
-### 👉 [Go to the course website](https://peeterlaas.github.io/MolEcoMeth/)
+### 👉 [Mine kursuse veebilehele](https://peeterlaas.github.io/MolEcoMeth/)
 
-Everything you need is there: the schedule, the lecture slides, the reading
-list, the seminar register and the attendance record.
+Kõik vajalik on seal: ajakava, loenguslaidid, lugemisnimekiri, seminaride
+register ja kohalolekukirje.
 
-## What you do in this repository
+## Mida sa selles repositooriumis teed
 
 | | |
 |---|---|
-| **Log that you attended a session** | [Open the attendance form](../../issues/new?template=attendance.yml) — pick the session, type the code given in class |
-| **Claim your seminar paper** | [Open the registration form](../../issues/new?template=seminar.yml) — first come, first served |
-| **Share your seminar slides** | Pull request adding your file to [`seminars/slides/`](seminars/slides) — PDF, PPTX or QMD |
-| **Report a problem** | [Open a plain issue](../../issues/new) |
+| **Märgid, et käisid tunnis** | [Ava kohalolekuvorm](../../issues/new?template=attendance.yml) — vali sessioon, sisesta tunnis antud kood |
+| **Broneerid oma seminariartikli** | [Ava registreerimisvorm](../../issues/new?template=seminar.yml) — kes ees, see mees |
+| **Jagad oma seminari slaide** | Pull request, mis lisab su faili kausta [`seminars/slides/`](seminars/slides) — PDF, PPTX või QMD |
+| **Annad probleemist teada** | [Ava tavaline issue](../../issues/new) |
 
-Both forms answer you automatically: a bot checks what you submitted, records
-it, and closes the issue with a ✅ or an explanation of what went wrong. Your
-GitHub username is your identity, so there is nothing else to fill in — no name,
-no email.
+Mõlemad vormid vastavad sulle automaatselt: robot kontrollib esitatut, salvestab
+selle ja sulgeb issue ✅-ga või selgitusega, mis valesti läks. Sinu GitHubi
+kasutajanimi on su isik, nii et midagi muud täita ei ole — ei nime ega e-posti.
 
-A pull request that only touches `seminars/` is checked and merged for you.
-Anything else waits for the lecturer.
+Pull request, mis puudutab ainult kausta `seminars/`, kontrollitakse ja
+liidetakse sinu eest ära. Kõik muu jääb õppejõudu ootama.
 
-## Questions
+## Küsimused
 
 Peeter Laas — <peeter.laas@ut.ee>
 
 ---
 
-<sub>Running the course? See [MAINTAINING.md](MAINTAINING.md).</sub>
+<sub>Kursust läbi viimas? Vaata [MAINTAINING.md](MAINTAINING.md).</sub>

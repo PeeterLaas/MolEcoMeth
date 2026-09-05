@@ -1,202 +1,206 @@
 ---
-title: "📓 Syllabus"
+title: "📓 Ainekava"
 subtitle: "MLB7052.LT — Kaasaegsed meetodid molekulaarses ökoloogias / Modern Molecular Methods in Ecology"
 ---
 
 ::: {.callout-note}
-## Status
+## Staatus
 
-This page is the **proposed expanded version** of the course, prepared for
-departmental review. The existing 6 ECTS MLB7052.LT programme remains the
-administrative baseline until the expansion is approved — see
-[implementation note](#implementation-note) at the end.
+See leht on kursuse **kavandatav laiendatud versioon**, koostatud instituudis
+läbivaatamiseks. Kehtiv 6 EAP maht (MLB7052.LT) jääb administratiivseks
+lähtekohaks seni, kuni laiendus on kinnitatud — vt
+[rakendusmärkust](#implementation-note) lehe lõpus.
 :::
 
-# 1. General information
+# 1. Üldinfo
 
-| Field | Proposed specification |
+| Väli | Kavandatav täpsustus |
 |---|---|
-| Course code | MLB7052.LT |
-| Course title | Kaasaegsed meetodid molekulaarses ökoloogias / Modern Molecular Methods in Ecology |
-| Semester | 2026/2027 autumn |
-| Language | Estonian teaching; English reading and software documentation |
-| Credits | 10 ECTS, proposed expansion from 6 ECTS |
-| Contact hours | 102 hours: lectures, seminars, demonstrations, and practicals |
-| Independent work | 158 hours |
-| Prerequisites | MLK6922.LT Biochemistry; MLB6013.LT Genetics |
-| Lecturer | Peeter Laas |
-| Assessment | Graded: A, B, C, D, E, F |
-| Intended audience | Advanced undergraduate and master's students in molecular ecology, biology, biotechnology, and related fields |
+| Ainekood | MLB7052.LT |
+| Aine nimetus | Kaasaegsed meetodid molekulaarses ökoloogias / Modern Molecular Methods in Ecology |
+| Semester | 2026/2027 sügis |
+| Õppekeel | Õppetöö eesti keeles; lugemismaterjal ja tarkvara dokumentatsioon inglise keeles |
+| Maht | 10 EAP, kavandatav laiendus seniselt 6 EAP-lt |
+| Kontakttunnid | 102 tundi: loengud, seminarid, demonstratsioonid ja praktikumid |
+| Iseseisev töö | 158 tundi |
+| Eeldusained | MLK6922.LT Biokeemia; MLB6013.LT Geneetika |
+| Õppejõud | Peeter Laas |
+| Hindamine | Eristav hindamine: A, B, C, D, E, F |
+| Sihtrühm | Molekulaarse ökoloogia, bioloogia, biotehnoloogia ja lähedaste erialade vanemate kursuste bakalaureuse- ja magistriõppe üliõpilased |
 
-# 2. Course purpose
+# 2. Aine eesmärk
 
-The course develops a working understanding of molecular biology and its use in
-ecological and evolutionary research. Students move from the molecular basis of
-information to a defensible study design:
+Aine arendab töötavat arusaamist molekulaarbioloogiast ja selle kasutamisest
+ökoloogilises ning evolutsioonilises uurimistöös. Üliõpilane liigub info
+molekulaarselt alustelt kaitstava uuringudisainini:
 
-**biological question → sample → molecule → assay → sequence or measurement → computation → inference**
+**bioloogiline küsimus → proov → molekul → analüüs → järjestus või mõõtmine → arvutus → järeldus**
 
-Cox, *Molecular Biology: Principles and Practice*, 2nd ed. (2015), provides the
-foundation for the opening weeks and a reference throughout the course. Method
-chapters and primary literature supply the case studies; the full list is on the
-[materials page](materials.qmd).
+Cox, *Molecular Biology: Principles and Practice*, 2. tr (2015), on aluseks
+esimestele nädalatele ja käsiraamatuks kogu kursuse vältel. Metoodikapeatükid
+ja teadusartiklid annavad juhtumianalüüsid; täielik nimekiri on
+[materjalide lehel](materials.qmd).
 
-# 3. Course aims
+# 3. Õpieesmärgid
 
-After completing the course, students should:
+Aine läbinud üliõpilane peaks:
 
-1. understand the molecular principles behind DNA, RNA, proteins, genomes, gene expression, and molecular phenotypes;
-2. understand the strengths, weaknesses, and appropriate uses of major molecular methods in ecology and evolutionary biology;
-3. develop practical competence in sample design, nucleic-acid extraction, quantification, PCR, electrophoresis, sequencing, and basic computational analysis;
-4. learn to connect molecular observations with ecological interactions, population structure, phylogeny, and environmental change;
-5. develop reproducible habits for controls, contamination prevention, metadata, quality assessment, and scientific reporting;
-6. design an end-to-end molecular study and defend the limitations of the proposed inference.
+1. mõistma molekulaarseid põhimõtteid, mis on DNA, RNA, valkude, genoomide, geeniekspressiooni ja molekulaarsete fenotüüpide taga;
+2. mõistma ökoloogia ja evolutsioonibioloogia peamiste molekulaarsete meetodite tugevusi, nõrkusi ja sobivat kasutusala;
+3. omandama praktilise oskuse proovivõtu kavandamises, nukleiinhapete eraldamises, kvantifitseerimises, PCR-is, elektroforeesis, sekveneerimises ja lihtsamas arvutuslikus analüüsis;
+4. õppima siduma molekulaarseid vaatlusi ökoloogiliste vastasmõjude, populatsioonistruktuuri, fülogeneesi ja keskkonnamuutustega;
+5. kujundama reprodutseeritavad harjumused kontrollide, saastumise vältimise, metaandmete, kvaliteedihindamise ja teadusliku aruandluse osas;
+6. oskama kavandada molekulaarse uuringu algusest lõpuni ja kaitsta kavandatava järelduse piiranguid.
 
-# 4. Learning outcomes
+# 4. Õpiväljundid
 
-On successful completion, students can:
+Aine edukalt läbinud üliõpilane oskab:
 
-- explain the chemical and informational basis of nucleic acids and proteins;
-- explain replication, mutation, repair, recombination, transcription, translation, RNA processing, and regulation;
-- choose sampling and preservation strategies for environmental, tissue, faecal, sediment, or low-biomass material;
-- design extraction and amplification workflows with appropriate blanks, positive controls, negative controls, technical replicates, and inhibition checks;
-- interpret agarose gels, Sanger traces, qPCR curves, standard curves, FASTQ quality metrics, and Nanopore run reports;
-- compare Sanger, short-read, and long-read sequencing for a stated biological objective;
-- use marker genes, metabarcoding, genome comparisons, phylogenetic analyses, and population-genetic summaries appropriately;
-- interpret selected transcriptomic, proteomic, hybridization, microscopy, and flow-cytometry evidence;
-- connect molecular observations to species interactions, symbiosis, population processes, and environmental monitoring;
-- produce a reproducible report that distinguishes observation, analysis, inference, and speculation.
+- selgitada nukleiinhapete ja valkude keemilist ning informatsioonilist alust;
+- selgitada replikatsiooni, mutatsiooni, reparatsiooni, rekombinatsiooni, transkriptsiooni, translatsiooni, RNA protsessimist ja regulatsiooni;
+- valida proovivõtu- ja säilitusstrateegia keskkonna-, koe-, väljaheite-, sette- või vähese biomassiga materjali jaoks;
+- kavandada ekstraktsiooni ja amplifikatsiooni töövoo koos sobivate pimeproovide, positiivsete ja negatiivsete kontrollide, tehniliste korduste ja inhibitsioonikontrollidega;
+- tõlgendada agaroosgeele, Sangeri kromatogramme, qPCR-kõveraid, standardkõveraid, FASTQ-kvaliteedinäitajaid ja Nanopore'i jooksuraporteid;
+- võrrelda Sangeri, lühikeste ja pikkade lugemite sekveneerimist etteantud bioloogilise eesmärgi jaoks;
+- kasutada asjakohaselt markergeene, metavöötkoodistamist, genoomide võrdlust, fülogeneetilist analüüsi ja populatsioonigeneetilisi näitajaid;
+- tõlgendada valitud transkriptoomilisi, proteoomilisi, hübridisatsiooni-, mikroskoopia- ja voolutsütomeetria tõendeid;
+- siduda molekulaarseid vaatlusi liikidevaheliste suhete, sümbioosi, populatsiooniprotsesside ja keskkonnaseirega;
+- koostada reprodutseeritava raporti, mis eristab vaatlust, analüüsi, järeldust ja spekulatsiooni.
 
-# 5. Course content
+# 5. Aine sisu
 
-The four blocks are expanded, with the methods each one covers, on the
-[topics page](topics.qmd).
+Neli plokki koos meetoditega, mida igaüks neist katab, on lahti kirjutatud
+[teemade lehel](topics.qmd).
 
-### Block I — Foundations and measurement
+### Plokk I — Alused ja mõõtmine
 
-- evolution, scientific reasoning, and molecular biology as a way of knowing;
-- chemical properties of DNA, RNA, proteins, buffers, enzymes, and molecular interactions;
-- information flow, replication, mutation, repair, recombination, transcription, translation, and regulation;
-- sample representativeness, preservation, extraction, quantification, inhibition, and contamination.
+- evolutsioon, teaduslik arutlemine ja molekulaarbioloogia kui viis teada saada;
+- DNA, RNA, valkude, puhvrite ja ensüümide keemilised omadused ning molekulaarsed vastasmõjud;
+- info liikumine, replikatsioon, mutatsioon, reparatsioon, rekombinatsioon, transkriptsioon, translatsioon ja regulatsioon;
+- proovi esinduslikkus, säilitamine, ekstraktsioon, kvantifitseerimine, inhibitsioon ja saastumine.
 
-### Block II — The molecular toolkit
+### Plokk II — Molekulaarne tööriistakast
 
-- electrophoresis, restriction analysis, Southern blotting, PCR, qPCR, ddPCR, Sanger sequencing, probes, FISH, fluorescence, and flow cytometry;
-- molecular markers, barcoding, metabarcoding, allozymes, RFLP, microsatellites, and SNPs;
-- Illumina, PacBio, Oxford Nanopore, library preparation, read quality, assembly, annotation, and data management.
+- elektroforees, restriktsioonanalüüs, Southerni blotting, PCR, qPCR, ddPCR, Sangeri sekveneerimine, sondid, FISH, fluorestsents ja voolutsütomeetria;
+- molekulaarsed markerid, vöötkoodistamine, metavöötkoodistamine, allosüümid, RFLP, mikrosatelliidid ja SNP-d;
+- Illumina, PacBio, Oxford Nanopore, raamatukogu ettevalmistamine, lugemite kvaliteet, assembleerimine, annoteerimine ja andmehaldus.
 
-### Block III — Genomes and molecular phenotypes
+### Plokk III — Genoomid ja molekulaarsed fenotüübid
 
-- comparative genomics, assembly, annotation, and public sequence databases;
-- transcriptomics, non-coding RNA, condition- and stage-specific regulation, epigenetics, and functional genomics;
-- proteomics, quantitative proteomics, protein interactions, post-translational modification, and molecular phenotypes;
-- the cell biology behind the traits we measure: life-cycle stages, secretion, transport, and cellular responses to the environment.
+- võrdlev genoomika, assembleerimine, annoteerimine ja avalikud järjestusandmebaasid;
+- transkriptoomika, mittekodeeriv RNA, seisundi- ja staadiumispetsiifiline regulatsioon, epigeneetika ja funktsionaalne genoomika;
+- proteoomika, kvantitatiivne proteoomika, valkude vastasmõjud, translatsioonijärgsed modifikatsioonid ja molekulaarsed fenotüübid;
+- rakubioloogia nende tunnuste taga, mida me mõõdame: elutsükli staadiumid, sekretsioon, transport ja raku vastused keskkonnale.
 
-### Block IV — Ecology, evolution, and application
+### Plokk IV — Ökoloogia, evolutsioon ja rakendused
 
-- phylogeny, phylogeography, population genetics, coalescence, and community-level inference;
-- species interactions, symbiosis, host-associated microbiota, and environmental monitoring;
-- CRISPR, LAMP, microfluidics, lab-on-chip, biosensing, and field-deployable diagnostics;
+- fülogenees, fülogeograafia, populatsioonigeneetika, koalestsents ja koosluse tasemel järeldused;
+- liikidevahelised suhted, sümbioos, peremeesorganismiga seotud mikrobiota ja keskkonnaseire;
+- CRISPR, LAMP, mikrofluidika, kiip-laboril põhinevad lahendused, biosensoorika ja välitingimustes kasutatav diagnostika.
 
-# 6. Textbook architecture
+# 6. Õpiku ülesehitus
 
-**Cox — molecular foundation**
+**Cox — molekulaarne alus**
 
-- Ch. 1: evolution and scientific reasoning;
-- Ch. 2–8: DNA, RNA, proteins, genes, genomes, transcriptomes, and proteomes;
-- Ch. 11–18: replication, mutation, repair, recombination, transcription, RNA processing, translation, and genetic manipulation;
-- Ch. 19–22: regulation of gene expression.
+- ptk 1: evolutsioon ja teaduslik arutlemine;
+- ptk 2–8: DNA, RNA, valgud, geenid, genoomid, transkriptoomid ja proteoomid;
+- ptk 11–18: replikatsioon, mutatsioon, reparatsioon, rekombinatsioon, transkriptsioon, RNA protsessimine, translatsioon ja geneetiline manipulatsioon;
+- ptk 19–22: geeniekspressiooni regulatsioon.
 
-Book examples are used to demonstrate how methods answer biological questions.
-Students are not expected to read all chapters cover-to-cover. Textbook figures
-should be linked or used under the relevant institutional permissions; teaching
-diagrams should otherwise be redrawn as original explanatory figures.
+Raamatu näiteid kasutatakse selleks, et näidata, kuidas meetodid bioloogilistele
+küsimustele vastavad. Üliõpilaselt ei oodata kõigi peatükkide läbilugemist.
+Õpiku jooniseid tuleks kasutada või linkida asjakohaste institutsionaalsete
+lubade alusel; õppediagrammid tuleks muidu joonistada originaalsete
+selgitavate joonistena.
 
-# 7. Teaching and learning methods
+# 7. Õppemeetodid
 
-- short lectures followed by structured interpretation of a figure, dataset, or method decision;
-- small-group [seminars](seminars/index.qmd) based on one paper, figure, or case study;
-- wet-lab practicals using approved teaching material and non-pathogenic controls;
-- virtual PCR/qPCR and sequence-analysis exercises;
-- public sequence, genome, and biodiversity databases with open computational tools;
+- lühiloengud, millele järgneb ühe joonise, andmestiku või metoodilise valiku struktureeritud tõlgendamine;
+- väikeses rühmas toimuvad [seminarid](seminars/index.qmd), mille aluseks on üks artikkel, joonis või juhtum;
+- märglabori praktikumid, kus kasutatakse heakskiidetud õppematerjali ja mittepatogeenseid kontrolle;
+- virtuaalsed PCR/qPCR- ja järjestusanalüüsi harjutused;
+- avalikud järjestus-, genoomi- ja elurikkuse andmebaasid koos avatud arvutusvahenditega.
 
-# 8. Assessment
+# 8. Hindamine {#assessment}
 
-The course is graded A–F on three components, and all three have to be there.
+Aine hinnatakse skaalal A–F kolme komponendi alusel ja kõik kolm peavad olemas
+olema.
 
-| Component | Weight | How it is judged |
+| Komponent | Osakaal | Kuidas hinnatakse |
 |---|---:|---|
-| Seminar presentation | 25% | Pass / no pass — one research article, presented to the group in week 13 |
-| Practical laboratory work | 25% | The three laboratory sessions in weeks 14–16 and the work handed in from them |
-| Oral examination | 50% | A conversation about the course material, in the examination period |
+| Seminariettekanne | 25% | Arvestatud / mittearvestatud — üks teadusartikkel, esitatakse rühmale 13. nädalal |
+| Praktiline laboritöö | 25% | Kolm praktikumi nädalatel 14–16 ja nende põhjal esitatud töö |
+| Suuline eksam | 50% | Vestlus aine materjali üle eksamisessioonil |
 
-### The seminar is pass or no pass
+### Seminar on arvestatud või mittearvestatud
 
-There is no scale and no rubric score behind this 25%: you either present a
-paper and show that you understood how its evidence was produced, or you do
-not. A presentation that falls short can be repeated once. What makes a good
-one, and the registration form, are on the [seminars page](seminars/index.qmd).
+Selle 25% taga ei ole skaalat ega hindamismaatriksit: kas sa esitad artikli ja
+näitad, et said aru, kuidas selle tõendus tekkis, või mitte. Ebaõnnestunud
+ettekannet saab üks kord korrata. Mis teeb ettekande heaks ja kust leiab
+registreerimisvormi, on kirjas [seminaride lehel](seminars/index.qmd).
 
-### The practicals are the bench work
+### Praktikumid on laboritöö
 
-The last three sessions of the semester are laboratory sessions, running the
-chain the whole course has been describing — sampling and extraction, then
-amplification and sequencing, then the analysis and the write-up. They are
-assessed together, on what you did at the bench and what you made of the result:
-controls run, deviations recorded, numbers interpreted honestly.
+Semestri kolm viimast korda on laboripraktikumid, kus läbitakse just see ahel,
+mida kogu kursus on kirjeldanud — proovivõtt ja ekstraktsioon, seejärel
+amplifikatsioon ja sekveneerimine, seejärel analüüs ja kokkuvõte. Neid
+hinnatakse koos, lähtudes sellest, mida sa laborilaua taga tegid ja mida
+tulemusest välja lugesid: millised kontrollid tehti, millised kõrvalekalded
+kirja pandi, kui ausalt numbreid tõlgendati.
 
-Attendance at the practicals is not optional in the way a lecture is. A session
-you miss has to be made up, and the laboratory safety induction has to be done
-before you can be in the room at all.
+Praktikumides osalemine ei ole valikuline samamoodi nagu loengus. Vahelejäänud
+kord tuleb järele teha ja laboriohutuse juhendamine peab olema läbitud, enne
+kui sa üldse laborisse siseneda saad.
 
-### The oral examination is scaled to what you already did
+### Suuline eksam sõltub sellest, mida sa juba tegid
 
-The examination is a conversation, and how long a conversation depends on the
-record you bring to it.
+Eksam on vestlus, ja kui pikk see vestlus on, sõltub sellest, millise kirjega
+sa kohale tuled.
 
-- **You attended, presented, and did the practical work.** The examination is a
-  short discussion of what you found interesting and what you would do
-  differently — a confirmation, not an interrogation.
-- **You have gaps.** The examination covers the topics of the sessions you
-  missed and the work you did not finish. Nothing exotic: the material of those
-  weeks, at the level it was taught.
+- **Käisid kohal, esinesid ja tegid praktikumitöö ära.** Eksam on lühike
+  arutelu selle üle, mis sulle huvitav tundus ja mida teeksid teisiti —
+  kinnitus, mitte ülekuulamine.
+- **Sul on lünki.** Eksam katab nende kordade teemad, millest puudusid, ja
+  töö, mis jäi lõpetamata. Midagi eksootilist ei tule: nende nädalate
+  materjal sellel tasemel, nagu seda õpetati.
 
-That is the entire reason attendance is recorded. It is not a compliance
-exercise — it is the thing the examination is measured against, and it is kept
-in the open where you can check it yourself through the
-[participation tracker](participation.qmd).
+Just see on kogu põhjus, miks kohalolekut üldse arvestatakse. See ei ole
+aruandluse pärast — see on see, mille vastu eksamit mõõdetakse, ja seda
+hoitakse avalikult, kus sa saad seda ise kontrollida
+[osalemise lehel](participation.qmd).
 
-# 9. Biosafety and ethical practice
+# 9. Bioohutus ja eetiline praktika
 
-The course does not require culturing pathogenic organisms. Teaching activities
-use non-pathogenic organisms, preserved material, purified DNA/RNA, commercial
-controls, prepared images, or public datasets. Any live work must follow
-institutional biosafety, waste, ethics, and sample-transfer procedures.
+Aine ei nõua patogeensete organismide kasvatamist. Õppetöös kasutatakse
+mittepatogeenseid organisme, säilitatud materjali, puhastatud DNA-d/RNA-d,
+kaubanduslikke kontrolle, ettevalmistatud pilte või avalikke andmestikke. Iga
+elusmaterjaliga tehtav töö peab järgima asutuse bioohutuse, jäätmekäitluse,
+eetika ja proovide edastamise korda.
 
-Students must record sample origin, collection date, preservation, extraction
-batch, control status, software version, parameter choices, and any deviation
-from the planned workflow.
+Üliõpilane peab kirja panema proovi päritolu, kogumise kuupäeva, säilitusviisi,
+ekstraktsioonipartii, kontrollide staatuse, tarkvara versiooni,
+parameetrivalikud ja iga kõrvalekalde kavandatud töövoost.
 
-# 10. Workload model
+# 10. Töökoormuse mudel
 
-The semester is sixteen weekly sessions:
+Semester koosneb kuueteistkümnest iganädalasest kohtumisest:
 
-| Activity | Sessions | When |
+| Tegevus | Kordi | Millal |
 |---|---:|---|
-| Lectures and demonstrations | 12 | Weeks 1–12 |
-| Student seminar presentations | 1 | Week 13 |
-| Practical laboratories | 3 | Weeks 14–16 |
-| Oral examination | — | Examination period |
+| Loengud ja demonstratsioonid | 12 | Nädalad 1–12 |
+| Üliõpilaste seminariettekanded | 1 | 13. nädal |
+| Laboripraktikumid | 3 | Nädalad 14–16 |
+| Suuline eksam | — | Eksamisessioon |
 
-Independent work is the reading for each lecture, the preparation of one seminar
-paper, and the write-up of the practicals. The hour split behind these sessions
-follows whichever credit volume is approved; the totals proposed for the
-expanded version are in section 1.
+Iseseisev töö on iga loengu lugemismaterjal, ühe seminariartikli
+ettevalmistamine ja praktikumide kokkuvõtete kirjutamine. Tundide jaotus nende
+kohtumiste taga järgib seda ainepunktide mahtu, mis kinnitatakse; laiendatud
+versiooni jaoks kavandatud kogusummad on punktis 1.
 
-# 11. Administrative implementation note {#implementation-note}
+# 11. Administratiivne rakendusmärkus {#implementation-note}
 
-The existing 6 ECTS course can be retained as a compact version by selecting
-weeks 1–8 and 12, keeping the seminar, and reducing the practical block from
-three sessions to one. The 10 ECTS version should be adopted only after the
-timetable, laboratory capacity, staffing, assessment load, and programme-level
-credit requirements have been confirmed.
+Senise 6 EAP mahuga aine saab säilitada kompaktse versioonina, valides nädalad
+1–8 ja 12, jättes seminari alles ning vähendades praktikumiplokki kolmelt
+korralt ühele. 10 EAP versioon tuleks kasutusele võtta alles siis, kui
+tunniplaan, labori maht, personal, hindamiskoormus ja õppekava tasemel
+ainepunktide nõuded on kinnitatud.

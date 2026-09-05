@@ -1,117 +1,117 @@
 ---
-title: "🧭 Topics"
-subtitle: "What the course covers, and which method answers which question"
+title: "🧭 Teemad"
+subtitle: "Mida kursus katab ja milline meetod millisele küsimusele vastab"
 ---
 
-The course is built in four blocks. Each block is a stage in the same chain of
-reasoning: what a molecule *is*, what we can *do* to it, what a genome *says*,
-and what any of that lets us *claim* about an ecological system.
+Kursus on üles ehitatud neljale plokile. Iga plokk on üks etapp samas
+arutluskäigus: mis molekul *on*, mida me temaga *teha* saame, mida genoom
+*ütleb*, ja mida see kõik lubab meil ökoloogilise süsteemi kohta *väita*.
 
-# The four blocks
+# Neli plokki
 
 ::: {.dropdown-table}
 
 <details open>
-<summary><strong>Block I</strong> — Foundations and measurement</summary>
+<summary><strong>Plokk I</strong> — Alused ja mõõtmine</summary>
 
-- evolution, scientific reasoning, and molecular biology as a way of knowing;
-- chemical properties of DNA, RNA, proteins, buffers, enzymes, and molecular interactions;
-- information flow: replication, mutation, repair, recombination, transcription, translation, and regulation;
-- sample representativeness, preservation, extraction, quantification, inhibition, and contamination.
+- evolutsioon, teaduslik arutlemine ja molekulaarbioloogia kui viis teada saada;
+- DNA, RNA, valkude, puhvrite ja ensüümide keemilised omadused ning molekulaarsed vastasmõjud;
+- info liikumine: replikatsioon, mutatsioon, reparatsioon, rekombinatsioon, transkriptsioon, translatsioon ja regulatsioon;
+- proovi esinduslikkus, säilitamine, ekstraktsioon, kvantifitseerimine, inhibitsioon ja saastumine.
 
-*Weeks 1–2, and the practical block in weeks 14–16. Slides:*
-[Introduction](lectures/introduction.html) ·
-[The code of life](lectures/code_of_life.html)
-
-</details>
-
-<details>
-<summary><strong>Block II</strong> — The molecular toolkit</summary>
-
-- electrophoresis, restriction analysis, Southern blotting, PCR, qPCR, ddPCR, Sanger sequencing, probes, FISH, fluorescence, and flow cytometry;
-- molecular markers: barcoding, metabarcoding, allozymes, RFLP, microsatellites, and SNPs;
-- Illumina, PacBio, Oxford Nanopore, library preparation, read quality, assembly, annotation, and data management.
-
-*Weeks 3–6. Slides:*
-[The molecular toolkit](lectures/lecture2.html) ·
-[Sequencing technologies](lectures/lecture3.html) ·
-[Markers and DNA sources](lectures/loeng4.html) ·
-[eDNA and hybridization](lectures/loeng5.html)
+*Nädalad 1–2 ning praktikumiplokk nädalatel 14–16. Slaidid:*
+[Sissejuhatus](lectures/introduction.html) ·
+[Elu kood](lectures/code_of_life.html)
 
 </details>
 
 <details>
-<summary><strong>Block III</strong> — Genomes and molecular phenotypes</summary>
+<summary><strong>Plokk II</strong> — Molekulaarne tööriistakast</summary>
 
-- comparative genomics, assembly, annotation, and public sequence databases;
-- transcriptomics, non-coding RNA, condition- and stage-specific regulation, epigenetics, and functional genomics;
-- proteomics, quantitative proteomics, protein interactions, post-translational modification, and molecular phenotypes;
-- the cell biology behind the traits we measure: life-cycle stages, secretion, transport, and cellular responses to the environment.
+- elektroforees, restriktsioonanalüüs, Southerni blotting, PCR, qPCR, ddPCR, Sangeri sekveneerimine, sondid, FISH, fluorestsents ja voolutsütomeetria;
+- molekulaarsed markerid: vöötkoodistamine, metavöötkoodistamine, allosüümid, RFLP, mikrosatelliidid ja SNP-d;
+- Illumina, PacBio, Oxford Nanopore, raamatukogu ettevalmistamine, lugemite kvaliteet, assembleerimine, annoteerimine ja andmehaldus.
 
-*Weeks 7–9.*
+*Nädalad 3–6. Slaidid:*
+[Molekulaarne tööriistakast](lectures/lecture2.html) ·
+[Sekveneerimistehnoloogiad](lectures/lecture3.html) ·
+[Markerid ja DNA allikad](lectures/loeng4.html) ·
+[eDNA ja hübridisatsioon](lectures/loeng5.html)
 
 </details>
 
 <details>
-<summary><strong>Block IV</strong> — Ecology, evolution, and application</summary>
+<summary><strong>Plokk III</strong> — Genoomid ja molekulaarsed fenotüübid</summary>
 
-- phylogeny, phylogeography, population genetics, coalescence, and community-level inference;
-- species interactions, symbiosis, host-associated microbiota, and environmental monitoring;
-- CRISPR, LAMP, microfluidics, lab-on-chip, biosensing, and field-deployable diagnostics.
+- võrdlev genoomika, assembleerimine, annoteerimine ja avalikud järjestusandmebaasid;
+- transkriptoomika, mittekodeeriv RNA, seisundi- ja staadiumispetsiifiline regulatsioon, epigeneetika ja funktsionaalne genoomika;
+- proteoomika, kvantitatiivne proteoomika, valkude vastasmõjud, translatsioonijärgsed modifikatsioonid ja molekulaarsed fenotüübid;
+- rakubioloogia nende tunnuste taga, mida me mõõdame: elutsükli staadiumid, sekretsioon, transport ja raku vastused keskkonnale.
 
-*Weeks 10–12.*
+*Nädalad 7–9.*
+
+</details>
+
+<details>
+<summary><strong>Plokk IV</strong> — Ökoloogia, evolutsioon ja rakendused</summary>
+
+- fülogenees, fülogeograafia, populatsioonigeneetika, koalestsents ja koosluse tasemel järeldused;
+- liikidevahelised suhted, sümbioos, peremeesorganismiga seotud mikrobiota ja keskkonnaseire;
+- CRISPR, LAMP, mikrofluidika, kiip-laboril põhinevad lahendused, biosensoorika ja välitingimustes kasutatav diagnostika.
+
+*Nädalad 10–12.*
 
 </details>
 
 :::
 
-# Which method for which question
+# Milline meetod millisele küsimusele
 
-A method is only as good as the question it is asked to answer. This table is
-the one to argue with in seminars.
+Meetod on täpselt nii hea, kui hea on küsimus, millele ta vastama pannakse.
+Just selle tabeliga tasub seminarides vaielda.
 
-| The question | Typical approach | The thing that usually goes wrong |
+| Küsimus | Tüüpiline lähenemine | Mis tavaliselt valesti läheb |
 |---|---|---|
-| Is this species present here? | Targeted qPCR or ddPCR assay on eDNA | Assay specificity; a positive means *DNA was present*, not *the animal was* |
-| What is in this community? | Metabarcoding of a marker region | Primer bias and reference-database gaps decide what you can possibly detect |
-| What is this specimen? | Sanger barcoding of COI, ITS, 16S/18S | The reference sequence may be misidentified; barcode gaps vary by group |
-| How are these populations connected? | Microsatellites, SNP panels, RAD-seq | Sampling design, not marker count, limits the inference |
-| What is the evolutionary history? | Multi-locus phylogeny, coalescent models | Gene trees are not species trees |
-| What is this organism doing right now? | Transcriptomics, RT-qPCR, eRNA | RNA degradation and the sampling instant dominate the signal |
-| How much biomass or how many cells? | Flow cytometry, qPCR standard curves | Calibration and gating decisions carry most of the uncertainty |
-| What did this ecosystem look like before? | Sedimentary and ancient DNA | Damage, contamination, and leaching between layers |
-| Which genes are present in this genome? | Assembly and annotation | Assembly errors propagate silently into every downstream count |
+| Kas see liik on siin olemas? | Sihitud qPCR- või ddPCR-analüüs eDNA-l | Analüüsi spetsiifilisus; positiivne tulemus tähendab, et *DNA oli kohal*, mitte et *loom oli* |
+| Mis selles koosluses on? | Markerpiirkonna metavöötkoodistamine | Praimerite kallutatus ja referentsandmebaasi lüngad otsustavad, mida on üldse võimalik tuvastada |
+| Mis isend see on? | COI, ITS või 16S/18S Sangeri vöötkoodistamine | Referentsjärjestus võib olla valesti määratud; vöötkoodilõhe erineb rühmiti |
+| Kuidas need populatsioonid on seotud? | Mikrosatelliidid, SNP-paneelid, RAD-seq | Järeldust piirab proovivõtu disain, mitte markerite arv |
+| Milline on evolutsiooniline ajalugu? | Mitme lookuse fülogenees, koalestsentsimudelid | Geenipuud ei ole liigipuud |
+| Mida see organism praegu teeb? | Transkriptoomika, RT-qPCR, eRNA | Signaali määravad RNA lagunemine ja proovivõtu hetk |
+| Kui palju on biomassi või rakke? | Voolutsütomeetria, qPCR standardkõverad | Suurema osa määramatusest annavad kalibreerimine ja väravate seadmine |
+| Milline see ökosüsteem varem välja nägi? | Setete DNA ja vana DNA | Kahjustused, saastumine ja leostumine kihtide vahel |
+| Millised geenid selles genoomis on? | Assembleerimine ja annoteerimine | Assembleerimisvead kanduvad vaikselt edasi igasse järgnevasse loendusse |
 
-# Skills you should leave with
+# Oskused, mis peaksid kaasa jääma
 
 ::: {.dropdown-table}
 
 <details>
-<summary><strong>At the bench</strong></summary>
+<summary><strong>Laborilaua taga</strong></summary>
 
-- extract nucleic acids from environmental, tissue, faecal, sediment, or low-biomass material and say why you chose that protocol;
-- design a PCR with the controls that make its result interpretable: extraction blank, no-template control, positive control, technical replicates, inhibition check;
-- read an agarose gel, a Sanger trace, a qPCR amplification curve, and a standard curve;
-- keep a notebook another person could use to repeat what you did.
-
-</details>
-
-<details>
-<summary><strong>At the keyboard</strong></summary>
-
-- assess FASTQ quality and a Nanopore run report, and decide whether the data are usable;
-- run a barcoding or metabarcoding workflow from reads to a taxon table;
-- build and read a phylogenetic tree, and state what the support values do and do not mean;
-- produce a reproducible report that keeps observation, analysis, inference, and speculation visibly separate.
+- eraldada nukleiinhappeid keskkonna-, koe-, väljaheite-, setteproovist või vähese biomassiga materjalist ja põhjendada, miks valisid just selle protokolli;
+- kavandada PCR koos kontrollidega, mis muudavad tulemuse tõlgendatavaks: ekstraktsiooni pimeproov, matriitsita kontroll, positiivne kontroll, tehnilised kordused, inhibitsioonikontroll;
+- lugeda agaroosgeeli, Sangeri kromatogrammi, qPCR-i amplifikatsioonikõverat ja standardkõverat;
+- pidada laborimärkmikku, mille järgi keegi teine suudaks su töö korrata.
 
 </details>
 
 <details>
-<summary><strong>In an argument</strong></summary>
+<summary><strong>Klaviatuuri taga</strong></summary>
 
-- compare Sanger, short-read, and long-read sequencing for a stated objective and defend the choice on cost, error profile, and read length;
-- identify the step in someone else's study where the inference actually becomes fragile;
-- state the limitations of your own design before a reviewer does.
+- hinnata FASTQ-kvaliteeti ja Nanopore'i jooksuraportit ning otsustada, kas andmed on kasutatavad;
+- viia vöötkoodistamise või metavöötkoodistamise töövoog lugemitest taksonitabelini;
+- koostada ja lugeda fülogeneesipuud ning öelda, mida toetusväärtused tähendavad ja mida mitte;
+- koostada reprodutseeritav raport, kus vaatlus, analüüs, järeldus ja spekulatsioon on nähtavalt lahus.
+
+</details>
+
+<details>
+<summary><strong>Vaidluses</strong></summary>
+
+- võrrelda Sangeri, lühikeste ja pikkade lugemite sekveneerimist etteantud eesmärgi jaoks ning kaitsta valikut maksumuse, vigade profiili ja lugemi pikkuse põhjal;
+- leida kellegi teise uuringus see samm, kus järeldus tegelikult hapraks muutub;
+- nimetada oma töö piirangud enne, kui retsensent seda teeb.
 
 </details>
 

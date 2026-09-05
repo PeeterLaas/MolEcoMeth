@@ -1,7 +1,7 @@
 ---
-title: "✅ Participation"
-subtitle: "Attendance sets the shape of your oral examination — and it is recorded here, in the open"
-# Reads a CSV that the bots update; must not be served from the freeze cache.
+title: "✅ Osalemine"
+subtitle: "Kohalolek määrab su suulise eksami kuju — ja seda hoitakse siin, avalikult"
+# Loeb CSV-d, mida robotid uuendavad; ei tohi tulla freeze-vahemälust.
 execute:
   freeze: false
 ---
@@ -26,16 +26,15 @@ new_issue     <- paste0(repo, "/issues/new?template=attendance.yml")
 ```
 
 ::: {.callout-important}
-## Why this matters
+## Miks see oluline on
 
-The oral examination is 50% of the grade, and it is scaled against this record.
-Attend the sessions, present your seminar and do the practical work, and the
-examination is a short conversation. Where there are gaps, the examination
-covers the topics of the sessions you missed. See the
-[syllabus](syllabus.qmd#assessment) for the full breakdown.
+Suuline eksam annab 50% hindest ja seda mõõdetakse just selle kirje vastu. Käi
+kohal, esine seminariga ja tee praktikumitöö ära — siis on eksam lühike
+vestlus. Kus on lünki, seal katab eksam nende kordade teemad, millest
+puudusid. Täielik jaotus on [ainekavas](syllabus.qmd#assessment).
 :::
 
-# How to log a session
+# Kuidas kohalolekut märkida
 
 ```{r}
 #| label: open-now
@@ -43,43 +42,43 @@ covers the topics of the sessions you missed. See the
 #| results: asis
 
 if (nrow(open_sessions) > 0) {
-  cat('::: {.callout-important appearance="simple"}\n## Open right now\n\n')
+  cat('::: {.callout-important appearance="simple"}\n## Praegu avatud\n\n')
   for (i in seq_len(nrow(open_sessions))) {
     s <- open_sessions[i, ]
-    cat(sprintf("- **%s** — %s (%s)\n", s$session_id, s$topic, s$date))
+    cat(sprintf("- **%s** — %s (%s)\n", s$session_id, s$topic, et_date(s$date)))
   }
-  cat(sprintf('\n[Log your attendance](%s){.cta}\n\n:::\n', new_issue))
+  cat(sprintf('\n[Märgi oma kohalolek](%s){.cta}\n\n:::\n', new_issue))
 } else {
-  cat('::: {.callout-note appearance="simple"}\n## Nothing open at the moment\n\n')
-  cat('No session is currently accepting attendance. The form opens during class ')
-  cat('and closes shortly after it ends.\n\n:::\n')
+  cat('::: {.callout-note appearance="simple"}\n## Hetkel ei ole midagi avatud\n\n')
+  cat('Ükski kord ei võta praegu kohalolekut vastu. Vorm avaneb tunni ajal ')
+  cat('ja sulgub varsti pärast selle lõppu.\n\n:::\n')
 }
 ```
 
-1. During the session, open the attendance form:
-   [**Log attendance**](`r new_issue`).
-2. Pick the session and enter the **code given in class**.
-3. Submit. A bot checks the code, adds you to `data/attendance.csv`, and closes
-   the issue with a ✅ or an explanation of what went wrong.
+1. Ava tunni ajal kohalolekuvorm:
+   [**Märgi kohalolek**](`r new_issue`).
+2. Vali sessioon ja sisesta **tunnis antud kood**.
+3. Saada ära. Robot kontrollib koodi, lisab su faili `data/attendance.csv` ja
+   sulgeb issue ✅-ga või selgitusega, mis valesti läks.
 
-That is the whole process. Your GitHub username is your identity, so there is
-nothing to type but the session and the code, and nothing to lose track of: the
-record is a file in this repository that you can read yourself at any time.
+See ongi kogu protsess. Sinu GitHubi kasutajanimi on su isik, nii et tippida ei
+ole midagi peale sessiooni ja koodi, ning kaotsi ei saa midagi minna: kirje on
+fail selles repositooriumis, mida sa võid ise igal ajal lugeda.
 
 ::: {.callout-note collapse="true"}
-## Why it works this way
+## Miks see nii käib
 
-An earlier plan used a Google Form feeding a spreadsheet. Doing it in GitHub
-instead means one account instead of two, no personal data leaving the
-university's control, no email addresses collected at all, and an audit trail —
-every attendance record is a commit made by a bot in response to an issue you
-opened, and both halves stay visible.
+Varasem plaan nägi ette Google'i vormi, mis toidab tabelit. GitHubis tehes on
+selle asemel üks konto kahe asemel, ülikooli kontrolli alt ei lahku ühtegi
+isikuandmete kogumit, e-posti aadresse ei koguta üldse, ja alles jääb jälg:
+iga kohalolekukirje on commit, mille tegi robot vastuseks sinu avatud issue'le,
+ja mõlemad pooled jäävad nähtavaks.
 
-The session code exists so that attendance means *being in the room*. Codes are
-announced in class and are not published here.
+Sessiooni kood on olemas selleks, et kohalolek tähendaks *ruumis olemist*.
+Koodid öeldakse tunnis ja neid siin ei avaldata.
 :::
 
-# The record
+# Kirje
 
 ```{r}
 #| label: attendance-matrix
@@ -87,7 +86,7 @@ announced in class and are not published here.
 #| results: asis
 
 if (nrow(attendance) == 0) {
-  cat("No sessions have been logged yet. The table appears here after the first one.\n")
+  cat("Ühtegi korda ei ole veel märgitud. Tabel ilmub siia pärast esimest.\n")
 } else {
   seen <- sessions |> filter(session_id %in% attendance$session_id)
 
@@ -100,47 +99,48 @@ if (nrow(attendance) == 0) {
 
   totals <- attendance |>
     distinct(github_user, session_id) |>
-    count(github_user, name = "Total")
+    count(github_user, name = "Kokku")
 
   out <- grid |>
     left_join(totals, by = "github_user") |>
-    rename(`GitHub user` = github_user)
+    rename(`GitHubi kasutaja` = github_user)
 
   print(kable(out, align = c("l", rep("c", ncol(out) - 1))))
 
-  cat(sprintf("\n\n%d session%s logged by %d student%s.\n",
-              length(unique(attendance$session_id)),
-              if (length(unique(attendance$session_id)) == 1) "" else "s",
-              length(unique(attendance$github_user)),
-              if (length(unique(attendance$github_user)) == 1) "" else "s"))
+  n_sess <- length(unique(attendance$session_id))
+  n_stud <- length(unique(attendance$github_user))
+  cat(sprintf("\n\nKokku %d %s %d üliõpilaselt.\n",
+              n_sess,
+              if (n_sess == 1) "märgitud kord" else "märgitud korda",
+              n_stud))
 }
 ```
 
-# Sessions
+# Sessioonid
 
 ```{r}
 #| label: session-table
 #| echo: false
-counts <- attendance |> count(session_id, name = "Logged")
+counts <- attendance |> count(session_id, name = "Märgitud")
 
 sessions |>
   left_join(counts, by = "session_id") |>
   transmute(
-    Session = session_id,
-    Date    = date,
-    Topic   = topic,
-    Status  = ifelse(tolower(open) == "yes", "open", "closed"),
-    Logged  = ifelse(is.na(Logged), 0L, as.integer(Logged))
+    Sessioon = session_id,
+    Kuupäev  = et_date(date),
+    Teema    = topic,
+    Staatus  = ifelse(tolower(open) == "yes", "avatud", "suletud"),
+    Märgitud = ifelse(is.na(Märgitud), 0L, as.integer(Märgitud))
   ) |>
   kable()
 ```
 
-# If something is wrong
+# Kui midagi on valesti
 
-Check `data/attendance.csv` first — it is the record, and it is readable. If a
-session you attended is missing, or one you did not attend is present, open a
-plain issue describing the problem. Do not edit the file directly: the bot owns
-it, and a manual edit will be overwritten.
+Vaata kõigepealt faili `data/attendance.csv` — see ongi kirje ja see on
+loetav. Kui mõni kord, kus sa käisid, on puudu, või mõni, kus sa ei käinud, on
+kohal, ava tavaline issue ja kirjelda probleemi. Ära muuda faili ise: see
+kuulub robotile ja käsitsi tehtud muudatus kirjutatakse üle.
 
-Corrections are made by the lecturer as a normal commit, so the change and its
-reason stay visible.
+Parandused teeb õppejõud tavalise commit'ina, nii et muudatus ja selle põhjus
+jäävad nähtavaks.

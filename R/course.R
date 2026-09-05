@@ -42,3 +42,32 @@ course_meta <- function(key = NULL) {
 course_path <- function(...) {
   file.path(course_root(), ...)
 }
+
+# --- Estonian dates ---------------------------------------------------------
+# Rendered without touching LC_TIME: et_EE.UTF-8 is not installed on the CI
+# runner, so %B and %a would silently fall back to English month and weekday
+# names on the published site. Same reasoning as the LC_CTYPE block above.
+
+ET_MONTHS <- c("jaanuar", "veebruar", "märts", "aprill", "mai", "juuni",
+               "juuli", "august", "september", "oktoober", "november",
+               "detsember")
+
+# ISO weekday order, so %u indexes straight into it.
+ET_WEEKDAYS <- c("E", "T", "K", "N", "R", "L", "P")
+
+# 04.09.2026
+et_date <- function(x) format(as.Date(x), "%d.%m.%Y")
+
+# 4. september 2026
+et_date_long <- function(x) {
+  x <- as.Date(x)
+  paste0(as.integer(format(x, "%d")), ". ",
+         ET_MONTHS[as.integer(format(x, "%m"))], " ",
+         format(x, "%Y"))
+}
+
+# R 04.09
+et_date_weekday <- function(x) {
+  x <- as.Date(x)
+  paste0(ET_WEEKDAYS[as.integer(format(x, "%u"))], " ", format(x, "%d.%m"))
+}

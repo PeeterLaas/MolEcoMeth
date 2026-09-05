@@ -4,10 +4,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this is
 
-A Quarto website that *is* the course MLB7052.LT (Modern Molecular Methods in
-Ecology, Tallinn University / TalTech, 2026/2027 autumn). It holds the six
-revealjs lecture decks, the syllabus and schedule pages, and the attendance and
-seminar records — all rendered to GitHub Pages by CI. It is not an R package or
+A Quarto website that *is* the course MLB7052.LT (Kaasaegsed meetodid
+molekulaarses ökoloogias / Modern Molecular Methods in Ecology, Tallinn
+University / TalTech, 2026/2027 autumn). The site is in Estonian. It holds
+the six revealjs lecture decks, the syllabus and schedule pages, and the
+attendance and seminar records — all rendered to GitHub Pages by CI. It is not an R package or
 a Shiny app, and there is no test suite; `quarto render` is the check.
 
 `README.md` is written for students, `MAINTAINING.md` for whoever runs the
@@ -62,6 +63,26 @@ short list of light packages (`rmarkdown`, `yaml`, `readr`, `dplyr`, `tidyr`,
   `.github/workflows/publish.yml`; adding one to those pages means adding it
   there too.
 
+### Estonian, and the three traps in it
+
+Quarto 1.5 ships no `_language-et.yml`, so the interface strings — TOC title,
+search, callout headings — are supplied by hand in the `language:` block of
+`_quarto.yml`. Anything Quarto renders itself that appears in English is a
+missing key there, not a missed translation in a page.
+
+Dates go through `et_date()`, `et_date_long()` and `et_date_weekday()` in
+`R/course.R`, never `%B` or `%a`. `et_EE.UTF-8` is not installed on the CI
+runner, so a locale-based month name silently comes out English on the
+published site — the same reason the file forces `LC_CTYPE`.
+
+**Estonian ordinals break Pandoc.** `1. nädal` at the start of a paragraph is a
+valid ordered-list marker: digits, a period, a space. Inside the raw-HTML
+lecture cards in `index.qmd` it turned every `<p>` into an `<ol>` and swallowed
+the closing `</div>` tags, and in a list continuation line it opens a nested
+list. Keep an ordinal off the start of a line and off the start of a paragraph;
+`04.09.2026` is safe because there is no space after the period. `quarto render`
+reports this as `[WARNING] Div … unclosed`.
+
 ### Data flow: issue forms → CSV → website
 
 An issue opened from `.github/ISSUE_TEMPLATE/attendance.yml` or `seminar.yml`
@@ -81,7 +102,11 @@ headings, `_No response_` for empty), CSV append that preserves header order,
   accepts anything).
 - The session dropdown in `attendance.yml` must stay in sync with the
   `session_id` values in `data/sessions.csv` — the bot takes the id from the
-  first token of the selected option.
+  first token of the selected option. The text after the dash is free, and is
+  kept in Estonian to match the CSV; the form's **field labels** stay English,
+  because `parse_fields()` looks values up by label (`session`, `session code`,
+  `your name`, `paper title`, `doi or url`) and renaming one breaks every
+  submission.
 - `data/attendance.csv` and `seminars/registrations.csv` are bot-written. When
   editing them from a script, write with `lineterminator="\n"`: Python's `csv`
   defaults to CRLF and turns a one-cell edit into a whole-file diff.
@@ -120,8 +145,12 @@ arrives by pull request.
   and `data/…`.
 - **Styling** is two SCSS files sharing the Tallinn University red `#990000`:
   `css/site.scss` (website) and `css/lectures.scss` (decks).
-- **Content is bilingual** — English body text, Estonian titles and some slides.
-  Keep both intact when editing.
+- **The website is Estonian, the decks are English.** Every `.qmd` outside
+  `lectures/`, the sidebar, the navbar, the footer and the topic strings in
+  `data/schedule.csv` and `data/sessions.csv` are Estonian — the 2026/2027
+  intake has no non-Estonian speakers. The six revealjs decks are still
+  English. Write new site copy in Estonian; leave the decks alone unless the
+  whole set is being converted.
 - `MolEcoMeth/`, `www/`, `app.R`, `deploy.R` and `rsconnect/` are leftovers from
   an unrelated Shiny app. They are git-ignored and excluded from the render;
   leave them alone.

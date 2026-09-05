@@ -1,7 +1,7 @@
 ---
-title: "🗓️ Schedule"
-subtitle: "Week-by-week plan for the 2026/2027 autumn semester"
-# Reads a CSV that the bots update; must not be served from the freeze cache.
+title: "🗓️ Ajakava"
+subtitle: "Nädalate kaupa plaan 2026/2027 sügissemestriks"
+# Loeb CSV-d, mida robotid uuendavad; ei tohi tulla freeze-vahemälust.
 execute:
   freeze: false
 ---
@@ -21,21 +21,20 @@ schedule <- schedule |>
   mutate(
     date  = start + 7 * (week - 1),
     past  = date < Sys.Date(),
-    # A row links to its deck when one exists, otherwise the topic is plain text.
+    # Rida lingib oma slaididele, kui need on olemas; muidu on teema tavaline tekst.
     topic_cell = ifelse(
       is.na(lecture) | lecture == "",
       topic,
       sprintf("[%s](%s)", topic, lecture)
     ),
-    state = ifelse(past, "delivered", status)
+    state = ifelse(past, "toimunud", status)
   )
 ```
 
 ::: {.callout-tip appearance="simple"}
-Dates are derived from a single semester-start date in `_quarto.yml`
-(**`r format(start, "%d %B %Y")`**, the first teaching Friday). Confirm it
-against the official timetable — changing that one line moves the whole
-schedule.
+Kuupäevad tuletatakse ühestainsast semestri alguskuupäevast failis
+`_quarto.yml` (**`r et_date_long(start)`**, esimene õppereede). Kontrolli seda
+ametliku tunniplaani vastu — selle ühe rea muutmine nihutab kogu ajakava.
 :::
 
 ```{r}
@@ -43,63 +42,63 @@ schedule.
 #| echo: false
 schedule |>
   transmute(
-    Week    = week,
-    Date    = format(date, "%a %d %b"),
-    Block   = block,
-    Format  = kind,
-    Topic   = topic_cell,
-    Reading = ifelse(is.na(reading) | reading == "", "—", reading)
+    Nädal    = week,
+    Kuupäev  = et_date_weekday(date),
+    Plokk    = block,
+    Vorm     = kind,
+    Teema    = topic_cell,
+    Lugemine = ifelse(is.na(reading) | reading == "", "—", reading)
   ) |>
   kable()
 ```
 
-# Blocks
+# Plokid
 
-The semester is organised into four blocks; the
-[topics page](topics.qmd) lists what each one covers.
+Semester on jaotatud neljaks plokiks; [teemade leht](topics.qmd) loetleb, mida
+igaüks neist katab.
 
 ```{r}
 #| label: block-summary
 #| echo: false
 block_names <- c(
-  I   = "Foundations and measurement",
-  II  = "The molecular toolkit",
-  III = "Genomes and molecular phenotypes",
-  IV  = "Ecology, evolution, and application"
+  I   = "Alused ja mõõtmine",
+  II  = "Molekulaarne tööriistakast",
+  III = "Genoomid ja molekulaarsed fenotüübid",
+  IV  = "Ökoloogia, evolutsioon ja rakendused"
 )
 
 schedule |>
   group_by(block) |>
   summarise(
-    Weeks = paste0(min(week), "–", max(week)),
-    Sessions = n(),
+    Nädalad = paste0(min(week), "–", max(week)),
+    Kordi = n(),
     .groups = "drop"
   ) |>
   transmute(
-    Block = paste0("Block ", block),
-    Title = block_names[block],
-    Weeks,
-    Sessions
+    Plokk = paste0("Plokk ", block),
+    Pealkiri = block_names[block],
+    Nädalad,
+    Kordi
   ) |>
   kable()
 ```
 
-# What happens in a typical week
+# Kuidas tavaline nädal välja näeb
 
 | | |
 |---|---|
-| **Before** | Read the assigned chapter or paper |
-| **In class** | Lecture, then structured interpretation of one figure, dataset or method decision |
-| **After** | Log your [attendance](participation.qmd) — it is what your oral examination is scaled against |
+| **Enne** | Loe läbi määratud peatükk või artikkel |
+| **Tunnis** | Loeng, seejärel ühe joonise, andmestiku või metoodilise valiku struktureeritud tõlgendamine |
+| **Pärast** | Märgi oma [kohalolek](participation.qmd) — just selle vastu suulist eksamit mõõdetakse |
 
-The last four weeks differ. Week 13 is given over to
-[student seminar presentations](seminars/index.qmd), and weeks 14–16 are the
-practical laboratory block — sampling and extraction, then amplification and
-sequencing, then analysis and write-up. Together the practicals are 25% of the
-grade; the [syllabus](syllabus.qmd#assessment) has the rest.
+Viimased neli nädalat on teistsugused. 13. nädal on pühendatud
+[üliõpilaste seminariettekannetele](seminars/index.qmd) ja nädalad 14–16 on
+praktikumide plokk: proovivõtt ja ekstraktsioon, seejärel amplifikatsioon ja
+sekveneerimine, seejärel analüüs ja kokkuvõtte kirjutamine. Kokku annavad
+praktikumid 25% hindest; ülejäänu on kirjas [ainekavas](syllabus.qmd#assessment).
 
-# Changes
+# Muudatused
 
-The schedule lives in `data/schedule.csv`. Any change to it is a commit, so the
-history of what moved and when is visible in the repository — there is no
-separate announcement channel to miss.
+Ajakava elab failis `data/schedule.csv`. Iga muudatus selles on commit, nii et
+ajalugu — mis ja millal nihkus — on repositooriumis näha. Eraldi
+teavituskanalit, millest ilma võiks jääda, ei ole.

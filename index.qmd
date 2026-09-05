@@ -1,8 +1,8 @@
 ---
 title: "Kaasaegsed meetodid molekulaarses ökoloogias"
-subtitle: "MLB7052.LT — Modern Molecular Methods in Ecology · 2026/2027 autumn"
+subtitle: "MLB7052.LT · 2026/2027 sügissemester"
 toc: false
-# Reads a CSV that the bots update; must not be served from the freeze cache.
+# Loeb CSV-d, mida robotid uuendavad; ei tohi tulla freeze-vahemälust.
 execute:
   freeze: false
 ---
@@ -17,51 +17,53 @@ source("R/course.R")
 
 schedule <- read_csv("data/schedule.csv", show_col_types = FALSE)
 
-# Every date on the site is derived from the single semester-start date in
-# _quarto.yml, so shifting the semester is a one-line change.
+# Kõik saidi kuupäevad tuletatakse ühestainsast semestri alguskuupäevast
+# _quarto.yml-is, nii et semestri nihutamine on ühe rea muudatus.
 start   <- as.Date(course_meta("semester-start"))
 schedule <- schedule |> mutate(date = start + 7 * (week - 1))
 ```
 
-From the chemistry of a nucleic acid to a defensible ecological inference. The
-course follows one chain of reasoning all semester:
+Nukleiinhappe keemiast kaitstava ökoloogilise järelduseni. Kogu semestri
+jooksul järgib kursus üht ja sama arutlusahelat:
 
 ::: {style="text-align:center; font-size:1.05em; margin:1.2em 0; padding:0.9em; background:#f7f3f3; border-left:4px solid #990000;"}
-**biological question → sample → molecule → assay → sequence or measurement → computation → inference**
+**bioloogiline küsimus → proov → molekul → analüüs → järjestus või mõõtmine → arvutus → järeldus**
 :::
 
-[🗓️ Schedule](schedule.qmd){.cta}
-[👨‍🏫 Lectures](#lectures){.cta}
-[🎤 Register your seminar](seminars/index.qmd){.cta}
-[✅ Log your attendance](participation.qmd){.cta .ghost}
-[📓 Syllabus](syllabus.qmd){.cta .ghost}
+[🗓️ Ajakava](schedule.qmd){.cta}
+[👨‍🏫 Loengud](#lectures){.cta}
+[🎤 Registreeri oma seminar](seminars/index.qmd){.cta}
+[✅ Märgi kohalolek](participation.qmd){.cta .ghost}
+[📓 Ainekava](syllabus.qmd){.cta .ghost}
 
 ::: {.callout-important}
-## Two things to do in week 1
+## Kaks asja, mis tuleb esimesel nädalal ära teha
 
-1. Send me your **GitHub username** so you can be added to this repository.
-2. Read [how seminars work](seminars/index.qmd) and start looking for a paper.
-   Registration is first-come, first-served, and everyone presents in week 13.
+1. Saada mulle oma **GitHubi kasutajanimi**, et saaksin sind sellesse
+   repositooriumi lisada.
+2. Loe läbi, [kuidas seminarid käivad](seminars/index.qmd), ja hakka artiklit
+   otsima. Registreerimine käib "kes ees, see mees" põhimõttel ja kõik
+   esinevad 13. nädalal.
 :::
 
-# What the course is about
+# Millest see kursus räägib
 
-Molecular data have become the default evidence in ecology: a water sample
-stands in for a fish survey, a gut content becomes a diet table, a handful of
-sediment becomes a century of community change. Every one of those inferences
-depends on choices made long before the sequencer — what was sampled, how it was
-preserved, which molecule was targeted, which controls were run.
+Molekulaarsetest andmetest on saanud ökoloogia tavapärane tõendusmaterjal:
+veeproov asendab kalaloendust, seedetrakti sisust saab toidutabel, peotäiest
+setet sajand koosluse muutusi. Iga selline järeldus sõltub valikutest, mis
+tehti ammu enne sekvenaatorit — mida prooviti, kuidas seda säilitati, millist
+molekuli sihiti, millised kontrollid tehti.
 
-This course teaches the methods *and* the reasoning that makes their output
-trustworthy. You will learn what each technique measures, what it cannot
-measure, and how to tell the difference in someone else's paper.
+See kursus õpetab nii meetodeid *kui ka* arutluskäiku, mis nende tulemuse
+usaldusväärseks muudab. Sa õpid, mida iga meetod mõõdab, mida see mõõta ei
+suuda, ja kuidas seda vahet kellegi teise artiklis ära tunda.
 
-By the end you should be able to design a molecular study end-to-end, run the
-core bench and computational steps, and defend the limits of what your data
-support. The four content blocks are laid out on the [topics page](topics.qmd),
-and the week-by-week plan on the [schedule](schedule.qmd).
+Kursuse lõpuks peaksid oskama molekulaarse uuringu algusest lõpuni kavandada,
+teha läbi põhilised labori- ja arvutusetapid ning kaitsta seda, mida sinu
+andmed tegelikult võimaldavad väita. Neli sisuplokki on lahti kirjutatud
+[teemade lehel](topics.qmd) ja nädalate kaupa plaan [ajakavas](schedule.qmd).
 
-# Lectures {#lectures}
+# Loengud {#lectures}
 
 ```{r}
 #| label: lecture-cards
@@ -73,55 +75,59 @@ cards <- schedule |> filter(!is.na(lecture), lecture != "")
 cat('<div class="lecture-grid">\n')
 for (i in seq_len(nrow(cards))) {
   r <- cards[i, ]
+  # The date comes first on purpose. Pandoc parses markdown inside these divs,
+  # so a paragraph opening with "1. nädal" is read as an ordered list, which
+  # then swallows the closing </div> tags. "04.09.2026" has no space after a
+  # period, so it cannot start a list.
   cat(sprintf(
-    '<div class="lecture-card"><a href="%s"><h4>%s</h4></a><p>Week %d · %s · Block %s</p></div>\n',
+    '<div class="lecture-card"><a href="%s"><h4>%s</h4></a><p>%s · %d. nädal · plokk %s</p></div>\n',
     r$lecture,
     htmltools::htmlEscape(r$topic),
+    et_date(r$date),
     r$week,
-    format(r$date, "%d %b %Y"),
     r$block
   ))
 }
 cat('</div>\n')
 ```
 
-Slides open in your browser; use the arrow keys, `F` for fullscreen, `S` for
-speaker notes and `?` for the full key list. Remaining weeks are listed on the
-[schedule](schedule.qmd) and appear here as they are delivered.
+Slaidid avanevad brauseris: liigu nooleklahvidega, `F` avab täisekraani, `S`
+esineja märkmed ja `?` kogu klahvinimekirja. Ülejäänud nädalad on kirjas
+[ajakavas](schedule.qmd) ja ilmuvad siia sedamööda, kuidas loengud toimuvad.
 
-# Practical information
+# Praktiline info
 
 ```{r}
 #| label: course-info
 #| echo: false
 meta <- course_meta()
 tibble::tribble(
-  ~Field,          ~Detail,
-  "Course code",   meta[["course-code"]],
-  "Title",         paste0(meta[["course-title-et"]], " / ", meta[["course-title-en"]]),
-  "Semester",      meta[["semester"]],
-  "Teaching time", "Fridays, weekly — see the schedule for dates",
-  "Language",      "Estonian teaching; English reading and software documentation",
-  "Prerequisites", "MLK6922.LT Biochemistry; MLB6013.LT Genetics",
-  "Lecturer",      "Peeter Laas, PhD — peeter.laas@ut.ee",
-  "Assessment",    "Graded A–F: seminar 25% (pass/no pass), practicals 25%, oral examination 50%"
+  ~Väli,            ~Sisu,
+  "Ainekood",       meta[["course-code"]],
+  "Nimetus",        paste0(meta[["course-title-et"]], " / ", meta[["course-title-en"]]),
+  "Semester",       meta[["semester"]],
+  "Toimumisaeg",    "Reedeti, kord nädalas — kuupäevad on ajakavas",
+  "Õppekeel",       "Õppetöö eesti keeles; lugemismaterjal ja tarkvara dokumentatsioon inglise keeles",
+  "Eeldusained",    "MLK6922.LT Biokeemia; MLB6013.LT Geneetika",
+  "Õppejõud",       "Peeter Laas, PhD — peeter.laas@ut.ee",
+  "Hindamine",      "Hinne A–F: seminar 25% (arvestatud / mittearvestatud), praktikumid 25%, suuline eksam 50%"
 ) |> knitr::kable()
 ```
 
-# How this site works
+# Kuidas see sait töötab
 
-Everything runs through this repository, so there is one place to look and one
-place to submit.
+Kõik käib läbi selle repositooriumi, nii et vaadata on vaja ühest kohast ja
+esitada ühte kohta.
 
-| You want to… | Where | How |
+| Sa tahad… | Kus | Kuidas |
 |---|---|---|
-| See what is coming | [Schedule](schedule.qmd) | Week-by-week plan with links to slides |
-| Read the slides | [Lectures](#lectures) | Rendered in the browser, no download needed |
-| Record that you attended | [Participation](participation.qmd) | Open an issue from the attendance form |
-| Claim a paper for your seminar | [Seminars](seminars/index.qmd) | Open an issue; a bot adds you to the table |
-| Share your seminar slides | [Seminars](seminars/index.qmd) | Pull request with a PDF, PPTX or QMD |
-| Find a reading or a tool | [Materials](materials.qmd) | Books, software, databases, datasets |
+| Näha, mis tulemas on | [Ajakava](schedule.qmd) | Nädalate kaupa plaan koos linkidega slaididele |
+| Lugeda slaide | [Loengud](#lectures) | Avanevad brauseris, midagi alla laadida pole vaja |
+| Märkida, et käisid kohal | [Osalemine](participation.qmd) | Ava kohalolekuvormist issue |
+| Broneerida artikkel seminariks | [Seminarid](seminars/index.qmd) | Ava issue; robot lisab su tabelisse |
+| Jagada oma seminari slaide | [Seminarid](seminars/index.qmd) | Pull request PDF-i, PPTX-i või QMD-failiga |
+| Leida lugemist või tööriista | [Materjalid](materials.qmd) | Raamatud, tarkvara, andmebaasid, andmestikud |
 
-No Google Forms, no separate sign-ups: your GitHub account is your identity for
-attendance and for seminar registration, and the record lives in this
-repository where you can check it yourself.
+Ei mingeid Google'i vorme ega eraldi registreerumisi: sinu GitHubi konto on
+sinu isik nii kohaloleku kui ka seminarile registreerumise juures, ja kirje
+elab selles repositooriumis, kus saad seda ise järele vaadata.

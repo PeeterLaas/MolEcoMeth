@@ -1,68 +1,67 @@
 ---
-title: "📚 Materials"
-subtitle: "Books, software, databases and data for the course"
+title: "📚 Materjalid"
+subtitle: "Raamatud, tarkvara, andmebaasid ja andmed kursuse jaoks"
 ---
 
-# Books
+# Raamatud
 
-| Book | Use in the course |
+| Raamat | Kasutus kursusel |
 |---|---|
-| Cox, Doudna & O'Donnell — *Molecular Biology: Principles and Practice*, 2nd ed. (2015) | The molecular foundation. Ch. 1–8 for the opening weeks, ch. 11–22 as a reference throughout |
-| Chisholm — *Theoretical Ecology: Concepts and Models with R* (2025) | Optional. Useful if you want the ecological models behind the inferences we draw |
+| Cox, Doudna & O'Donnell — *Molecular Biology: Principles and Practice*, 2. tr (2015) | Molekulaarne alus. Ptk 1–8 esimesteks nädalateks, ptk 11–22 käsiraamatuna kogu kursuse vältel |
+| Chisholm — *Theoretical Ecology: Concepts and Models with R* (2025) | Valikuline. Kasulik, kui tahad tundma õppida ökoloogilisi mudeleid, mis meie järelduste taga on |
 
-Textbook figures shown in lectures are used for teaching under institutional
-permissions and are not redistributed from this repository.
+Loengutes näidatavaid õpikujooniseid kasutatakse õppetöös institutsionaalsete
+lubade alusel ja neid ei levitata sellest repositooriumist.
 
-# Software
+# Tarkvara
 
-Install these before week 3. All of them are free, and all run on Linux, macOS
-and Windows.
+Paigalda need enne 3. nädalat. Kõik on tasuta ja kõik töötavad Linuxis, macOS-is
+ja Windowsis.
 
-| Tool | What you need it for | Where |
+| Tööriist | Milleks vaja | Kust |
 |---|---|---|
-| R (≥ 4.3) and RStudio | Every computational exercise | [posit.co](https://posit.co/download/rstudio-desktop/) |
-| Quarto | Reports, and the slides you are reading | [quarto.org](https://quarto.org) |
-| Git | Submitting seminar material to this repository | [git-scm.com](https://git-scm.com) |
-| A GitHub account | Attendance, seminar registration, slide submission | [github.com](https://github.com) |
+| R (≥ 4.3) ja RStudio | Iga arvutuslik harjutus | [posit.co](https://posit.co/download/rstudio-desktop/) |
+| Quarto | Raportid ja need slaidid, mida sa praegu loed | [quarto.org](https://quarto.org) |
+| Git | Seminarimaterjali esitamiseks sellesse repositooriumi | [git-scm.com](https://git-scm.com) |
+| GitHubi konto | Kohalolek, seminarile registreerumine, slaidide esitamine | [github.com](https://github.com) |
 
-R packages used in the practicals:
+Praktikumides kasutatavad R-i paketid:
 
 ```r
 install.packages(c("tidyverse", "readr", "knitr", "DT", "ape", "phangorn", "vegan"))
 ```
 
-# Sequence and biodiversity databases
+# Järjestus- ja elurikkuse andmebaasid
 
-| Database | What it holds |
+| Andmebaas | Mida sisaldab |
 |---|---|
-| [NCBI GenBank / SRA](https://www.ncbi.nlm.nih.gov/) | Sequences, genomes and raw reads |
-| [ENA](https://www.ebi.ac.uk/ena) | The European mirror and submission route |
-| [BOLD Systems](https://www.boldsystems.org/) | Curated COI barcodes with specimen metadata |
-| [SILVA](https://www.arb-silva.de/) | Curated rRNA reference alignments |
-| [UNITE](https://unite.ut.ee/) | Fungal ITS reference sequences, hosted at Tartu |
-| [GBIF](https://www.gbif.org/) | Occurrence records, for putting molecular detections in context |
-| [PR2](https://pr2-database.org/) | Protist ribosomal reference database |
+| [NCBI GenBank / SRA](https://www.ncbi.nlm.nih.gov/) | Järjestused, genoomid ja toorlugemid |
+| [ENA](https://www.ebi.ac.uk/ena) | Euroopa peegel ja esitamise kanal |
+| [BOLD Systems](https://www.boldsystems.org/) | Kureeritud COI-vöötkoodid koos isendi metaandmetega |
+| [SILVA](https://www.arb-silva.de/) | Kureeritud rRNA referentsjoondused |
+| [UNITE](https://unite.ut.ee/) | Seente ITS-referentsjärjestused, majutatud Tartus |
+| [GBIF](https://www.gbif.org/) | Leiuandmed, et asetada molekulaarsed leiud konteksti |
+| [PR2](https://pr2-database.org/) | Protistide ribosomaalne referentsandmebaas |
 
-# Datasets used in class
+# Tunnis kasutatavad andmestikud
 
-| Dataset | Used in |
+| Andmestik | Kus kasutatakse |
 |---|---|
-| EEA bathing-water quality, 1990–2024 | Introduction lecture — a large real table to practise on |
-| Course sequencing runs | Weeks 4–7, released as they are generated |
+| EEA suplusvee kvaliteet, 1990–2024 | Sissejuhatav loeng — suur päris tabel harjutamiseks |
+| Kursuse sekveneerimisjooksud | Nädalad 4–7, avaldatakse sedamööda, kuidas need valmivad |
 
-The EEA table is ~100 MB and is **not** stored in this repository. Download it
-from the [EEA data hub](https://www.eea.europa.eu/en/datahub) and place it in
-the project root under its original name; the introduction lecture reads it from
-there.
+EEA tabel on ~100 MB ja seda **ei** hoita selles repositooriumis. Laadi see alla
+[EEA andmehubist](https://www.eea.europa.eu/en/datahub) ja pane projekti
+juurkataloogi algse nime all; sissejuhatav loeng loeb selle sealt.
 
-# Reference material for your seminar
+# Lugemismaterjal seminari jaoks
 
-Choose a paper that makes a *methodological* argument, not only a biological
-one — the seminar is about how the evidence was produced. Good hunting grounds:
+Vali artikkel, mis esitab *metoodilise*, mitte ainult bioloogilise argumendi —
+seminar räägib sellest, kuidas tõendus tekkis. Head jahimaad:
 
-- *Molecular Ecology* and *Molecular Ecology Resources*
+- *Molecular Ecology* ja *Molecular Ecology Resources*
 - *Environmental DNA*
 - *Methods in Ecology and Evolution*
-- *Nucleic Acids Research* — for the method itself rather than its application
+- *Nucleic Acids Research* — pigem meetodi enda kui selle rakenduse pärast
 
-See the [seminar page](seminars/index.qmd) for how to claim one.
+Kuidas artiklit broneerida, on kirjas [seminaride lehel](seminars/index.qmd).
