@@ -1,5 +1,5 @@
-# Turns attendance and seminar-registration issues into rows in the CSVs the
-# website reads. Serialised, because a room full of students submits at once.
+# Turns seminar-registration issues into rows in seminars/registrations.csv.
+# Serialised, because two students may claim papers at the same moment.
 name: Issue forms
 
 on:
@@ -12,9 +12,7 @@ concurrency:
 
 jobs:
   record:
-    if: >
-      contains(github.event.issue.labels.*.name, 'attendance') ||
-      contains(github.event.issue.labels.*.name, 'seminar')
+    if: contains(github.event.issue.labels.*.name, 'seminar')
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -31,23 +29,17 @@ jobs:
         env:
           ISSUE_BODY: ${{ github.event.issue.body }}
           ISSUE_USER: ${{ github.event.issue.user.login }}
-          SESSION_PEPPER: ${{ secrets.SESSION_PEPPER }}
-        run: |
-          if [ "${{ contains(github.event.issue.labels.*.name, 'attendance') }}" = "true" ]; then
-            python3 tools/attendance_bot.py
-          else
-            python3 tools/seminar_bot.py
-          fi
+        run: python3 tools/seminar_bot.py
 
       - name: Commit the change
         run: |
-          if [ -z "$(git status --porcelain data seminars)" ]; then
+          if [ -z "$(git status --porcelain seminars)" ]; then
             echo "Nothing to commit."
             exit 0
           fi
           git config user.name  "course-bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data seminars
+          git add seminars
           git commit -m "Record submission from #${{ github.event.issue.number }}"
           # Another issue may have landed while this one was processing.
           for attempt in 1 2 3; do

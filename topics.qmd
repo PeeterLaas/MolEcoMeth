@@ -19,7 +19,7 @@ arutluskäigus: mis molekul *on*, mida me temaga *teha* saame, mida genoom
 - info liikumine: replikatsioon, mutatsioon, reparatsioon, rekombinatsioon, transkriptsioon, translatsioon ja regulatsioon;
 - proovi esinduslikkus, säilitamine, ekstraktsioon, kvantifitseerimine, inhibitsioon ja saastumine.
 
-*Nädalad 1–2 ning praktikumiplokk nädalatel 14–16. Slaidid:*
+*Nädalad 1–2, ettevalmistav praktikum nädalal 7 ning praktikumiplokk nädalatel 14–16. Slaidid:*
 [Sissejuhatus](lectures/introduction.html) ·
 [Elu kood](lectures/code_of_life.html)
 
@@ -32,7 +32,7 @@ arutluskäigus: mis molekul *on*, mida me temaga *teha* saame, mida genoom
 - molekulaarsed markerid: vöötkoodistamine, metavöötkoodistamine, allosüümid, RFLP, mikrosatelliidid ja SNP-d;
 - Illumina, PacBio, Oxford Nanopore, raamatukogu ettevalmistamine, lugemite kvaliteet, assembleerimine, annoteerimine ja andmehaldus.
 
-*Nädalad 3–6. Slaidid:*
+*Nädalad 2–5. Slaidid:*
 [Molekulaarne tööriistakast](lectures/lecture2.html) ·
 [Sekveneerimistehnoloogiad](lectures/lecture3.html) ·
 [Markerid ja DNA allikad](lectures/loeng4.html) ·
@@ -48,7 +48,7 @@ arutluskäigus: mis molekul *on*, mida me temaga *teha* saame, mida genoom
 - proteoomika, kvantitatiivne proteoomika, valkude vastasmõjud, translatsioonijärgsed modifikatsioonid ja molekulaarsed fenotüübid;
 - rakubioloogia nende tunnuste taga, mida me mõõdame: elutsükli staadiumid, sekretsioon, transport ja raku vastused keskkonnale.
 
-*Nädalad 7–9.*
+*Nädalad 6–8.*
 
 </details>
 
@@ -59,7 +59,8 @@ arutluskäigus: mis molekul *on*, mida me temaga *teha* saame, mida genoom
 - liikidevahelised suhted, sümbioos, peremeesorganismiga seotud mikrobiota ja keskkonnaseire;
 - CRISPR, LAMP, mikrofluidika, kiip-laboril põhinevad lahendused, biosensoorika ja välitingimustes kasutatav diagnostika.
 
-*Nädalad 10–12.*
+*Nädalad 3, 5 ja 9; seminarid nädalatel 10–13. Slaidid:*
+[Populatsioonigeneetika](lectures/population_genetics.html)
 
 </details>
 

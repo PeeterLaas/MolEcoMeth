@@ -37,6 +37,5 @@ echo
 echo "Done. Next, in the repository settings:"
 echo "  1. Pages   -> Source: GitHub Actions"
 echo "  2. Collaborators -> add the students with Write"
-echo "  3. Secrets and variables -> Actions -> new secret SESSION_PEPPER"
-echo "  4. Rules   -> require the 'Seminar guard / guard' check on main"
+echo "  3. Rules   -> require the 'Seminar guard / guard' check on main"
 echo "See MAINTAINING.md for the details."

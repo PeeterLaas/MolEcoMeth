@@ -128,7 +128,7 @@ olema.
 
 | Komponent | Osakaal | Kuidas hinnatakse |
 |---|---:|---|
-| Seminariettekanne | 25% | Arvestatud / mittearvestatud — üks teadusartikkel, esitatakse rühmale 13. nädalal |
+| Seminariettekanne | 25% | Arvestatud / mittearvestatud — üks teadusartikkel, 15 minutit, esitatakse rühmale ühel seminarireedel nädalatel 10–13 |
 | Praktiline laboritöö | 25% | Kolm praktikumi nädalatel 14–16 ja nende põhjal esitatud töö |
 | Suuline eksam | 50% | Vestlus aine materjali üle eksamisessioonil |
 
@@ -165,9 +165,8 @@ sa kohale tuled.
   materjal sellel tasemel, nagu seda õpetati.
 
 Just see on kogu põhjus, miks kohalolekut üldse arvestatakse. See ei ole
-aruandluse pärast — see on see, mille vastu eksamit mõõdetakse, ja seda
-hoitakse avalikult, kus sa saad seda ise kontrollida
-[osalemise lehel](participation.qmd).
+aruandluse pärast — see on see, mille vastu eksamit mõõdetakse. Kohalolekut
+arvestatakse tundides antud ülesannete vastuste põhjal.
 
 # 9. Bioohutus ja eetiline praktika
 
@@ -183,12 +182,14 @@ parameetrivalikud ja iga kõrvalekalde kavandatud töövoost.
 
 # 10. Töökoormuse mudel
 
-Semester koosneb kuueteistkümnest iganädalasest kohtumisest:
+Semester koosneb kuueteistkümnest iganädalasest kohtumisest ja ühest
+lisapraktikumist:
 
 | Tegevus | Kordi | Millal |
 |---|---:|---|
-| Loengud ja demonstratsioonid | 12 | Nädalad 1–12 |
-| Üliõpilaste seminariettekanded | 1 | 13. nädal |
+| Loengud ja demonstratsioonid | 9 | Nädalad 1–9 |
+| Ettevalmistav / sissejuhatav praktikum | 1 | Nädal 7, lisaks loengule |
+| Üliõpilaste seminariettekanded | 4 | Nädalad 10–13, kuus ettekannet korraga |
 | Laboripraktikumid | 3 | Nädalad 14–16 |
 | Suuline eksam | — | Eksamisessioon |
 

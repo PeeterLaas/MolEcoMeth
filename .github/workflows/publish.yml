@@ -1,9 +1,9 @@
 # Builds the course website and publishes it to GitHub Pages.
 #
 # The lecture decks are served from the committed _freeze/ cache, so this
-# runner never re-executes their R code. Only the four data-driven pages
-# (home, schedule, participation, seminars) run R here, and they need just a
-# handful of light packages.
+# runner never re-executes their R code. Only the three data-driven pages
+# (home, schedule, seminars) run R here, and they need just a handful of light
+# packages.
 name: Publish site
 
 on:
@@ -41,7 +41,6 @@ jobs:
             any::yaml
             any::readr
             any::dplyr
-            any::tidyr
             any::knitr
             any::htmltools
             any::tibble

@@ -8,7 +8,7 @@ A Quarto website that *is* the course MLB7052.LT (Kaasaegsed meetodid
 molekulaarses ökoloogias / Modern Molecular Methods in Ecology, Tallinn
 University / TalTech, 2026/2027 autumn). The site is in Estonian. It holds
 the six revealjs lecture decks, the syllabus and schedule pages, and the
-attendance and seminar records — all rendered to GitHub Pages by CI. It is not an R package or
+seminar register — all rendered to GitHub Pages by CI. It is not an R package or
 a Shiny app, and there is no test suite; `quarto render` is the check.
 
 `README.md` is written for students, `MAINTAINING.md` for whoever runs the
@@ -24,10 +24,6 @@ required checks, secrets) that is not repeated here.
 quarto render                     # whole site into _site/
 quarto render lectures/loeng4.qmd # one deck
 quarto preview                    # live reload while editing
-
-./geneh.sh --init                 # once per machine: create .session_pepper
-./geneh.sh w03 amplicon           # print the code hash for a session
-./geneh.sh -w w03 amplicon        # …and write it into data/sessions.csv, open=yes
 ```
 
 `quarto` is often not on `PATH` (it ships inside RStudio); `update.sh` falls
@@ -48,18 +44,25 @@ the repo URL in a page; every schedule date is derived as
 `R/course.R` also forces a UTF-8 `LC_CTYPE`, because under a C locale (CI, some
 shells) `kable()` escapes the Estonian titles to `<U+00F6>`.
 
+`data/schedule.csv` is **one row per topic, not per week**. A Friday that covers
+two topics, or carries an extra session, has two rows with the same `week`; the
+optional `time` column is shown beside the date. Read it through
+`course_schedule()`, which adds the derived `date` — pages that need seminar or
+practical dates filter on `kind` and format with `et_session_list()` rather than
+writing dates into prose.
+
 ### The freeze split — the thing most likely to break a build
 
 `_freeze/` **is committed**. Lecture decks execute `tidyverse` and friends
 locally and CI serves them from the cache; the publish workflow installs only a
-short list of light packages (`rmarkdown`, `yaml`, `readr`, `dplyr`, `tidyr`,
-`knitr`, `htmltools`, `tibble`).
+short list of light packages (`rmarkdown`, `yaml`, `readr`, `dplyr`, `knitr`,
+`htmltools`, `tibble`).
 
 - Edited a deck? Render it locally and commit the updated `_freeze/` with the
   `.qmd`, or the CI build fails. This is why `update.sh` renders by default.
-- The four data-driven pages (`index.qmd`, `schedule.qmd`, `participation.qmd`,
+- The three data-driven pages (`index.qmd`, `schedule.qmd`,
   `seminars/index.qmd`) set `execute: freeze: false`, because they must pick up
-  CSV changes the bots commit. Any library they use must exist in
+  CSV changes — the seminar bot's, and yours to `data/schedule.csv`. Any library they use must exist in
   `.github/workflows/publish.yml`; adding one to those pages means adding it
   there too.
 
@@ -83,43 +86,37 @@ list. Keep an ordinal off the start of a line and off the start of a paragraph;
 `04.09.2026` is safe because there is no space after the period. `quarto render`
 reports this as `[WARNING] Div … unclosed`.
 
-### Data flow: issue forms → CSV → website
+### Attendance is not in this repository
 
-An issue opened from `.github/ISSUE_TEMPLATE/attendance.yml` or `seminar.yml`
-carries a label that triggers `.github/workflows/issue-forms.yml`, which runs
-`tools/attendance_bot.py` or `tools/seminar_bot.py`. A bot appends a row to a
-CSV, hands its reply back through `finish()` (writes `comment`/`close` as step
+It is kept by the lecturer outside GitHub: each session has a short task, and
+an Apps Script collects the replies into a Google Sheet. A GitHub-based system
+(issue form, bot, peppered session codes, `participation.qmd`) existed until
+2026-09-14 and was removed because students found GitHub too much for
+something done every week. Do not rebuild it; the site only says that
+attendance is counted from the task replies.
+
+### Seminar registration: issue form → CSV → website
+
+An issue opened from `.github/ISSUE_TEMPLATE/seminar.yml` carries the `seminar`
+label, which triggers `.github/workflows/issue-forms.yml` to run
+`tools/seminar_bot.py`. The bot appends a row to `seminars/registrations.csv`,
+hands its reply back through `finish()` (writes `comment`/`close` as step
 outputs), and the workflow commits, pulls-rebases-pushes with retries, comments
-and closes. `concurrency: course-data` serialises the runs — a room full of
-students submits at once.
+and closes. `concurrency: course-data` serialises the runs.
 
 `tools/issue_form.py` is the shared layer: issue-form body parsing (`### Label`
 headings, `_No response_` for empty), CSV append that preserves header order,
-`code_hash()`, and `finish()`.
+and `finish()`.
 
-- `data/sessions.csv` gates attendance: a row must have `open` = `yes`, and its
-  `code_hash` must match, or the bot rejects the claim (an empty `code_hash`
-  accepts anything).
-- The session dropdown in `attendance.yml` must stay in sync with the
-  `session_id` values in `data/sessions.csv` — the bot takes the id from the
-  first token of the selected option. The text after the dash is free, and is
-  kept in Estonian to match the CSV; the form's **field labels** stay English,
-  because `parse_fields()` looks values up by label (`session`, `session code`,
-  `your name`, `paper title`, `doi or url`) and renaming one breaks every
-  submission.
-- `data/attendance.csv` and `seminars/registrations.csv` are bot-written. When
-  editing them from a script, write with `lineterminator="\n"`: Python's `csv`
-  defaults to CRLF and turns a one-cell edit into a whole-file diff.
-
-### Session codes
-
-`sha256("<pepper>:<session_id>:<lowercased code>")`, defined once in
-`issue_form.code_hash()` and used by both the bot and the local helpers, so the
-two cannot drift. The pepper lives in `.session_pepper` (git-ignored, mode 600)
-locally and as the `SESSION_PEPPER` Actions secret; **they must be identical**
-or every submission is rejected. Peppering is what lets `data/sessions.csv`
-stay readable by students without leaking the code, which is only ever spoken
-in class.
+- **The `seminar` label must exist in the repository.** GitHub applies an issue
+  form's labels only if they already exist; otherwise the issue arrives
+  unlabelled and the workflow silently skips it.
+- The form's field labels stay English, because `parse_fields()` looks values up
+  by label (`your name`, `paper title`, `doi or url`) and renaming one breaks
+  every submission.
+- `seminars/registrations.csv` is bot-written. When editing it from a script,
+  write with `lineterminator="\n"`: Python's `csv` defaults to CRLF and turns a
+  one-cell edit into a whole-file diff.
 
 ### Student write access
 
@@ -147,7 +144,7 @@ arrives by pull request.
   `css/site.scss` (website) and `css/lectures.scss` (decks).
 - **The website is Estonian, the decks are English.** Every `.qmd` outside
   `lectures/`, the sidebar, the navbar, the footer and the topic strings in
-  `data/schedule.csv` and `data/sessions.csv` are Estonian — the 2026/2027
+  `data/schedule.csv` are Estonian — the 2026/2027
   intake has no non-Estonian speakers. The six revealjs decks are still
   English. Write new site copy in Estonian; leave the decks alone unless the
   whole set is being converted.

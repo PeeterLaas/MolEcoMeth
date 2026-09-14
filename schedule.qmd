@@ -14,21 +14,28 @@ library(readr)
 library(knitr)
 source("R/course.R")
 
-schedule <- read_csv("data/schedule.csv", show_col_types = FALSE)
 start    <- as.Date(course_meta("semester-start"))
-
-schedule <- schedule |>
+schedule <- course_schedule() |>
   mutate(
-    date  = start + 7 * (week - 1),
     past  = date < Sys.Date(),
     # Rida lingib oma slaididele, kui need on olemas; muidu on teema tavaline tekst.
-    topic_cell = ifelse(
-      is.na(lecture) | lecture == "",
-      topic,
-      sprintf("[%s](%s)", topic, lecture)
-    ),
-    state = ifelse(past, "toimunud", status)
+    topic_cell = ifelse(is.na(lecture), topic, sprintf("[%s](%s)", topic, lecture)),
+    state = ifelse(past, "toimunud", status),
+    # Nädalal võib olla mitu rida; nädal ja kuupäev näidatakse ainult esimesel.
+    first_of_week = !duplicated(week)
   )
+
+# 1, 2, 3, 5, 9, 10, 11 → "1–3, 5, 9–11"
+week_runs <- function(w) {
+  w <- sort(unique(w))
+  breaks <- c(TRUE, diff(w) != 1)
+  starts <- w[breaks]
+  ends   <- w[c(breaks[-1], TRUE)]
+  paste(ifelse(starts == ends, starts, paste0(starts, "–", ends)), collapse = ", ")
+}
+
+seminars   <- schedule |> filter(kind == "Seminar")
+practicals <- schedule |> filter(kind == "Praktikum")
 ```
 
 ::: {.callout-tip appearance="simple"}
@@ -42,20 +49,25 @@ ametliku tunniplaani vastu — selle ühe rea muutmine nihutab kogu ajakava.
 #| echo: false
 schedule |>
   transmute(
-    Nädal    = week,
-    Kuupäev  = et_date_weekday(date),
+    Nädal    = ifelse(first_of_week, as.character(week), ""),
+    Kuupäev  = trimws(paste(
+      ifelse(first_of_week, et_date_weekday(date), ""),
+      # Ilma nowrap'ita murdub "16:15–17:45" kitsas veerus kaheks reaks.
+      ifelse(is.na(time), "", sprintf('<span style="white-space:nowrap">%s</span>', time))
+    )),
     Plokk    = block,
     Vorm     = kind,
     Teema    = topic_cell,
-    Lugemine = ifelse(is.na(reading) | reading == "", "—", reading)
+    Lugemine = ifelse(is.na(reading), "—", reading)
   ) |>
-  kable()
+  kable(align = c("r", "l", "l", "l", "l", "l"))
 ```
 
 # Plokid
 
 Semester on jaotatud neljaks plokiks; [teemade leht](topics.qmd) loetleb, mida
-igaüks neist katab.
+igaüks neist katab. Plokid ei käi rangelt järjest — mõnel reedel on kaks
+teemat eri plokkidest.
 
 ```{r}
 #| label: block-summary
@@ -69,16 +81,11 @@ block_names <- c(
 
 schedule |>
   group_by(block) |>
-  summarise(
-    Nädalad = paste0(min(week), "–", max(week)),
-    Kordi = n(),
-    .groups = "drop"
-  ) |>
+  summarise(Nädalad = week_runs(week), .groups = "drop") |>
   transmute(
     Plokk = paste0("Plokk ", block),
     Pealkiri = block_names[block],
-    Nädalad,
-    Kordi
+    Nädalad
   ) |>
   kable()
 ```
@@ -89,13 +96,15 @@ schedule |>
 |---|---|
 | **Enne** | Loe läbi määratud peatükk või artikkel |
 | **Tunnis** | Loeng, seejärel ühe joonise, andmestiku või metoodilise valiku struktureeritud tõlgendamine |
-| **Pärast** | Märgi oma [kohalolek](participation.qmd) — just selle vastu suulist eksamit mõõdetakse |
+| **Ülesanne** | Vasta tunni ülesandele — vastuste põhjal arvestatakse kohalolekut, mille vastu suulist eksamit mõõdetakse |
 
-Viimased neli nädalat on teistsugused. 13. nädal on pühendatud
-[üliõpilaste seminariettekannetele](seminars/index.qmd) ja nädalad 14–16 on
-praktikumide plokk: proovivõtt ja ekstraktsioon, seejärel amplifikatsioon ja
-sekveneerimine, seejärel analüüs ja kokkuvõtte kirjutamine. Kokku annavad
-praktikumid 25% hindest; ülejäänu on kirjas [ainekavas](syllabus.qmd#assessment).
+Semestri teine pool on teistsugune. [Seminariettekanded](seminars/index.qmd)
+toimuvad `r et_session_list(seminars$date)`, kuus ettekannet korraga.
+Laboripraktikumid toimuvad `r et_session_list(practicals$date, practicals$time)`:
+esimene neist on ettevalmistav, kolm viimast moodustavad praktikumiploki —
+proovivõtt ja ekstraktsioon, seejärel amplifikatsioon ja sekveneerimine, seejärel
+analüüs ja kokkuvõtte kirjutamine. Praktikumiplokk annab 25% hindest; ülejäänu
+on kirjas [ainekavas](syllabus.qmd#assessment).
 
 # Muudatused
 

@@ -5,7 +5,6 @@ heading followed by the value (or the literal `_No response_` when empty).
 """
 
 import csv
-import hashlib
 import os
 import re
 
@@ -39,15 +38,6 @@ def append_row(path: str, row: dict) -> None:
             {k: row.get(k, "") for k in header}
         )
 
-
-def code_hash(session_id: str, code: str, pepper: str) -> str:
-    """Hash a session code so the expected value can live in a repo students read.
-
-    The pepper is an Actions secret, so a stored hash reveals nothing even
-    though `data/sessions.csv` is visible to everyone with access.
-    """
-    material = f"{pepper}:{session_id}:{code.strip().lower()}"
-    return hashlib.sha256(material.encode("utf-8")).hexdigest()
 
 
 def finish(message: str, close: bool = True) -> None:

@@ -71,3 +71,29 @@ et_date_weekday <- function(x) {
   x <- as.Date(x)
   paste0(ET_WEEKDAYS[as.integer(format(x, "%u"))], " ", format(x, "%d.%m"))
 }
+
+# --- The schedule -----------------------------------------------------------
+# One row per topic, not per week: a Friday that covers two topics, or carries
+# an extra session, has two rows with the same `week`. The date is always
+# derived, never stored, so moving semester-start moves everything.
+course_schedule <- function() {
+  start <- as.Date(course_meta("semester-start"))
+  readr::read_csv(
+    course_path("data", "schedule.csv"),
+    col_types = readr::cols(week = readr::col_integer(), .default = readr::col_character())
+  ) |>
+    dplyr::mutate(date = start + 7L * (week - 1L))
+}
+
+# "a", "a ja b", "a, b ja c"
+et_join <- function(x) {
+  n <- length(x)
+  if (n <= 1) return(paste(x, collapse = ""))
+  paste0(paste(x[-n], collapse = ", "), " ja ", x[n])
+}
+
+# 06.11, 13.11 ja 20.11 — with " kell 16:15–17:45" where a row has a time.
+et_session_list <- function(dates, times = NA_character_) {
+  times <- rep_len(times, length(dates))
+  et_join(paste0(format(dates, "%d.%m"), ifelse(is.na(times), "", paste0(" kell ", times))))
+}

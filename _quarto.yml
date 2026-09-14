@@ -112,8 +112,6 @@ website:
             text: "10 · Populatsioonigeneetika"
       - href: seminars/index.qmd
         text: "🎤 Seminarid"
-      - href: participation.qmd
-        text: "✅ Osalemine"
       - href: materials.qmd
         text: "📚 Materjalid"
   page-footer:

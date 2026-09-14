@@ -1,17 +1,21 @@
-week,block,kind,topic,lecture,reading,status
-1,I,Loeng,"Sissejuhatus: kursus, selle töövahendid ja reprodutseeritavad töövood",lectures/introduction.html,Cox ptk 1,planeeritud
-2,I,Loeng,"Elu kood: molekulid, info liikumine ja molekulaarse ökoloogia juured",lectures/code_of_life.html,Cox ptk 2–8,planeeritud
-3,II,Loeng,"Molekulaarne tööriistakast: elektroforees, allosüümid, PCR, Sanger, fragmendipikkuse polümorfismid",lectures/lecture2.html,Cox ptk 18,planeeritud
-4,II,Loeng,Sekveneerimistehnoloogiad: 454-st nanopoorini,lectures/lecture3.html,,planeeritud
-5,II,Loeng,"Markerid ja DNA allikad: mtDNA, vöötkoodistamine, metavöötkoodistamine, vana DNA",lectures/loeng4.html,,planeeritud
-6,II,Loeng,"eDNA seires, hübridisatsioonimeetodid ja voolutsütomeetria",lectures/loeng5.html,,planeeritud
-7,III,Loeng,"Võrdlev genoomika: assembleerimine, annoteerimine ja avalikud järjestusandmebaasid",,,planeeritud
-8,III,Loeng,"Transkriptoomika, mittekodeeriv RNA ja geeniekspressiooni regulatsioon",,Cox ptk 19–22,planeeritud
-9,III,Loeng,"Proteoomika, translatsioonijärgsed modifikatsioonid ja molekulaarsed fenotüübid",,,planeeritud
-10,IV,Loeng,"Fülogenees, fülogeograafia ja fülogeneetiline mõtlemine",,,planeeritud
-11,IV,Loeng,"Populatsioonigeneetika, koalestsents ja koosluse tasemel järeldused",lectures/population_genetics.html,,planeeritud
-12,IV,Loeng,"Liikidevahelised suhted, keskkonnaseire ja rakenduslikud välimeetodid",,,planeeritud
-13,IV,Seminar,Üliõpilaste seminariettekanded,,Sinu valitud artikkel,planeeritud
-14,IV,Praktikum,"Proovivõtu kavandamine, nukleiinhapete eraldamine, kvantifitseerimine ja inhibitsioonikontrollid",,,planeeritud
-15,IV,Praktikum,"PCR, elektroforees ja Sangeri sekveneerimine täieliku kontrollikomplektiga",,,planeeritud
-16,IV,Praktikum,"Järjestusanalüüs, kvaliteedihindamine ja tulemuse kirjapanek",,,planeeritud
+week,block,kind,topic,lecture,reading,status,time
+1,I,Loeng,"Sissejuhatus: kursus, selle töövahendid ja reprodutseeritavad töövood",lectures/introduction.html,Cox ptk 1,planeeritud,
+2,I,Loeng,"Elu kood: molekulid, info liikumine ja molekulaarse ökoloogia juured",lectures/code_of_life.html,Cox ptk 2–8,planeeritud,
+2,II,Loeng,"Molekulaarne tööriistakast: elektroforees, allosüümid, PCR, Sanger, fragmendipikkuse polümorfismid",lectures/lecture2.html,Cox ptk 18,planeeritud,
+3,II,Loeng,Sekveneerimistehnoloogiad: 454-st nanopoorini (algas eelmisel korral),lectures/lecture3.html,,planeeritud,
+3,IV,Loeng,"Populatsioonigeneetika, koalestsents ja koosluse tasemel järeldused",lectures/population_genetics.html,,planeeritud,
+4,II,Loeng,"Markerid ja DNA allikad: mtDNA, vöötkoodistamine, metavöötkoodistamine, vana DNA",lectures/loeng4.html,,planeeritud,
+5,II,Loeng,"eDNA seires, hübridisatsioonimeetodid ja voolutsütomeetria",lectures/loeng5.html,,planeeritud,
+5,IV,Loeng,"Liikidevahelised suhted, keskkonnaseire ja rakenduslikud välimeetodid",,,planeeritud,
+6,III,Loeng,"Võrdlev genoomika: assembleerimine, annoteerimine ja avalikud järjestusandmebaasid",,,planeeritud,
+7,III,Loeng,"Transkriptoomika, mittekodeeriv RNA ja geeniekspressiooni regulatsioon",,Cox ptk 19–22,planeeritud,
+7,IV,Praktikum,Ettevalmistav / sissejuhatav praktikum,,,planeeritud,16:15–17:45
+8,III,Loeng,"Proteoomika, translatsioonijärgsed modifikatsioonid ja molekulaarsed fenotüübid",,,planeeritud,
+9,IV,Loeng,"Fülogenees, fülogeograafia ja fülogeneetiline mõtlemine",,,planeeritud,
+10,IV,Seminar,Üliõpilaste seminariettekanded (1/4),,Sinu valitud artikkel,planeeritud,
+11,IV,Seminar,Üliõpilaste seminariettekanded (2/4),,Sinu valitud artikkel,planeeritud,
+12,IV,Seminar,Üliõpilaste seminariettekanded (3/4),,Sinu valitud artikkel,planeeritud,
+13,IV,Seminar,Üliõpilaste seminariettekanded (4/4),,Sinu valitud artikkel,planeeritud,
+14,IV,Praktikum,"Proovivõtu kavandamine, nukleiinhapete eraldamine, kvantifitseerimine ja inhibitsioonikontrollid",,,planeeritud,
+15,IV,Praktikum,"PCR, elektroforees ja Sangeri sekveneerimine täieliku kontrollikomplektiga",,,planeeritud,
+16,IV,Praktikum,"Järjestusanalüüs, kvaliteedihindamine ja tulemuse kirjapanek",,,planeeritud,

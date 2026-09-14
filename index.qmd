@@ -15,12 +15,10 @@ library(readr)
 library(knitr)
 source("R/course.R")
 
-schedule <- read_csv("data/schedule.csv", show_col_types = FALSE)
-
 # Kõik saidi kuupäevad tuletatakse ühestainsast semestri alguskuupäevast
 # _quarto.yml-is, nii et semestri nihutamine on ühe rea muudatus.
-start   <- as.Date(course_meta("semester-start"))
-schedule <- schedule |> mutate(date = start + 7 * (week - 1))
+schedule <- course_schedule()
+seminars <- schedule |> filter(kind == "Seminar")
 ```
 
 Nukleiinhappe keemiast kaitstava ökoloogilise järelduseni. Kogu semestri
@@ -33,7 +31,6 @@ jooksul järgib kursus üht ja sama arutlusahelat:
 [🗓️ Ajakava](schedule.qmd){.cta}
 [👨‍🏫 Loengud](#lectures){.cta}
 [🎤 Registreeri oma seminar](seminars/index.qmd){.cta}
-[✅ Märgi kohalolek](participation.qmd){.cta .ghost}
 [📓 Ainekava](syllabus.qmd){.cta .ghost}
 
 ::: {.callout-important}
@@ -42,8 +39,8 @@ jooksul järgib kursus üht ja sama arutlusahelat:
 1. Saada mulle oma **GitHubi kasutajanimi**, et saaksin sind sellesse
    repositooriumi lisada.
 2. Loe läbi, [kuidas seminarid käivad](seminars/index.qmd), ja hakka artiklit
-   otsima. Registreerimine käib "kes ees, see mees" põhimõttel ja kõik
-   esinevad 13. nädalal.
+   otsima. Registreerimine käib "kes ees, see mees" põhimõttel; seminarid
+   toimuvad `r et_session_list(seminars$date)`, kuus ettekannet korraga.
 :::
 
 # Millest see kursus räägib
@@ -116,18 +113,17 @@ tibble::tribble(
 
 # Kuidas see sait töötab
 
-Kõik käib läbi selle repositooriumi, nii et vaadata on vaja ühest kohast ja
-esitada ühte kohta.
+Slaidid, ajakava ja seminarid käivad läbi selle saidi ja selle taga oleva
+repositooriumi.
 
 | Sa tahad… | Kus | Kuidas |
 |---|---|---|
 | Näha, mis tulemas on | [Ajakava](schedule.qmd) | Nädalate kaupa plaan koos linkidega slaididele |
 | Lugeda slaide | [Loengud](#lectures) | Avanevad brauseris, midagi alla laadida pole vaja |
-| Märkida, et käisid kohal | [Osalemine](participation.qmd) | Ava kohalolekuvormist issue |
 | Broneerida artikkel seminariks | [Seminarid](seminars/index.qmd) | Ava issue; robot lisab su tabelisse |
 | Jagada oma seminari slaide | [Seminarid](seminars/index.qmd) | Pull request PDF-i, PPTX-i või QMD-failiga |
 | Leida lugemist või tööriista | [Materjalid](materials.qmd) | Raamatud, tarkvara, andmebaasid, andmestikud |
 
-Ei mingeid Google'i vorme ega eraldi registreerumisi: sinu GitHubi konto on
-sinu isik nii kohaloleku kui ka seminarile registreerumise juures, ja kirje
-elab selles repositooriumis, kus saad seda ise järele vaadata.
+Seminarile registreerumiseks piisab GitHubi kontost ja register elab selles
+repositooriumis, kus saad seda ise järele vaadata. Kohalolekut arvestatakse
+tundides antud ülesannete vastuste põhjal.

@@ -18,6 +18,8 @@ repo  <- course_meta("course-repo")
 regs  <- read_csv("registrations.csv", show_col_types = FALSE,
                   col_types = cols(.default = col_character()))
 
+seminar_dates <- course_schedule() |> filter(kind == "Seminar") |> pull(date)
+
 claim_issue <- paste0(repo, "/issues/new?template=seminar.yml")
 slides_dir  <- "slides"
 
@@ -25,8 +27,9 @@ slides_dir  <- "slides"
 have_file <- function(f) !is.na(f) && nzchar(f) && file.exists(file.path(slides_dir, f))
 ```
 
-Igaüks teist esitab **ühe teadusartikli**, 15 minutit pluss 3–5 minutit
-küsimusteks, eesti keeles, **13. nädalal**. See annab **25% aine hindest ja
+Igaüks teist esitab **ühe teadusartikli**: **15 minutit koos küsimustega**,
+eesti keeles. Seminarid toimuvad **`r et_session_list(seminar_dates)`** ja
+igal neist reedest esineb kuus inimest. See annab **25% aine hindest ja
 hinnatakse arvestatud / mittearvestatud** — optimeerida ei ole midagi, seega
 vali artikkel, mis vaidleb selle üle, *kuidas tõendus tekkis*, mitte ainult
 selle üle, mis leiti. See on metoodikaseminar.
@@ -142,9 +145,11 @@ seda hinnata.
   Nimeta see ja ütle, mida sa ise teisiti oleksid teinud.
 - **Ülekanne** — kus mujal see meetod töötab ja kus see katki läheks?
 
-Slaidid peavad olema loetavad ruumi tagumisest otsast: vähe sõnu, üks mõte
-slaidi kohta ja artikli võtmejoonis piisavalt suur, et seda saaks tegelikult
-tõlgendada.
+Kuus ettekannet täidavad terve 90-minutilise tunni, nii et 15 minutit on
+tõesti 15 minutit: arvesta küsimuste jaoks aega sellest sees, mitte selle
+järel. Slaidid peavad olema loetavad ruumi tagumisest otsast: vähe sõnu, üks
+mõte slaidi kohta ja artikli võtmejoonis piisavalt suur, et seda saaks
+tegelikult tõlgendada.
 
 # Arvestatud või mittearvestatud
 

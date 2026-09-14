@@ -4,8 +4,9 @@ Notes for whoever is running MLB7052.LT. Students want
 [README.md](README.md) and the [website](https://peeterlaas.github.io/MolEcoMeth/)
 instead.
 
-The repository is the course: slides, schedule, attendance record and seminar
-register all live here, and the published site is a rendering of it.
+The repository is the course: slides, schedule and seminar register all live
+here, and the published site is a rendering of it. Attendance does not — see
+[Attendance](#attendance) below.
 
 ## Layout
 
@@ -15,19 +16,16 @@ syllabus.qmd         full syllabus
 schedule.qmd         week-by-week plan, dates derived from _quarto.yml
 topics.qmd           the four blocks, and which method answers which question
 materials.qmd        books, software, databases, datasets
-participation.qmd    attendance record
 seminars/
   index.qmd          seminar register and submission instructions
   registrations.csv  written by the seminar bot
   slides/            student uploads (linked, never rendered)
 lectures/            the six revealjs decks
 data/
-  schedule.csv       the teaching plan
-  sessions.csv       one row per session; gates attendance
-  attendance.csv     written by the attendance bot
+  schedule.csv       the teaching plan, one row per topic
 assets/              lecture figures and logos
 css/                 site.scss (website) and lectures.scss (decks)
-tools/               the issue-form bots and the session-code helper
+tools/               the seminar-registration bot
 ```
 
 ## Day to day
@@ -52,8 +50,8 @@ Lecture decks are cached in `_freeze/`, which **is** committed: CI publishes the
 site without re-running the decks' R code. If you change a deck, render it
 locally and commit the updated `_freeze/` along with the `.qmd`.
 
-The four data-driven pages set `freeze: false`, because they must pick up CSV
-changes the bots make.
+The three data-driven pages (home, schedule, seminars) set `freeze: false`,
+because they must pick up CSV changes the seminar bot makes.
 
 ## Setting up the GitHub side
 
@@ -102,36 +100,25 @@ workflows on their own branch. If that matters for your setup, give students
 **Read** instead and have them work from forks — the same workflows still run as
 checks, and you merge by hand.
 
-Read access alone is enough for attendance and for claiming a seminar paper,
-since both are issue forms. Only uploading slides needs write or a fork.
+Read access alone is enough for claiming a seminar paper, since that is an
+issue form. Only uploading slides needs write or a fork.
 
-### 4. Add the session-code secret
+### 4. Create the `seminar` label
 
-Settings → Secrets and variables → Actions → new secret `SESSION_PEPPER`, any
-long random string. Keep a copy; you need it locally.
+Issues → Labels → New label, named exactly `seminar`. GitHub applies an issue
+form's labels only if they already exist, so without it every registration
+arrives unlabelled and the bot never runs.
 
-Then, for each session, announce a code in class and store its hash:
+## Attendance
 
-```bash
-SESSION_PEPPER='<the same string>' python3 tools/session_code.py w03 amplicon
-```
+Attendance is not recorded in this repository. Each session has a short task,
+and an Apps Script collects the replies into a Google Sheet, which is the
+record the oral examination is scaled against.
 
-Paste the result into the `code_hash` column of `data/sessions.csv`. Because the
-hash is peppered with a secret, students can read the file without learning the
-code.
-
-A session with an empty `code_hash` accepts any submission while it is open —
-fine for a session where you would rather not bother.
-
-## Running a session
-
-1. Set `open` to `yes` for that row in `data/sessions.csv`, commit, push.
-2. Announce the code in class.
-3. Students open the attendance form; the bot records them.
-4. Set `open` back to `no` afterwards.
-
-Both edits are one-line commits, so the window each session was open is visible
-in the history.
+A GitHub-based system — an issue form, a bot and peppered session codes — was
+tried in the first weeks of 2026 and removed: for students new to GitHub it was
+too much to do every week. It is in the history before 2026-09-14 if it is ever
+wanted again.
 
 ## Adding a lecture
 
