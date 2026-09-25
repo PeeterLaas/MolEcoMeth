@@ -1,0 +1,137 @@
+<script>
+/* ---------------------------------------------------------------------------
+   Click a figure to see it full-screen; click, Esc or the × to come back.
+
+   Many of the figures lifted out of the source PDFs are legible on a laptop
+   and hopeless from the back of a lecture room. fit-slides.html makes sure a
+   slide *fits*; this makes one figure on it *big*, without leaving the deck.
+
+   Quarto's own `lightbox` is not usable here: it wraps each image in a link to
+   the file on disk, and these decks are `self-contained`, so the image is
+   inlined as a data URI and no such file is published. This reads the pixels
+   that are already in the page instead, which also means it still works from a
+   deck emailed to someone as a single file.
+
+   Reveal binds both Escape (overview) and the arrow keys (navigation) on the
+   document, so while the overlay is open every key is caught in the capture
+   phase and stopped before Reveal sees it. Otherwise closing the overlay would
+   also throw the deck into overview mode.
+--------------------------------------------------------------------------- */
+(function () {
+  var SKIP = '.slide-logo, .header-logo, .reveal-header';
+
+  var overlay = document.createElement('div');
+  overlay.className = 'figure-zoom';
+  overlay.setAttribute('role', 'dialog');
+  overlay.setAttribute('aria-modal', 'true');
+  overlay.setAttribute('aria-label', 'Enlarged figure');
+  overlay.hidden = true;
+  overlay.innerHTML =
+    '<button type="button" class="figure-zoom-close" aria-label="Close">&times;</button>' +
+    '<img alt="">';
+  var big = overlay.querySelector('img');
+  var closeBtn = overlay.querySelector('.figure-zoom-close');
+  var lastFocus = null;
+
+  function open(img) {
+    /* Reveal lazy-loads slide images, so the pixels may still be on data-src. */
+    big.src = img.currentSrc || img.src || img.getAttribute('data-src');
+    big.alt = img.alt || '';
+    lastFocus = document.activeElement;
+    overlay.hidden = false;
+    document.body.classList.add('figure-zoom-open');
+    closeBtn.focus();
+  }
+
+  function close() {
+    overlay.hidden = true;
+    big.removeAttribute('src');
+    document.body.classList.remove('figure-zoom-open');
+    if (lastFocus && lastFocus.focus) lastFocus.focus();
+  }
+
+  function isOpen() { return !overlay.hidden; }
+
+  document.addEventListener('click', function (e) {
+    if (isOpen()) { e.preventDefault(); e.stopPropagation(); close(); return; }
+    var img = e.target.closest ? e.target.closest('.reveal .slides img') : null;
+    if (!img || img.closest(SKIP) || img.closest('a')) return;
+    e.preventDefault();
+    e.stopPropagation();
+    open(img);
+  }, true);
+
+  document.addEventListener('keydown', function (e) {
+    if (!isOpen()) return;
+    e.stopPropagation();          // keep Reveal out of it
+    if (e.key === 'Escape' || e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      close();
+    }
+  }, true);
+
+  function install() {
+    if (!document.body.contains(overlay)) document.body.appendChild(overlay);
+    var imgs = document.querySelectorAll('.reveal .slides img');
+    for (var i = 0; i < imgs.length; i++) {
+      var img = imgs[i];
+      if (img.closest(SKIP) || img.closest('a')) continue;
+      img.classList.add('zoomable');
+      if (!img.getAttribute('title')) img.setAttribute('title', 'Click to enlarge');
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', install);
+  } else {
+    install();
+  }
+  window.addEventListener('load', install);
+})();
+</script>
+
+<style>
+  .reveal .slides img.zoomable { cursor: zoom-in; }
+
+  .figure-zoom {
+    position: fixed;
+    inset: 0;
+    z-index: 3000;                /* above Reveal's own chrome */
+    background: rgba(12, 12, 12, 0.92);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: zoom-out;
+  }
+  .figure-zoom[hidden] { display: none; }
+
+  .figure-zoom img {
+    max-width: 94vw;
+    max-height: 92vh;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    background: #fff;             /* most figures are line art on white */
+    border-radius: 4px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+  }
+
+  .figure-zoom-close {
+    position: absolute;
+    top: 1rem;
+    right: 1.5rem;
+    width: 2.4rem;
+    height: 2.4rem;
+    font-size: 1.8rem;
+    line-height: 1;
+    color: #fff;
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    border-radius: 50%;
+    cursor: pointer;
+  }
+  .figure-zoom-close:hover { background: rgba(255, 255, 255, 0.25); }
+
+  /* The printed deck is a stack of static slides; an overlay has no meaning. */
+  @media print { .figure-zoom { display: none !important; } }
+</style>

@@ -12,6 +12,12 @@
 *.pdf
 !seminars/slides/*.pdf
 
+# --- Figure libraries extracted from a textbook: staging only ---
+# Same reasoning as the PDFs above — not ours to redistribute, and 48 MB of
+# it. The dozen figures a deck actually uses are copied into assets/<deck>/
+# and published from there under institutional teaching permissions.
+/figures_*/
+
 # --- Bulk data: download it, do not commit it ---
 bw_assessment_eea_datahub_1990_2024_data.csv
 

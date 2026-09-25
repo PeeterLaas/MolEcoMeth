@@ -110,6 +110,8 @@ website:
             text: "5 · eDNA, hübridisatsioon ja tsütomeetria"
           - href: lectures/population_genetics.qmd
             text: "10 · Populatsioonigeneetika"
+          - href: lectures/molecular_evolution.qmd
+            text: "11 · Molekulaarne evolutsioon"
       - href: seminars/index.qmd
         text: "🎤 Seminarid"
       - href: materials.qmd

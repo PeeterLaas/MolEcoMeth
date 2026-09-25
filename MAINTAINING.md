@@ -50,6 +50,12 @@ Lecture decks are cached in `_freeze/`, which **is** committed: CI publishes the
 site without re-running the decks' R code. If you change a deck, render it
 locally and commit the updated `_freeze/` along with the `.qmd`.
 
+Two scripts are injected into every deck from `lectures/_metadata.yml`:
+`tools/fit-slides.html` shrinks a slide whose content overflows, and
+`tools/zoom-figures.html` makes each figure open full-screen when clicked
+(click, Esc or the × to come back). Editing either one means re-rendering the
+decks so they pick it up — `./update.sh` does that.
+
 The three data-driven pages (home, schedule, seminars) set `freeze: false`,
 because they must pick up CSV changes the seminar bot makes.
 

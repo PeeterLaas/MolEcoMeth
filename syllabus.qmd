@@ -182,12 +182,13 @@ parameetrivalikud ja iga kõrvalekalde kavandatud töövoost.
 
 # 10. Töökoormuse mudel
 
-Semester koosneb kuueteistkümnest iganädalasest kohtumisest ja ühest
-lisapraktikumist:
+Semester koosneb viieteistkümnest iganädalasest kohtumisest ja ühest
+lisapraktikumist; 9. õppenädalal on Tallinna Ülikoolis õppetööst vaba nädal
+ja loengut ei toimu:
 
 | Tegevus | Kordi | Millal |
 |---|---:|---|
-| Loengud ja demonstratsioonid | 9 | Nädalad 1–9 |
+| Loengud ja demonstratsioonid | 8 | Nädalad 1–8 |
 | Ettevalmistav / sissejuhatav praktikum | 1 | Nädal 7, lisaks loengule |
 | Üliõpilaste seminariettekanded | 4 | Nädalad 10–13, kuus ettekannet korraga |
 | Laboripraktikumid | 3 | Nädalad 14–16 |

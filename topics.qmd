@@ -59,7 +59,7 @@ arutluskäigus: mis molekul *on*, mida me temaga *teha* saame, mida genoom
 - liikidevahelised suhted, sümbioos, peremeesorganismiga seotud mikrobiota ja keskkonnaseire;
 - CRISPR, LAMP, mikrofluidika, kiip-laboril põhinevad lahendused, biosensoorika ja välitingimustes kasutatav diagnostika.
 
-*Nädalad 3, 5 ja 9; seminarid nädalatel 10–13. Slaidid:*
+*Nädalad 3 ja 5; seminarid nädalatel 10–13. Slaidid:*
 [Populatsioonigeneetika](lectures/population_genetics.html)
 
 </details>

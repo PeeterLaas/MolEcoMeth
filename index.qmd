@@ -89,7 +89,8 @@ cat('</div>\n')
 ```
 
 Slaidid avanevad brauseris: liigu nooleklahvidega, `F` avab täisekraani, `S`
-esineja märkmed ja `?` kogu klahvinimekirja. Ülejäänud nädalad on kirjas
+esineja märkmed ja `?` kogu klahvinimekirja. **Klõpsa joonisel, et see suurelt
+avada** — tagasi saab klõpsu, `Esc` või ×-nupuga. Ülejäänud nädalad on kirjas
 [ajakavas](schedule.qmd) ja ilmuvad siia sedamööda, kuidas loengud toimuvad.
 
 # Praktiline info

@@ -2,4 +2,6 @@
 # in one place. Paths are relative to this file.
 format:
   revealjs:
-    include-after-body: ../tools/fit-slides.html
+    include-after-body:
+      - ../tools/fit-slides.html
+      - ../tools/zoom-figures.html

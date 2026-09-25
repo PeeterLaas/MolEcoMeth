@@ -1,0 +1,617 @@
+---
+title: "Lecture 11: Molecular evolution"
+subtitle: "MLB7052.LT: Modern Methods in Molecular Ecology"
+title-slide-attributes:
+    data-background-image: ../assets/logos/uu_sigill_right.png
+    data-background-size: contain
+    data-background-opacity: "0.25"
+author: "Peeter Laas"
+institute: "TalTech / UT Institute of Technology"
+format:
+  revealjs: 
+    theme: [serif, ../css/lectures.scss]
+    slide-number: false
+    show-slide-number: all
+    toc: true
+    toc-depth: 1
+    progress: true
+    width: 1200
+    height: 675
+    transition: slide
+    toc-title: "Modern Methods in Molecular Ecology lecture:"
+    smaller: true
+    footer: "Fall 2026"
+    logo: ../assets/logos/uu_sigill_right.png
+    header-logo: ../assets/logos/UUtopleft.png
+    self-contained: true
+    html-math-method: mathml
+filters:
+  - reveal-header
+editor_options: 
+  chunk_output_type: inline
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+knitr::opts_chunk$set(eval=TRUE, cache=F, include=T, echo=F, error=F,
+                      message=FALSE, comment=c(" "), width=90)
+theme_set(theme_minimal(base_size = 15))
+```
+
+## Kaasaegsed molekulaarsed meetodid ökoloogias
+
+**Loeng 11 — molekulaarne evolutsioon (*molecular evolution*).**
+
+Every marker in this course is a piece of inherited text. This lecture is about how that text changes over time, why most of the change means nothing, and how a tree is reconstructed from it anyway.
+
+::: {.notes}
+The through-line: a sequence difference is not evidence of adaptation. Most of it is the background hum of mutation and drift, and the whole discipline exists to tell the hum from the signal.
+:::
+
+## Kust me tuleme? {.smaller}
+
+::: {.columns}
+::: {.column width="52%"}
+Two questions sit under everything that follows:
+
+- How did the **DNA → RNA → protein** information flow get started at all?
+- How do we reconstruct descent and evolution *from genetic data alone*?
+
+Neither is answered by looking at an organism. Both are answered by reading molecules as documents — with the understanding that the document has been copied, imperfectly, for about four billion years.
+:::
+::: {.column width="48%"}
+![](/assets/molecular_evolution/p486_extinctions.png){height="320px"}
+
+Extinction rate across the Phanerozoic. The "Big Five" are the red points — the deep-time backdrop against which molecular lineages survive or end.
+:::
+:::
+
+# Rakueelne elu — the record before there was a record
+
+## LUCA — viimane ühine eellane
+
+**LUCA** (*last universal common ancestor*) is the inferred organism from which every living thing on Earth descends. It is not the first cell; it is the last one whose descendants are all still with us.
+
+Everything reconstructed about LUCA is reconstructed **backwards from living sequences** — the same logic you will use on a ten-sample dataset, applied to the whole tree.
+
+::: {.callout-note}
+LUCA is a *node*, not a fossil. Nobody has a specimen. What we have is the set of features so widely shared that the most economical explanation is common inheritance rather than repeated invention: the genetic code, ribosomes, ATP, membrane chemistry.
+:::
+
+::: {.notes}
+Stress that "reconstructed backwards" is a claim with error bars, and the error bars grow with depth. This is the same reason deep phylogenies are contested and shallow ones are not.
+:::
+
+## „Elule eelnev supp"
+
+::: {.columns}
+::: {.column width="55%"}
+**Primordial / prebiotic soup**, roughly 3.7–4.0 billion years ago.
+
+- **1953 — Miller–Urey experiment.** Spark discharge through a reducing gas mixture produces amino acids abiotically. The finding was that the monomers are *easy*.
+- **Newer work** shifts the emphasis to mineral-mediated and catalysed chemistry — surfaces, gradients, and hydrothermal settings rather than a homogeneous ocean.
+
+What remains hard is not making monomers. It is getting a polymer that both **carries information** and **acts as a catalyst**.
+:::
+::: {.column width="45%"}
+![](/assets/molecular_evolution/p494_levels.png){height="300px"}
+
+Evolutionary change is not a separate compartment from ecology. It feeds populations, communities and ecosystems, and is fed back by them.
+:::
+:::
+
+## RNA maailm või DNA/RNA kimäärid?
+
+::: {.columns}
+::: {.column width="58%"}
+The chicken-and-egg problem: DNA stores but does not catalyse, protein catalyses but is not copied directly. Something had to do both.
+
+- **1968 — Francis Crick** proposes that RNA was the first carrier of genetic information, and should also have enzyme-like properties.
+- **1982 — Thomas R. Cech**: the **ribozyme** — a ribonucleic acid with catalytic activity. The proposal becomes an observation.
+- **1986 — Walter Gilbert** names it the **"RNA world"**.
+
+The competing **systems-chemistry model** says the prebiotic soup never contained only one polymer: RNA and DNA building blocks coexisted, formed **RNA–DNA chimeras**, and the clean division of labour came later.
+:::
+::: {.column width="42%"}
+**TNA** — threose nucleic acid — is a genetic polymer in which RNA's natural five-carbon ribose is replaced by an unnatural four-carbon sugar. It base-pairs with RNA and DNA, which makes it a candidate **pre-RNA** genetic system.
+
+::: {.callout-important}
+The question is not *which* molecule came first, but how a **genetic takeover** happens — one polymer handing its information to another without losing it.
+:::
+:::
+:::
+
+# Molekulaarne evolutsioon
+
+## Mis see on?
+
+**Molecular evolution** is the evolution of biological macromolecules — DNA, RNA, proteins. Three things at once:
+
+- the **changes** that occur in macromolecules;
+- the **rate and pattern** of those changes;
+- the **mechanisms** that produce them.
+
+It sits between fields you already know, and borrows from all of them:
+
+| Field | What it contributes |
+|---|---|
+| Genetics, molecular biology | what a mutation *is*, mechanistically |
+| Population genetics | how a variant's frequency behaves in a population |
+| Genomics | the scale — whole genomes, not single loci |
+| Mathematics, bioinformatics | the models and the algorithms that fit them |
+
+::: {.callout-note}
+Reconstructing the evolution of genes and of groups of organisms is **molecular phylogenetics** (*molekulaarne fülogeneetika*) — the applied core of this lecture.
+:::
+
+## Fülogeneetika ja fülogenees
+
+::: {.columns}
+::: {.column width="58%"}
+**Fülogeneetika** (*phylogenetics*) — the branch of biology that studies the origin and descent of groups of organisms: populations, species, families. From Greek *phylē* (tribe) + *genetikos* (relating to origin).
+
+**Fülogenees** (*phylogeny*) — the descent history itself. *phylē* + *genesis* (birth).
+
+The aims are concrete:
+
+- reconstruct the **genealogical relationships** between taxa;
+- describe the **sequence of events** that took place;
+- estimate **divergence times** — the age of the **most recent common ancestor (MRCA)**.
+:::
+::: {.column width="42%"}
+![](/assets/molecular_evolution/p482_pinniped_tree.png){height="330px"}
+
+A tree is a hypothesis with parts: branch points are inferred common ancestors, horizontal lines are lineages, and extinct tips are as much a part of the topology as living ones.
+:::
+:::
+
+## Molekulaarsete andmete eelised
+
+Why molecules beat morphology for this job:
+
+- DNA and protein sequences are **strictly heritable** — no environmental component to argue about.
+- The characters are **unambiguously defined**: a nucleotide or amino-acid position, and its state.
+- The characters are **independent** — a substitution at one position does not force one at another.
+- The data are **quantitative**, so the relationships can be described mathematically rather than argued.
+- They allow comparison of **very distantly related organisms**, where no morphological character is shared.
+- There is a very **large amount of information**: a mammalian genome is ~3 billion base pairs, a bacterial genome 0.5–>10 million.
+
+::: {.notes}
+Independence is the assumption that gets violated most often in practice — linked sites, structural constraint in rRNA stems, codon position effects. Worth flagging now, because every model later assumes it.
+:::
+
+# Neutraalne teooria
+
+## Neutral theory of molecular evolution
+
+The **neutral theory** holds that most evolutionary change *at the molecular level*, and most of the variation within and between species, is due to **random genetic drift of selectively neutral mutants** — not to selection.
+
+Read the qualifications carefully, because they are what make it testable:
+
+- It applies **only at the molecular level**. It is fully compatible with phenotypic evolution being shaped by natural selection, exactly as Darwin described.
+- It allows that **most mutations are deleterious** — but those are removed rapidly by selection, so they contribute little to observed variation.
+- Of the mutations that are *not* deleterious, it assumes most are **neutral rather than beneficial**.
+
+::: {.callout-important}
+A neutral mutation is one that does not affect the organism's ability to survive and reproduce. Because only a fraction of gametes is sampled each generation, such an allele can reach **fixation by chance alone**.
+:::
+
+## Kust see tuli?
+
+::: {.columns}
+::: {.column width="55%"}
+- **Freese (1962)**, **Freese & Yoshida (1965)** — neutral mutations are probably widespread.
+- **Motoo Kimura (1968)** — a coherent theory, focused on differences *among species*.
+- **King & Jukes (1969)** — independently, focused on differences *within species*.
+
+The mathematical machinery came from population genetics — **Haldane**, **Fisher**, **Wright**.
+
+**Haldane's dilemma** was the motivation. Haldane estimated that a beneficial mutation takes ~300 generations to fix in a mammalian lineage. The substitution rate observed between humans and chimpanzees (~1.5 per year) is far too high to be explained by beneficial mutations alone. Something else must be doing most of the work.
+:::
+::: {.column width="45%"}
+![](/assets/molecular_evolution/p458_drift.png){height="330px"}
+
+Drift in action: identical starting frequency, 20 replicate populations, and by generation 20 the allele is fixed in some and lost in others. No selection anywhere in this picture.
+:::
+:::
+
+## Funktsionaalne surve
+
+**The prediction:** as functional constraint diminishes, the probability that a mutation is neutral rises — and so should the rate of sequence divergence.
+
+The evidence, and it is the reason the theory was taken seriously:
+
+- Proteins with little functionality — **fibrinopeptides**, the **C chain of proinsulin** — evolve extremely fast.
+- In haemoglobin, the **surface** of the alpha and beta chains evolves roughly **ten times faster** than the interior pockets that hold the iron-containing haem group.
+- Substitution rates are highest at the **third codon position**, where the degenerate genetic code means many changes are **synonymous** — GCC and GCA both encode alanine.
+
+::: {.callout-note}
+This is the logic behind choosing a marker. A gene region is useful at a given taxonomic depth *because* of how constrained it is. Constraint is not a nuisance — it is the tuning knob.
+:::
+
+## Infinite sites model ja molekulaarne kell
+
+::: {.columns}
+::: {.column width="52%"}
+Kimura's **infinite sites model (ISM)**. With $N$ diploid individuals and a neutral mutation rate $\mu$ per gene copy, the number of new mutants per generation is $2N\mu$, and each has probability $1/(2N)$ of eventually fixing:
+
+$$k = 2N\mu \times \frac{1}{2N} = \mu$$
+
+The population size cancels. The rate at which fixed differences accumulate between diverging lineages equals the **per-individual mutation rate**, independent of how large the populations are.
+
+That is the theoretical basis of the **molecular clock** — and note that the clock was an empirical observation *before* the neutral theory explained it.
+:::
+::: {.column width="48%"}
+```{r}
+#| label: molecular-clock
+#| fig-width: 5.2
+#| fig-height: 3.6
+#| fig-align: center
+set.seed(7)
+crossing(t = seq(0, 100, 2),
+         gene = c("rRNA (constrained)", "protein-coding", "synonymous sites")) |>
+  mutate(rate = recode(gene, "rRNA (constrained)" = 0.15,
+                       "protein-coding" = 0.45, "synonymous sites" = 1.1),
+         subs = rate * t + rnorm(n(), 0, rate * 3)) |>
+  ggplot(aes(t, subs, colour = gene)) +
+  geom_line(linewidth = 0.9) +
+  scale_colour_manual(values = c("#990000", "#3a7d6a", "#4a5168")) +
+  labs(x = "Divergence time (Myr)", y = "Substitutions per site (arbitrary)",
+       colour = NULL) +
+  theme(legend.position = "bottom", legend.text = element_text(size = 9))
+```
+
+Three clocks in the same lineage. Each is linear, each ticks at its own rate, and the rate is set by constraint.
+:::
+:::
+
+## Peaaegu neutraalne teooria
+
+::: {.columns}
+::: {.column width="56%"}
+**Tomoko Ohta** added the mutations that are neither neutral nor clearly deleterious: **slightly deleterious** ones.
+
+Their population dynamics differ from strictly neutral mutations only when the selection coefficient exceeds $1/N_e$. Below that threshold, drift overwhelms selection and a slightly harmful allele behaves as if it were neutral.
+
+The consequence is important, and it is why this belongs next to the population-genetics lecture:
+
+**The effective population size decides how much of the genome is effectively neutral.** In a small population, more mutations behave neutrally; in a large one, selection sees them.
+:::
+::: {.column width="44%"}
+![](/assets/molecular_evolution/p755_vortex.png){height="320px"}
+
+Small populations lose genetic diversity and gain drift. Ohta's threshold says the same populations also lose the ability to purge mildly harmful variants.
+:::
+:::
+
+::: {.notes}
+Tie back explicitly: $N_e$ from the population-genetics lecture is the same $N_e$ here. Students routinely treat them as two different quantities.
+:::
+
+## Kui see ei ole neutraalne
+
+::: {.columns}
+::: {.column width="50%"}
+![](/assets/molecular_evolution/p455_selection_modes.png){height="300px"}
+
+**Selection** moves a distribution in a direction, splits it, or narrows it. Each mode leaves a different footprint in allele frequencies — and none of them looks like drift.
+:::
+::: {.column width="50%"}
+![](/assets/molecular_evolution/p460_prairie_chicken.png){height="235px"}
+
+**A bottleneck** removes alleles wholesale. The greater prairie chicken went from millions to fewer than 50 birds, and the allelic diversity did not come back with the population.
+:::
+:::
+
+The neutral theory is the **null**. Both panels are departures from it — but only one of them is adaptation, and telling them apart is the everyday work of molecular ecology.
+
+# Homoloogia ja selle lõksud
+
+## Homoloogia ja homoplaasia
+
+::: {.columns}
+::: {.column width="52%"}
+A character is **homologous** (*homoloogne*) when it is **inherited from a common ancestor**.
+
+A character is **homoplasious** (*homoplaasne*) when it arose **independently in two lineages** — convergence, parallelism, or reversal.
+
+Phylogenies may be reconstructed from **homologous characters only**. Homoplasy is not a minor nuisance: it actively supports the wrong tree, because it makes unrelated lineages look similar.
+
+The trouble is that you cannot tell them apart by inspection. Similarity is the observation; homology is the inference.
+:::
+::: {.column width="48%"}
+![](/assets/molecular_evolution/p448_pocket_mouse.png){height="290px"}
+
+Dark coats on dark lava, light coats on light sand — and the dark phenotype evolved **separately** in different lava flows. Group the mice by coat colour and you recover geology, not genealogy.
+:::
+:::
+
+## Homoloogsed geenid
+
+::: {.columns}
+::: {.column width="60%"}
+Not all homology is the kind you want. Three flavours, and only one of them tracks speciation:
+
+- **Ortoloogsed geenid** (*orthologs*) — diverged at a **speciation** event. These are what a species tree needs.
+- **Paraloogsed geenid** (*paralogs*) — diverged after **duplication** of an ancestral gene within a genome. Their tree is the history of the gene family, not of the species.
+- **Ksenoloogsed geenid** (*xenologs*) — arrived by **horizontal gene transfer**. Their tree is the history of a transfer event.
+
+::: {.callout-important}
+Build a species tree out of paralogs by accident and you will get a confident, well-supported, wrong answer. This is the single most common way a beginner's phylogeny fails.
+:::
+:::
+::: {.column width="40%"}
+![](/assets/molecular_evolution/p479_speciation.png){height="300px"}
+
+Speciation as a gradient: a barrier to gene flow, then genetic divergence, then reproductive isolation. Orthologs date from the branch point; the barrier is what made it one.
+:::
+:::
+
+# Järjestuste joondamine
+
+## Miks joondamine on kogu analüüsi alus
+
+Before anything can be compared, positions have to be made **comparable**. Alignment (*joondamine*) is the step that decides which nucleotide in sequence A corresponds to which nucleotide in sequence B.
+
+Every number downstream — distance, tree, support value, divergence date — inherits whatever the alignment decided.
+
+::: {.callout-note}
+An alignment is a **hypothesis of positional homology**. It is not data preparation; it is the first inference in the pipeline, and the one that is most often accepted without inspection.
+:::
+
+## Punktmaatriks — the dot plot
+
+::: {.columns}
+::: {.column width="46%"}
+```{r}
+#| label: dot-plot
+#| fig-width: 4.4
+#| fig-height: 4.2
+#| fig-align: center
+s1 <- strsplit("ATGCGTCGTT", "")[[1]]
+s2 <- strsplit("ATGCGTCGT",  "")[[1]]
+expand_grid(i = seq_along(s1), j = seq_along(s2)) |>
+  mutate(hit = s1[i] == s2[j]) |>
+  filter(hit) |>
+  ggplot(aes(i, j)) +
+  geom_point(size = 3.4, colour = "#990000") +
+  scale_x_continuous(breaks = seq_along(s1), labels = s1) +
+  scale_y_continuous(breaks = seq_along(s2), labels = s2) +
+  labs(x = NULL, y = NULL) +
+  theme(panel.grid.minor = element_blank())
+```
+:::
+::: {.column width="54%"}
+A dot is placed wherever the two sequences carry the same nucleotide at that pair of positions.
+
+A **diagonal run of dots is an alignment**. Where the diagonal shifts, an insertion or deletion is being proposed. Off-diagonal dots are chance matches — with four bases, a quarter of all cells hit by accident.
+
+Two different paths through the same plot are two different alignments of the same pair of sequences. Neither is given by the data; you have to choose.
+:::
+:::
+
+## Joondamise „hind"
+
+::: {.columns}
+::: {.column width="55%"}
+The cost of an alignment:
+
+$$D = s + wg$$
+
+- $s$ — the number of **base-pair differences** (substitutions);
+- $w$ — the **weight given to indels** (*gap penalty*);
+- $g$ — the **total length of the indels** (*gap length*).
+
+The weight $w$ sets the exchange rate between "call it a substitution" and "call it a gap":
+
+| | Alignment with gaps | Alignment with substitutions |
+|---|---:|---:|
+| $w = 1$ | $D_1 = 0 + 1\times2 = 2$ | $D_2 = 2 + 1\times1 = 3$ |
+| $w = 3$ | $D_1 = 0 + 3\times2 = 6$ | $D_2 = 2 + 3\times1 = 5$ |
+
+At $w=1$ the gapped alignment wins. At $w=3$ the substitution-based one does. **Same sequences, same algorithm, different answer.**
+:::
+::: {.column width="45%"}
+::: {.callout-important}
+The gap penalty is a **parameter you choose**, not a property of the data. If you have never changed it, you have never tested whether your alignment depends on it.
+:::
+
+In practice you will not set $w$ by hand — the aligner has a default. That is precisely the problem: the default was chosen for someone else's data.
+:::
+:::
+
+## Kobarjoondamine — multiple alignment
+
+Aligning three or more sequences is not the pairwise problem repeated. The cost depends on which sequences are compared against which:
+
+- **Sum of pairs** — count the cost of aligning every pair. Exhaustive and expensive.
+- **Star alignment** — align everything to one central sequence. A special case of the tree alignment.
+- **Tree alignment** — align along the branches of a guide tree. Cheapest.
+
+The catch is circular and worth stating out loud: the **guide tree** used to build the alignment is built from a quick-and-dirty distance estimate, and the final tree is then built from that alignment.
+
+::: {.notes}
+This circularity is real but usually mild. It becomes severe with divergent sequences and large indels — which is exactly where students tend to have their data.
+:::
+
+# Fülogeneesipuud
+
+## Kuidas puu tehakse
+
+::: {.columns}
+::: {.column width="58%"}
+Phylogenetic trees are constructed **only from homologous sequences**. Methods differ, but they share a skeleton:
+
+- sequences are **aligned** so they can be compared;
+- the number of **differences** between each pair is determined;
+- sequences are **grouped by similarity**;
+- the groups are laid out **topologically** as a tree.
+
+The shape of a sequence-based tree is its **topology** (*topoloogia*).
+
+The more sequences you analyse, the more possible topologies exist — the number of distinct trees grows factorially, which is why this is a search problem and not a calculation.
+:::
+::: {.column width="42%"}
+**Juurteta puu** (*unrooted tree*) — shows relationships, but not the direction of time.
+
+**Juurega puu** (*rooted tree*) — adds a root, and therefore an ancestor and a direction from past to present. The root normally comes from an **outgroup**, not from the data itself.
+
+::: {.callout-note}
+An unrooted tree is often all the data support. Drawing it with a root anyway is a decision that should be defended, not a formatting choice.
+:::
+:::
+:::
+
+## Kokkuhoiuprintsiip — parsimony
+
+**The principle of parsimony**: the best tree is the one requiring the **fewest mutational events** to explain the observed sequences from a common ancestor.
+
+The classic worked example — the hominoid tree from **896 bp of mitochondrial DNA**:
+
+| Topology | Mutations required |
+|---|---:|
+| Variant 1 — (chimpanzee, gorilla), human | **145** |
+| Variant 2 — (human, chimpanzee), gorilla | 147 |
+| Variant 3 — (human, gorilla), chimpanzee | 148 |
+
+By parsimony, variant 1 wins. **On current data, variant 2 is the correct one** — human and chimpanzee are sister taxa.
+
+::: {.callout-important}
+Three mutations separate the "best" tree from the right one. Parsimony is a criterion, not an oracle: it is a statement about this alignment under this criterion, not a fact about the organisms.
+:::
+
+## Miks toored erinevused eksitavad
+
+::: {.columns}
+::: {.column width="48%"}
+```{r}
+#| label: saturation
+#| fig-width: 5
+#| fig-height: 3.6
+#| fig-align: center
+tibble(d = seq(0, 2, 0.01)) |>
+  mutate(p = 3/4 * (1 - exp(-4/3 * d))) |>
+  ggplot(aes(d, p)) +
+  geom_abline(slope = 1, intercept = 0, linetype = 2, colour = "#6b7691") +
+  geom_line(linewidth = 1, colour = "#990000") +
+  coord_cartesian(ylim = c(0, 1)) +
+  labs(x = "True substitutions per site",
+       y = "Observed proportion of differing sites")
+```
+:::
+::: {.column width="52%"}
+Count the positions at which two sequences differ and you get the **p-distance**. The dashed line is what you would like it to be; the curve is what it is.
+
+The gap opens because of **multiple hits**: a site can be substituted twice and look unchanged, or change back. As divergence grows, the observed difference **saturates** near 0.75 — the value expected for two random sequences.
+
+Correction models (Jukes–Cantor, Kimura 2-parameter, and on upward) estimate the true number of substitutions from the observed one. Choosing a model is choosing which kinds of change you believe are happening.
+:::
+:::
+
+# Rakendused
+
+## Inimese evolutsioon
+
+::: {.columns}
+::: {.column width="58%"}
+The ancestor of modern humans lived in Africa **100 000–200 000 years ago**. Both mtDNA and Y-chromosome sequencing put the out-of-Africa expansion at roughly **100 000 years ago**.
+
+The route, as read from the molecules:
+
+- Near East, then **South Asia** (~67 000 years ago);
+- **Australia** (~40 000–60 000);
+- a second branch into **Europe** (~40 000);
+- **North America** (~17 000), **South America** (~13 000).
+
+From mtDNA — the **mt-MRCA**, popularly "mitochondrial Eve". From the Y chromosome — the **Y-MRCA**, "Y-chromosomal Adam".
+:::
+::: {.column width="42%"}
+::: {.callout-important}
+"Eve" was not the only woman alive, and she and "Adam" need not have been contemporaries. An MRCA is the coalescence point of *one locus* — mtDNA is maternally inherited and the Y is paternal, so they trace two different lineages through the same population.
+:::
+
+Every other locus in the genome has its own MRCA, at its own date. The species has no single ancestor.
+:::
+:::
+
+## Evolutsioon, mida saab mõõta
+
+::: {.columns}
+::: {.column width="33%"}
+![](/assets/molecular_evolution/p471_adh_cline.png){height="270px"}
+
+A latitudinal cline in *Adh* allele frequency in *Drosophila* — and the cline has shifted about 4° of latitude in twenty years as the climate warmed.
+:::
+::: {.column width="33%"}
+![](/assets/molecular_evolution/p462_gene_flow.png){height="270px"}
+
+An insecticide-resistance allele arises once and is then carried between populations. Gene flow, not repeated mutation.
+:::
+::: {.column width="34%"}
+![](/assets/molecular_evolution/p441_harvest_selection.png){height="270px"}
+
+Thirty years of trophy hunting: mean body weight and horn length both decline. Selection with a date and a cause.
+:::
+:::
+
+These are the timescales molecular ecology actually works on. The neutral theory is the **null model** against which each of them is a departure.
+
+## Check yourself
+
+<details>
+<summary>Two species share 98% sequence identity at a gene. Why is that not, on its own, evidence of anything?</summary>
+
+Because identity has no scale attached. Without knowing the substitution rate for that region, the constraint acting on it, and the saturation level, 98% could mean a recent split or an ancient one under strong purifying selection. Identity is a measurement; divergence time is a model-based estimate from it.
+
+</details>
+
+<details>
+<summary>Why does the infinite sites model predict that the substitution rate is independent of population size?</summary>
+
+Because the number of new neutral mutants per generation scales with population size as $2N\mu$, while the fixation probability of each scales inversely as $1/(2N)$. The two cancel, leaving $k = \mu$. This holds only for strictly neutral mutations — under Ohta's nearly neutral theory, $N_e$ re-enters through the $1/N_e$ threshold.
+
+</details>
+
+<details>
+<summary>Your phylogeny groups two distant taxa with strong support. What should you check before believing it?</summary>
+
+Whether the shared character states are homologous or homoplasious, and whether the genes compared are orthologs. Convergence and accidental paralog comparison both produce well-supported wrong trees. Also check whether the sequences are saturated — at high divergence, chance similarity alone approaches 75%.
+
+</details>
+
+<details>
+<summary>You change the gap penalty and your tree topology changes. What does that tell you?</summary>
+
+That the topology is not supported by the data independently of the alignment — the signal is in a region whose positional homology is ambiguous. The honest responses are to report the sensitivity, to exclude the ambiguously aligned regions, or to use a method that integrates over alignment uncertainty. Silently reporting whichever tree you preferred is the one unacceptable option.
+
+</details>
+
+<details>
+<summary>Why does the neutral theory make molecular dating possible at all?</summary>
+
+Because if most substitutions are neutral, they accumulate at a rate set by the mutation rate rather than by the environment, giving an approximately clock-like accumulation of differences. Where selection dominates, or where $N_e$ swings widely enough to move Ohta's threshold, the clock becomes unreliable — which is why dates need calibration and error bars.
+
+</details>
+
+## Thank you for your attention! Questions?
+
+::: {.columns}
+::: {.column width="52%"}
+![](/assets/molecular_evolution/p553_durations.png){height="240px"}
+
+How long species last in the fossil record — the timescale a molecular clock is being asked to measure.
+:::
+::: {.column width="48%"}
+::: {.callout-important}
+peeter.laas@taltech.ee · peeter.laas@ut.ee
+:::
+
+**Worth your time:**
+
+- Timetree of life — <https://timetree.org/>
+- MEGA — <https://www.megasoftware.net/>
+- <https://itol.embl.de/> for drawing the result
+
+Figures from Bowman & Hacker, *Ecology*, 6th ed., used for teaching.
+:::
+:::

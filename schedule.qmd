@@ -34,6 +34,11 @@ week_runs <- function(w) {
   paste(ifelse(starts == ends, starts, paste0(starts, "–", ends)), collapse = ", ")
 }
 
+# Õppetööst vaba nädal paistab ajakavast välja augu järgi, nii et seda ei
+# ole vaja eraldi kirja panna: rea kustutamine ajakavast ongi kogu muudatus.
+vaba_nadalad <- setdiff(seq(min(schedule$week), max(schedule$week)), schedule$week)
+vaba_kuupaevad <- start + 7 * (vaba_nadalad - 1)
+
 seminars   <- schedule |> filter(kind == "Seminar")
 practicals <- schedule |> filter(kind == "Praktikum")
 ```
@@ -61,6 +66,20 @@ schedule |>
     Lugemine = ifelse(is.na(reading), "—", reading)
   ) |>
   kable(align = c("r", "l", "l", "l", "l", "l"))
+```
+
+```{r}
+#| label: break-weeks
+#| echo: false
+#| results: asis
+
+if (length(vaba_nadalad) > 0) {
+  cat('::: {.callout-note appearance="simple"}\n')
+  cat(sprintf(
+    "Tabelis on auk: %s õppetööd ei toimu, sest Tallinna Ülikoolis on siis õppetööst vaba nädal.\n\n:::\n",
+    et_session_list(vaba_kuupaevad)
+  ))
+}
 ```
 
 # Plokid

@@ -135,8 +135,12 @@ arrives by pull request.
   `../assets/logos/…`.
 - **New deck**: copy the YAML header from an existing one, put figures in
   `assets/<name>/`, then add it to the sidebar in `_quarto.yml` and to
-  `data/schedule.csv`. `lectures/_metadata.yml` applies
-  `include-after-body: ../tools/fit-slides.html` to every deck.
+  `data/schedule.csv`. `lectures/_metadata.yml` applies two
+  `include-after-body` scripts to every deck: `tools/fit-slides.html`, which
+  shrinks a slide that overflows, and `tools/zoom-figures.html`, which makes
+  every figure click-to-enlarge. Quarto's own `lightbox` is not usable here —
+  it links each image to a file on disk, and `self-contained: true` means the
+  image is inlined and no such file is published, so the link is dead.
 - **A `.qmd` runs from its own directory.** `seminars/index.qmd` sources
   `../R/course.R` and reads `registrations.csv`; top-level pages use `R/course.R`
   and `data/…`.
