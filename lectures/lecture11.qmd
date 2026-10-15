@@ -1,0 +1,709 @@
+---
+title: "Lecture 11: Reading selection, editing genomes, and what gets inherited"
+subtitle: "MLB7052.LT: Modern Methods in Molecular Ecology"
+title-slide-attributes:
+    data-background-image: ../assets/logos/uu_sigill_right.png
+    data-background-size: contain
+    data-background-opacity: "0.25"
+author: "Peeter Laas"
+institute: "TalTech / UT Institute of Technology"
+format:
+  revealjs: 
+    theme: [serif, ../css/lectures.scss]
+    slide-number: false
+    show-slide-number: all
+    toc: true
+    toc-depth: 1
+    progress: true
+    width: 1200
+    height: 675
+    transition: slide
+    toc-title: "Modern Methods in Molecular Ecology lecture:"
+    smaller: true
+    footer: "Fall 2026"
+    logo: ../assets/logos/uu_sigill_right.png
+    header-logo: ../assets/logos/UUtopleft.png
+    self-contained: true
+    html-math-method: mathml
+filters:
+  - reveal-header
+editor_options: 
+  chunk_output_type: inline
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+knitr::opts_chunk$set(eval=TRUE, cache=F, include=T, echo=F, error=F,
+                      message=FALSE, comment=c(" "), width=90)
+theme_set(theme_minimal(base_size = 15))
+red <- "#990000"; teal <- "#3a7d6a"; grey <- "#6b7691"
+```
+
+## Kaasaegsed molekulaarsed meetodid ökoloogias
+
+**Loeng 11 — valiku lugemine, genoomi muutmine ja see, mis pärandub.**
+
+Last week's MK test and dN/dS went past too fast. We start again from the beginning, slowly, with no equations until the idea is already obvious. Then the same treatment for LAMP and for CRISPR-Cas9 — and then phylogeography, behaviour, and what gets inherited without being written in the DNA at all.
+
+::: {.notes}
+The first section is a deliberate re-teach, not a summary. The home assignment is the same material; do not rush it here just because they have seen the words before.
+:::
+
+## Täna
+
+| | |
+|---:|---|
+| **1** | The MK test and dN/dS — from scratch |
+| **2** | LAMP — copying DNA without a thermal cycler |
+| **3** | CRISPR-Cas9 — find, cut, replace (and a mammoth) |
+| **4** | Phylogeography — and why the marker's address matters |
+| **5** | Behaviour, molecularly |
+| **6** | Epigenetics — inheritance without sequence change |
+
+# MK-test ja dN/dS — algusest peale
+
+## Kaks muutuse liiki
+
+Every protein-coding gene is read in **codons** — three letters per amino acid. The code is **redundant**: several codons mean the same amino acid.
+
+| | Codon change | Protein | Called |
+|---|---|---|---|
+| | `GCC` → `GCA` | Ala → **Ala** (no change) | **synonymous** (*sünonüümne*) |
+| | `GCC` → `GTC` | Ala → **Val** (changed) | **non-synonymous** (*mittesünonüümne*) |
+
+::: {.callout-important}
+This is the whole trick. **Synonymous changes are invisible to natural selection** — the protein is identical, so selection has nothing to grip. **Non-synonymous changes are visible** — they alter the protein, so selection can keep them or throw them away.
+:::
+
+## Analoogia: kirjavead raamatus
+
+Imagine a book copied by hand, over and over, for a thousand years. Copying errors creep in. Two kinds:
+
+::: {.columns}
+::: {.column width="50%"}
+**"colour" → "color"**
+
+The meaning is unchanged. No editor ever stops this. It accumulates at whatever rate the scribes make mistakes.
+
+**This is a synonymous change.** It is your *measuring stick* — it tells you how fast mistakes happen when nobody is checking.
+:::
+::: {.column width="50%"}
+**"the king is dead" → "the king is deaf"**
+
+The meaning changed. Now an editor has an opinion. Most such errors get corrected out. Occasionally one survives *because* someone liked it better.
+
+**This is a non-synonymous change.** It is the one selection acts on.
+:::
+:::
+
+::: {.callout-note}
+So: count both kinds. The silent ones tell you the background rate of copying errors. Any **excess or shortage** of meaning-changing ones, measured against that background, is the fingerprint of selection.
+:::
+
+## dN/dS — üks suhtarv
+
+$$\omega = \frac{dN}{dS} = \frac{\text{meaning-changing substitutions, per opportunity}}{\text{silent substitutions, per opportunity}}$$
+
+"Per opportunity" matters: there are far more ways to change meaning than not, so both counts are divided by the number of sites at which each kind *could* happen.
+
+```{r}
+#| label: omega-scale
+#| fig-width: 11
+#| fig-height: 2.5
+#| fig-align: center
+tibble(x = c(0.15, 1, 2.2),
+       lab = c("ω < 1\npurifying selection\n'the editor removes changes'",
+               "ω = 1\nneutral\n'nobody is checking'",
+               "ω > 1\npositive selection\n'changes are favoured'")) |>
+  ggplot(aes(x, 0)) +
+  geom_segment(aes(x = 0, xend = 2.8, y = 0, yend = 0), colour = grey, linewidth = 0.6) +
+  geom_point(size = 6, colour = c(teal, grey, red)) +
+  geom_text(aes(label = lab), vjust = -0.9, size = 4.1, lineheight = 1.05) +
+  scale_x_continuous(breaks = c(0, 1, 2), limits = c(-0.25, 3)) +
+  coord_cartesian(ylim = c(-0.4, 1.4)) +
+  labs(x = NULL, y = NULL) +
+  theme(axis.text.y = element_blank(), panel.grid = element_blank())
+```
+
+Most genes, most of the time, sit well below 1. **Purifying selection is the normal state of the genome** — the editor is almost always working.
+
+## Kust tuleb MK-test
+
+dN/dS compares **two species**. The MK test adds a second axis, and that is what makes it powerful:
+
+::: {.columns}
+::: {.column width="50%"}
+**Within one species — polymorphism**
+
+Differences that are still *segregating*: some individuals have A, others have B. These are changes on **probation** — they arose recently and have not yet been accepted or rejected.
+:::
+::: {.column width="50%"}
+**Between two species — divergence**
+
+Differences that are **fixed**: every individual of species 1 has A, every individual of species 2 has B. These changes have already been *accepted* — permanently.
+:::
+:::
+
+::: {.callout-important}
+The neutral theory makes one sharp prediction: if nothing but drift is happening, **the mix of silent-to-meaningful changes should be the same in both columns**. Probation and acceptance should not change the recipe.
+:::
+
+## Mida tabel tegelikult ütleb
+
+```{r}
+#| label: mk-intuition
+#| fig-width: 10.5
+#| fig-height: 3.9
+#| fig-align: center
+d <- tribble(
+  ~panel,                          ~kind,             ~col,          ~n,
+  "Neutral expectation",           "non-synonymous",  "polymorphic", 20,
+  "Neutral expectation",           "synonymous",      "polymorphic", 42,
+  "Neutral expectation",           "non-synonymous",  "fixed",        8,
+  "Neutral expectation",           "synonymous",      "fixed",       17,
+  "Adh, observed",                 "non-synonymous",  "polymorphic",  2,
+  "Adh, observed",                 "synonymous",      "polymorphic", 42,
+  "Adh, observed",                 "non-synonymous",  "fixed",        7,
+  "Adh, observed",                 "synonymous",      "fixed",       17
+) |>
+  mutate(panel = factor(panel, levels = c("Neutral expectation", "Adh, observed")),
+         col = factor(col, levels = c("polymorphic", "fixed")))
+
+ggplot(d, aes(col, n, fill = kind)) +
+  geom_col(position = "fill", width = 0.72) +
+  geom_text(aes(label = n), position = position_fill(vjust = 0.5), size = 4.3,
+            colour = "white", fontface = "bold") +
+  facet_wrap(~panel) +
+  scale_fill_manual(values = c("non-synonymous" = red, "synonymous" = grey)) +
+  scale_y_continuous(labels = scales::percent) +
+  labs(x = NULL, y = "share of changes", fill = NULL) +
+  theme(legend.position = "bottom")
+```
+
+**Left:** the same recipe in both columns — nothing to explain. **Right:** the real *Adh* data. Among changes still on probation, almost none alter the protein. Among changes that got accepted, a third do. **Protein-altering changes are being accepted far more readily than they are tolerated while segregating.** That is positive selection.
+
+## *Adh* numbritega
+
+::: {.columns}
+::: {.column width="44%"}
+| | Fixed | Polymorphic |
+|---|---:|---:|
+| **Non-synonymous** | 7 | 2 |
+| **Synonymous** | 17 | 42 |
+
+$$\frac{D_n}{D_s} = \frac{7}{17} = 0.41$$
+$$\frac{P_n}{P_s} = \frac{2}{42} = 0.05$$
+:::
+::: {.column width="56%"}
+Read it as two sentences in plain language:
+
+- **Inside the species**, for every protein-changing variant on probation there are **21 silent** ones. The editor is strict.
+- **Between the species**, for every protein-change that got accepted there are only **2.4 silent** ones. The editor was far more generous about what it let through permanently.
+
+An editor that rejects changes day-to-day but has permanently accepted a pile of them **was not rejecting them at random**. Something was actively favouring protein change.
+
+$$NI = \frac{0.05}{0.41} \approx 0.12 \qquad \alpha = 1 - NI \approx 0.88$$
+
+Roughly **88% of the accepted protein changes** at *Adh* were driven by positive selection, not drift.
+:::
+:::
+
+## Kui suund on vastupidine
+
+What if $P_n/P_s$ is **bigger** than $D_n/D_s$ — more protein-changing variants on probation than ever get accepted?
+
+That is the common case, and it means: **slightly harmful variants are floating around in the population but never make it to fixation.** They are on probation and they will fail. $NI > 1$, negative (purifying) selection.
+
+::: {.callout-important}
+**The trap:** a population that recently crashed, or recently expanded, produces the same pattern without any selection at all, because drift lets mildly harmful variants rise. This is why every test of selection has to be read against the **genome-wide background** of the same population — never a single gene on its own.
+:::
+
+::: {.notes}
+Push them on this: the single most common mistake is running an MK test on one gene of interest, finding a signal, and never asking what the other 10 000 genes in the same dataset look like.
+:::
+
+## Koduseks: kontrolli ennast
+
+<details>
+<summary>Why do we count synonymous changes at all, if they do nothing?</summary>
+
+Precisely *because* they do nothing. They record how fast mutations arrive and drift to fixation when selection is not involved — the background rate. Without them you have a count of protein changes with nothing to compare it against, and no way to tell a fast-mutating gene from a positively selected one.
+
+</details>
+
+<details>
+<summary>A gene has dN/dS = 0.05. Is it unimportant?</summary>
+
+The opposite. ω = 0.05 means 95% of protein-changing mutations are being removed by selection — the gene is under strong purifying selection, which is what you expect for something essential. Low ω means *important and constrained*, not *inactive*.
+
+</details>
+
+<details>
+<summary>You get ω = 1.2 averaged across a whole gene. Why is that weak evidence?</summary>
+
+Because the average hides the sites. Positive selection usually acts on a handful of codons while the rest of the gene stays under purifying selection, so a genuine signal is often diluted below 1 — and an average above 1 across an entire gene is more often a sign of a pseudogene, poor alignment, or paralogues mistaken for orthologues.
+
+</details>
+
+<details>
+<summary>In the MK table, which cell would a recent population bottleneck inflate?</summary>
+
+$P_n$ — protein-changing polymorphism. Drift in a small population lets slightly deleterious variants reach appreciable frequency instead of being purged, which raises $P_n/P_s$ and pushes $NI$ above 1, mimicking purifying selection and masking any positive selection that is really there.
+
+</details>
+
+# LAMP — DNA paljundamine ilma termotsüklerita
+
+## Probleem, mida LAMP lahendab
+
+::: {.columns}
+::: {.column width="52%"}
+**PCR** separates the two DNA strands by **heating to 95 °C**, then cools to let primers bind, then warms to extend. Thirty times. That needs a thermal cycler: mains power, moving parts, and about an hour.
+
+**LAMP** never heats the DNA apart. It uses **Bst polymerase**, which does something Taq cannot: as it copies along, it **shoves the strand in front of it out of the way**. Strand displacement replaces the 95 °C step.
+
+One temperature. A water bath, a heat block, or a cup of hot water will do.
+:::
+::: {.column width="48%"}
+```{r}
+#| label: pcr-vs-lamp
+#| fig-width: 5.4
+#| fig-height: 3.6
+#| fig-align: center
+cyc <- tibble(t = seq(0, 30, by = 0.5)) |>
+  mutate(temp = case_when(
+    (t %% 3) < 1          ~ 95,
+    (t %% 3) < 2          ~ 55,
+    TRUE                  ~ 72),
+    method = "PCR")
+lamp <- tibble(t = seq(0, 30, by = 0.5), temp = 63, method = "LAMP")
+bind_rows(cyc, lamp) |>
+  ggplot(aes(t, temp, colour = method)) +
+  geom_step(linewidth = 0.9) +
+  scale_colour_manual(values = c(PCR = grey, LAMP = red)) +
+  labs(x = "minutes", y = "°C", colour = NULL) +
+  theme(legend.position = "bottom")
+```
+
+PCR must climb to 95 °C and back, over and over. LAMP sits still.
+:::
+:::
+
+## Kuidas see end ise käima tõmbab
+
+::: {.columns}
+::: {.column width="52%"}
+LAMP uses **six primers recognising eight regions** of the target. That is why it is so specific — eight independent matches is a far higher bar than PCR's two — and also why it is hard to design.
+
+The key event: the inner primer **FIP** carries a sequence (F1c) that is complementary to a part of the *new strand it is about to make*. So when the strand is displaced, its own end folds back and pairs with itself.
+
+**The product becomes a dumbbell** — a loop at each end. And a loop is a permanently available primer site that never needs melting open.
+:::
+::: {.column width="48%"}
+![](/assets/lecture9/s17_2.png){height="130px"}
+
+![](/assets/lecture9/s17_1.jpg){height="150px"}
+
+F3/B3 outer · FIP/BIP inner · LF/LB loop primers.
+:::
+:::
+
+::: {.callout-important}
+Once the dumbbell exists, copying never stops to be re-started. The structure keeps presenting new 3′ ends to the polymerase, so amplification is **continuous rather than cyclic** — which is why LAMP reaches a usable amount of DNA in 15–30 minutes.
+:::
+
+## Miks ta põllul töötab
+
+::: {.columns}
+::: {.column width="55%"}
+Amplifying that hard has a convenient side effect: it makes **a lot** of product, and a lot of by-product.
+
+- Each added nucleotide releases a **pyrophosphate** ion, which precipitates with magnesium — the tube goes **cloudy**, visible by eye.
+- The reaction also releases **protons**, dropping the pH. With a pH-sensitive dye the tube goes **pink → yellow**.
+
+No instrument. No gel. A result a non-specialist can read, which is exactly what citizen science and field diagnostics need.
+:::
+::: {.column width="45%"}
+![](/assets/lecture9/s18_4.jpg){height="160px"}
+
+![](/assets/lecture9/s20_2.jpg){height="130px"}
+:::
+:::
+
+::: {.callout-note}
+**The cost of all that sensitivity:** LAMP contaminates easily. A single opened tube of finished product aerosolises billions of copies, and every subsequent reaction in that room is positive. Colour-change LAMP is read **without opening the tube**, deliberately.
+:::
+
+# CRISPR-Cas9 — leia, lõika, asenda
+
+## Kolm osa, ei rohkem
+
+Think of the genome as an enormous text file and CRISPR-Cas9 as **find-and-replace**.
+
+| Part | What it is | In the analogy |
+|---|---|---|
+| **Guide RNA** (sgRNA) | ~20 bases that match your target | the **search term** you type |
+| **Cas9** | a protein that cuts both DNA strands | the **scissors** |
+| **PAM** (`NGG`) | a 3-letter motif that must sit right after the target | the rule that the search **only works** if the match is followed by `GG` |
+| **Repair template** | DNA you supply, carrying the change | the **replacement text** |
+
+::: {.callout-important}
+Cas9 cannot cut without a PAM. This is not a technical nuisance — it is why the bacterium does not destroy **its own** CRISPR array: the stored spacers have no PAM beside them, so the scissors ignore them.
+:::
+
+## Mis juhtub pärast lõiget
+
+The cut is the easy part. What the cell does next decides the outcome:
+
+::: {.columns}
+::: {.column width="50%"}
+**NHEJ** — non-homologous end joining
+
+The cell shoves the two ends back together, usually losing or adding a few bases. The reading frame breaks, and **the gene is destroyed**.
+
+Use this when you want to **switch a gene off**. It is the default, it is efficient, and it is sloppy.
+:::
+::: {.column width="50%"}
+**HDR** — homology-directed repair
+
+If you supply a template whose ends match the sequence either side of the cut, the cell copies your version in.
+
+Use this when you want to **write a specific change**. It is precise, much less efficient, and mostly works in dividing cells.
+:::
+:::
+
+![](/assets/lecture9/s27_2.jpg){height="190px"}
+
+## Näide: elevandist mammutiks, üks kodon korraga
+
+::: {.columns}
+::: {.column width="52%"}
+Remember last week: **mammoth haemoglobin** works at low temperature, because three amino-acid substitutions make O₂ release less temperature-sensitive. One of them is at position 12 — **threonine in elephant, alanine in mammoth**.
+
+So "making a piece of mammoth genome" is not science fiction. It is one letter.
+
+Asian elephant codon 12: `ACC` = **Thr**
+Mammoth codon 12: `GCC` = **Ala**
+
+**Change one A to a G.**
+:::
+::: {.column width="48%"}
+![](/assets/lecture10/s46_1.png){height="250px"}
+
+Campbell et al. 2010 — the protein was resurrected from sequence and tested in the lab *before* anyone tried to edit a cell.
+:::
+:::
+
+## Kuidas see redigeerimine välja näeb
+
+```
+SCHEMATIC — the codon change is real, the flanking bases are illustrative
+elephant HBB/HBD, around codon 12
+
+   ... C T G A C C G A G G A G A A G   ...
+           ▲                 ▲
+           codon 12 = ACC    PAM = AGG
+           (threonine)
+
+ guide RNA  : 20 bases matching the strand just left of that AGG
+ Cas9 cuts  : 3 bases upstream of the PAM  ──✂──
+ template   : the same ~100 bases, but with ACC rewritten as GCC
+              plus a silent change in the PAM so Cas9 cannot re-cut
+
+   ... C T G G C C G A G G A G A A G   ...
+           ▲
+           codon 12 = GCC  → alanine → mammoth-type haemoglobin
+```
+
+::: {.callout-note}
+Design the guide against the real sequence, not this sketch — the flanking bases here are made up so the mechanics are visible. What is real is the substitution: Thr12 in elephant, Ala12 in mammoth, one base apart.
+
+The **silent change in the PAM** is the practical trick worth remembering. Without it, Cas9 recognises the repaired sequence and cuts again — and the second repair is usually NHEJ, which destroys the gene you just fixed.
+:::
+
+## Ja miks see mammutit ei tee
+
+::: {.columns}
+::: {.column width="55%"}
+One codon gives you an elephant cell with mammoth-type haemoglobin. That is genuinely useful — and it is nothing like a mammoth.
+
+- The mammoth and Asian elephant genomes differ at roughly **1.4 million** positions.
+- The phenotypes people actually want — hair, fat, ear size, cold tolerance — are **polygenic**, and we know the responsible variants for almost none of them.
+- An edited cell still needs a nucleus transfer, a surrogate, and a gestation nobody has done in a proboscidean.
+
+What you can honestly claim is a **cold-adapted elephant**, edited at a handful of known loci.
+:::
+::: {.column width="45%"}
+![](/assets/lecture9/s29_2.jpg){height="160px"}
+
+![](/assets/lecture9/s29_4.png){height="110px"}
+
+The same protein family, pointed the other way: Cas12, Cas13 and Cas14 are the basis of CRISPR **diagnostics**.
+:::
+:::
+
+# Fülogeograafia ja markeri aadress
+
+## Fülogeograafia ühe lausega
+
+::: {.columns}
+::: {.column width="52%"}
+**Phylogeography** asks where the branches of a gene tree sit **on a map**. Not just *who is related to whom*, but *where their ancestors were, and when*.
+
+In the **comparative** version, you reconstruct the same history in several co-distributed species. Patterns they share are attributed to a shared event — an ice age, a land bridge, a drained strait. Patterns they do not share are about the species' own biology.
+
+The method is the same one you already know. What changes everything is **which piece of DNA you read it from**.
+:::
+::: {.column width="48%"}
+![](/assets/lecture10/s05_1.png){height="250px"}
+:::
+:::
+
+## Kolm aadressi, kolm erinevat ajalugu
+
+| | **mtDNA** | **Autosome** | **Y chromosome** |
+|---|---|---|---|
+| Inherited from | mother only | both parents | father only (sons) |
+| Recombines? | no | **yes** | almost none |
+| Copies per person | 1 lineage | 2 | 1 lineage (males) |
+| Relative $N_e$ | **1** | **4** | **1** |
+| Tells you about | female history | the population as a whole | male history |
+
+::: {.callout-important}
+Because there are four copies of each autosome for every one mitochondrial genome in a breeding pair, **autosomal lineages take about four times longer to coalesce**. mtDNA and Y reach a common ancestor fast; autosomes remember much deeper history.
+:::
+
+## Miks väiksem $N_e$ tähendab teravamat struktuuri
+
+```{r}
+#| label: marker-ne
+#| fig-width: 10.5
+#| fig-height: 3.2
+#| fig-align: center
+tibble(marker = factor(c("mtDNA", "Y", "X", "Autosome"),
+                       levels = c("mtDNA", "Y", "X", "Autosome")),
+       ne = c(1, 1, 3, 4)) |>
+  ggplot(aes(marker, ne, fill = marker)) +
+  geom_col(width = 0.62) +
+  geom_text(aes(label = paste0(ne, "N")), vjust = -0.4, size = 5) +
+  scale_fill_manual(values = c(red, red, grey, teal), guide = "none") +
+  coord_cartesian(ylim = c(0, 4.8)) +
+  labs(x = NULL, y = "effective population size")
+```
+
+Small $N_e$ means **drift is fast**. Alleles fix or disappear locally in a few thousand generations, so populations diverge quickly and $F_{ST}$ at mtDNA looks large. Large $N_e$ means drift is slow — the same populations may look barely differentiated at autosomal loci. **Same populations, same history, two different answers.** Neither is wrong.
+
+## Kui meestel ja naistel on erinev lugu
+
+::: {.columns}
+::: {.column width="55%"}
+This is the payoff, and it is why anyone bothers with three marker types.
+
+**Sex-biased dispersal** leaves opposite fingerprints:
+
+- Females stay, males disperse → mtDNA is **strongly structured** between sites, Y and autosomes are **homogenised**.
+- Males stay, females disperse → the reverse.
+
+In many whales, females return to their mother's feeding ground while males roam: mtDNA says "separate populations", nuclear markers say "one". Both are right — **the females are separate, the genes are not.**
+:::
+::: {.column width="45%"}
+::: {.callout-note}
+Humans: the mtDNA most recent common ancestor ("mitochondrial Eve") and the Y one ("Y-chromosomal Adam") are estimated at different dates — and neither is the ancestor of the species.
+
+They are the coalescence points of **two single loci**, each with $N_e$ four times smaller than an autosome. Every other gene you carry has its own ancestor, at its own date.
+:::
+:::
+:::
+
+::: {.callout-important}
+**A single-locus tree is not a species tree.** One mtDNA gene gives you one history, with no replication. The whole point of nuclear markers is that you get hundreds of independent ones.
+:::
+
+# Käitumine, molekulaarselt
+
+## Prussakad, kes magusat vihkama õppisid
+
+::: {.columns}
+::: {.column width="52%"}
+Cockroach baits worked by hiding poison in **glucose syrup**. Within a few years, in many populations, they stopped working.
+
+The reason is not poison resistance. It is **taste**. In these populations, glucose now activates the **bitter-sensing** neurons as well as the sweet ones — so the roach tastes the bait as bitter and refuses it.
+
+A change in a sensory receptor's wiring, driven by human pest control, strong enough to show up as a **behaviour** in a few years.
+
+The figure: wild-type roaches eat glucose happily; insecticide-selected ones avoid it.
+:::
+::: {.column width="48%"}
+![](/assets/lecture11/cockroach_glucose.png){height="260px"}
+:::
+:::
+
+## Kärbsevastsed, kes ravivad end alkoholiga
+
+::: {.columns}
+::: {.column width="48%"}
+![](/assets/lecture11/fly_alcohol.png){height="270px"}
+:::
+::: {.column width="52%"}
+*Drosophila* larvae develop in rotting fruit, which contains alcohol. Parasitoid **wasps** lay eggs in them.
+
+Larvae that eat food containing **6% alcohol** survive wasp attack far better than those on 0% — the alcohol is more toxic to the wasp than to the fly.
+
+And the larvae **seek out** alcohol when they have been attacked. A behaviour, deployed as medicine, against a specific enemy.
+
+::: {.callout-note}
+This is the shape of most molecular behavioural ecology: a behaviour that looks like a quirk turns out to be an adaptation whose mechanism is a measurable physiological tolerance.
+:::
+:::
+:::
+
+## Urud kui genotüüp
+
+::: {.columns}
+::: {.column width="52%"}
+Oldfield mice dig **long burrows with an escape tunnel**; deer mice dig short simple ones. Hybrids dig the long version with an escape tunnel — so the complex architecture is **dominant**.
+
+Cross them, map the offspring, and the behaviour splits into **a handful of genetic modules**: one region controls whether an escape tunnel is built at all, three more control the length of the entrance tunnel.
+
+A mouse has never seen a burrow before it digs one. The architecture is in the genome, and it is **modular** — length and escape tunnel are inherited separately.
+:::
+::: {.column width="48%"}
+![](/assets/lecture10/s55_1.png){height="250px"}
+:::
+:::
+
+## Hirm ise muudab füsioloogiat
+
+::: {.columns}
+::: {.column width="50%"}
+![](/assets/lecture11/sparrow_fear.png){height="240px"}
+:::
+::: {.column width="50%"}
+![](/assets/lecture11/nestling_fear.png){height="240px"}
+:::
+:::
+
+Song sparrow parents that merely **hear recordings of predators** — no predator ever present — feed their young less often. The nestlings grow up colder, fewer survive, and the effect persists into the next stage.
+
+**No gene changed. No animal was eaten.** The environment reached the offspring through the parent's behaviour and physiology — which is exactly the doorway into the last section.
+
+# Epigeneetika
+
+## Mis see on
+
+**Epigenetics** (*epigeneetika*): heritable changes in gene *activity* that do not change the DNA **sequence**.
+
+The sequence is the text. Epigenetic marks are the **annotations** — highlighter, sticky notes, and pages glued together — that decide which parts get read in which cell.
+
+| Mark | What it does |
+|---|---|
+| **DNA methylation** | A methyl group on cytosine, usually at `CG`. Heavily methylated promoters are generally **silent** |
+| **Histone modification** | Chemical tags on the proteins DNA is wound around, loosening or tightening access |
+| **Small RNAs** | Short RNAs that target specific transcripts for silencing, and can direct methylation |
+
+::: {.callout-important}
+Every cell in your body has the **same genome** and behaves completely differently. That difference is epigenetic. Epigenetics is not exotic — it is how a liver happens.
+:::
+
+## Miks pärandumine on raske
+
+For a mark to pass to the next *generation*, it must survive **two rounds of deliberate erasure**: once in the germ cells, once just after fertilisation. The embryo wipes the annotations so it can start from a clean text.
+
+::: {.columns}
+::: {.column width="50%"}
+**Within a lifetime** — uncontroversial. Marks are copied faithfully from a cell to its daughters every time a cell divides. This is ordinary developmental biology.
+:::
+::: {.column width="50%"}
+**Across generations** — only where a mark **escapes the reprogramming**. Well documented in plants and some invertebrates; genuinely contested in mammals, where the erasure is most thorough.
+:::
+:::
+
+::: {.callout-note}
+Be careful with the word "inherited". Much of what is reported as transgenerational inheritance in mammals is a **maternal effect**: the mother's physiology shaping the offspring directly, which looks identical in one generation and disappears by the third. The test is whether the effect is still there in the **F3** generation, which never existed as a cell inside the exposed mother.
+:::
+
+## Agouti-hiir: toit, mis muudab karvavärvi
+
+::: {.columns}
+::: {.column width="55%"}
+The $A^{vy}$ mouse carries a transposon inserted beside the **agouti** coat-colour gene. How methylated that transposon is determines how much agouti is expressed:
+
+- **Unmethylated** → gene always on → **yellow** coat, obese, diabetic, short-lived.
+- **Methylated** → gene silenced → **brown** coat, normal weight, healthy.
+
+Genetically **identical** mice, in the same cage, in a full spectrum from yellow to brown.
+
+Feed the mothers extra methyl donors — folate, B12, choline, betaine — and the litters shift towards brown. **Diet during pregnancy, changing coat colour and lifelong health, without touching the sequence.**
+:::
+::: {.column width="45%"}
+::: {.callout-important}
+This is the cleanest demonstration there is that the same genome can produce different animals, and that the switch is **chemical, environmental and heritable through at least one generation**.
+:::
+:::
+:::
+
+## Darwini lillkann: 250 aastat vana epiallelel
+
+::: {.columns}
+::: {.column width="55%"}
+*Linnaeus* described a toadflax (*Linaria vulgaris*) with radially symmetric flowers instead of the usual bilateral ones, and called it **peloria** — "monstrous". It bred true. Darwin was fascinated by it.
+
+In 1999 the cause was finally found: the *Lcyc* gene, which controls flower symmetry, is **heavily methylated and silenced**. The DNA sequence is **unchanged**.
+
+The variant has been propagating in the wild since at least the 1740s, and it occasionally reverts when the methylation is lost.
+
+**An epiallele behaving as a classical Mendelian mutant for two and a half centuries.**
+:::
+::: {.column width="45%"}
+::: {.callout-note}
+Plants make this easy for two reasons: their germline is set aside **late**, from ordinary somatic tissue, so marks acquired during growth can reach the gametes — and plant embryos do **not** perform the thorough genome-wide erasure that mammals do.
+
+If you want to study transgenerational epigenetics, do not start with a mouse.
+:::
+:::
+:::
+
+## Mida see ökoloogias tähendab
+
+::: {.columns}
+::: {.column width="52%"}
+- **Speed.** Allele frequency change takes generations. A methylation change takes one, and can be reversed. For an organism facing a fast-moving environment, that is the difference between adapting and not.
+- **Plasticity with a memory.** *Daphnia* grow defensive helmets when they smell predators — and so do their daughters, raised without any predator.
+- **It confuses your markers.** Two populations may differ strongly in phenotype and expression while being nearly identical at neutral markers — and the difference need not be genetic at all.
+:::
+::: {.column width="48%"}
+::: {.callout-important}
+Back to last week's question — **plasticity or adaptation?** Epigenetics is why that question needs an experiment and not a sequencer.
+
+The answer still comes from a **common garden**: raise both populations in identical conditions for a generation or more. What persists is heritable, whether the mechanism is sequence or methylation. What disappears was plasticity.
+:::
+:::
+:::
+
+## Kokkuvõte
+
+| | |
+|---:|---|
+| **1** | Synonymous changes are the measuring stick; non-synonymous changes are what selection sees. dN/dS and the MK test are just that comparison, done two ways |
+| **2** | MK adds a second axis — on probation (polymorphism) vs accepted (divergence). A mismatch between the two recipes is selection |
+| **3** | LAMP replaces 95 °C with a strand-displacing polymerase and a self-priming loop — one temperature, a colour change, no instrument |
+| **4** | CRISPR-Cas9 is find-and-replace: guide RNA finds, Cas9 cuts, PAM licenses, and the repair pathway you get decides whether you broke a gene or rewrote it |
+| **5** | mtDNA, Y and autosomes have different $N_e$ and different parents — so they tell different, equally true, histories |
+| **6** | Epigenetic marks change which genes are read, respond to the environment within one generation, and sometimes survive into the next |
+
+## Aitäh! Küsimused?
+
+::: {.columns}
+::: {.column width="52%"}
+![](/assets/lecture11/fly_alcohol.png){height="230px"}
+:::
+::: {.column width="48%"}
+::: {.callout-important}
+peeter.laas@taltech.ee · peeter.laas@ut.ee
+:::
+
+**Kodune ülesanne:** the MK test and dN/dS — work through the *Adh* table yourself, and bring one question about it to the next session.
+
+**Seminarid algavad 06.11** — kuus ettekannet korraga, 15 minutit koos küsimustega.
+:::
+:::

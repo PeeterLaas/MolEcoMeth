@@ -12,6 +12,12 @@
 *.pdf
 !seminars/slides/*.pdf
 
+# --- Source slide decks ---
+# The .pptx a deck was built from, same reasoning as the PDFs above: large
+# binaries, superseded by the .qmd, and one of them is 72 MB — git add -A in
+# update.sh would otherwise commit it into the history permanently.
+*.pptx
+
 # --- Figure libraries extracted from a textbook: staging only ---
 # Same reasoning as the PDFs above — not ours to redistribute, and 48 MB of
 # it. The dozen figures a deck actually uses are copied into assets/<deck>/

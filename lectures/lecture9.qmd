@@ -1,0 +1,724 @@
+---
+title: "Lecture 9: Microfluidics, LAMP, CRISPR-Cas and gene technology for restoration"
+subtitle: "MLB7052.LT: Modern Methods in Molecular Ecology"
+title-slide-attributes:
+    data-background-image: ../assets/logos/uu_sigill_right.png
+    data-background-size: contain
+    data-background-opacity: "0.25"
+author: "Peeter Laas"
+institute: "TalTech / UT Institute of Technology"
+format:
+  revealjs: 
+    theme: [serif, ../css/lectures.scss]
+    slide-number: false
+    show-slide-number: all
+    toc: true
+    toc-depth: 1
+    progress: true
+    width: 1200
+    height: 675
+    transition: slide
+    toc-title: "Modern Methods in Molecular Ecology lecture:"
+    smaller: true
+    footer: "Fall 2026"
+    logo: ../assets/logos/uu_sigill_right.png
+    header-logo: ../assets/logos/UUtopleft.png
+    self-contained: true
+    html-math-method: mathml
+filters:
+  - reveal-header
+editor_options: 
+  chunk_output_type: inline
+---
+
+## Kaasaegsed molekulaarsed meetodid ökoloogias
+
+**Loeng 9 — mikrofluidika, LAMP, CRISPR-Cas ja geenitehnoloogia taastamiseks.**
+
+Everything so far in this course has happened in a laboratory. This lecture is about the methods that leave it: assays small enough, cheap enough and robust enough to run beside the water you sampled — and about what happens when molecular tools stop measuring nature and start changing it.
+
+::: {.notes}
+Two halves with one hinge. First: miniaturisation — microfluidics, LAMP, lab-on-a-chip — which is about *measuring* in the field. Second: CRISPR, gene drive, de-extinction, restoration genomics — which is about *intervening*. The same enzymes underlie both.
+:::
+
+## Kust me alustame
+
+::: {.columns}
+::: {.column width="33%"}
+![](/assets/lecture9/s02_1.png){height="250px"}
+
+The familiar bench workflow: lyse, bind, wash, elute. Everything in this lecture is an attempt to shrink this.
+:::
+::: {.column width="33%"}
+![](/assets/lecture9/s03_1.jpg){height="250px"}
+
+Primer and probe design is increasingly automated — feature extraction from sequence, model-based assessment, validated pairs out.
+:::
+::: {.column width="34%"}
+![](/assets/lecture9/s04_1.jpg){height="250px"}
+
+…and the pipetting itself is being handed to robots.
+:::
+:::
+
+# Mineraalid ja mikroobid
+
+## Mineraalide ja mikroobide koosevolutsioon
+
+::: {.columns}
+::: {.column width="52%"}
+Since life originated, **minerals and microbes have co-evolved** through much of Earth history.
+
+- At the Earth's beginning there were only a few dozen high-temperature minerals — "geological species".
+- Igneous activity, metamorphism and plate tectonics raised that to about **1500**.
+- After the **Great Oxidation Event**, mineral species increased to **>4000**.
+
+Most minerals today are an **indirect consequence of microbial activity** — oxygenic photosynthesis being the major driver of mineral evolution.
+
+Mineral–microbe interactions happen at the microscopic scale, but the effect is seen at the global one.
+:::
+::: {.column width="48%"}
+![](/assets/lecture9/s05_1.png){height="300px"}
+
+Dong et al. 2022
+:::
+:::
+
+## Mineraal-mikroob: elu algus
+
+::: {.columns}
+::: {.column width="55%"}
+Mineral-catalysed reactions are central to theories of an **autotrophic origin of microbial metabolism** under hydrothermal vent conditions.
+
+**Ni₃Fe nanoparticles** — prepared by hard templating, and the most common hydrothermal vent alloy, *awaruite* — catalyse the conversion of H₂ and CO₂ into **formate, acetate and pyruvate** at 25 °C under 25 bar.
+
+That is a non-biological route to the carbon backbone of core metabolism, run at vent temperature and pressure.
+:::
+::: {.column width="45%"}
+![](/assets/lecture9/s06_1.png){height="150px"}
+
+![](/assets/lecture9/s06_2.png){height="150px"}
+
+Beyazay et al. 2023; Martin 2020
+:::
+:::
+
+## Mineraal-mikroob vastasmõjud
+
+::: {.columns}
+::: {.column width="48%"}
+![](/assets/lecture9/s07_1.png){height="290px"}
+:::
+::: {.column width="52%"}
+The **electrical interplay** between minerals and microorganisms is one of the most complicated, important and dynamic biogeochemical mechanisms on Earth.
+
+The topic is extremely broad, and the spatial scale runs **from atoms to globes**:
+
+- minerals as **physical protection** and as a source of **bio-essential elements**;
+- trace elements as **cofactors**;
+- minerals as **electron acceptors and donors** — extracellular electron transfer.
+:::
+:::
+
+# One Health ja keskkonnaseire
+
+## One Health ja eDNA
+
+::: {.columns}
+::: {.column width="34%"}
+![](/assets/lecture9/s09_6.png){height="240px"}
+
+The **One Health** approach adopted by the EU connects human, animal/plant and environmental health.
+:::
+::: {.column width="33%"}
+![](/assets/lecture9/s09_1.jpg){height="240px"}
+
+From target-species assays (qPCR, dPCR) and assemblage-level approaches (multiple qPCR, metabarcoding) to abundance and biomass estimates.
+:::
+::: {.column width="33%"}
+![](/assets/lecture9/s09_2.jpg){height="240px"}
+
+The fate of eDNA: release, degradation, transport, resuspension — every one of them between the organism and your filter.
+:::
+:::
+
+## Mida eDNA kirjandus tegelikult katab
+
+::: {.columns}
+::: {.column width="50%"}
+![](/assets/lecture9/s09_4.png){height="250px"}
+
+Publications per year since 1994 — the growth is almost entirely eukaryote-focused.
+:::
+::: {.column width="50%"}
+![](/assets/lecture9/s09_5.png){height="250px"}
+
+Sample type against sample use: drinking, recreational, irrigation, shellfish-growing. Most environmental DNA work is water, and most of it is regulatory in motivation.
+:::
+:::
+
+::: {.callout-note}
+**Genetic diagnostics of faecal pollution** is the concrete One Health case: host-associated markers distinguish ruminant, human, bird and other sources, which a plate count never can.
+:::
+
+## Suplusvee kvaliteet
+
+::: {.columns}
+::: {.column width="52%"}
+The revised **Bathing Water Directive** (2006/7/EC) sets limits in CFU per 100 ml for *Escherichia coli* and enterococci, classified excellent / good / sufficient / poor.
+
+The limits are the easy part. The hard part is that a culture result arrives **18–48 hours** after the swimmer did.
+
+**Fluidion's 2024 Olympics Open Data Initiative** put automated *E. coli* measurement on the Seine in near-real time, alongside precipitation and river discharge — which is what makes the data actionable rather than retrospective.
+:::
+::: {.column width="48%"}
+![](/assets/lecture9/s10_1.png){height="200px"}
+
+![](/assets/lecture9/s10_2.png){height="110px"}
+:::
+:::
+
+## Reaalajas hoiatussüsteemid
+
+::: {.columns}
+::: {.column width="33%"}
+![](/assets/lecture9/s10_5.jpg){height="230px"}
+
+Autonomous *in situ* analysers on the Seine.
+:::
+::: {.column width="33%"}
+![](/assets/lecture9/s10_6.jpg){height="230px"}
+
+*E. coli* concentration against precipitation and discharge — the rain is the signal.
+:::
+::: {.column width="34%"}
+![](/assets/lecture9/s10_4.jpg){height="230px"}
+
+From measurement to decision: a three-day forecast of bathing-water status, issued to decision-makers rather than to a journal.
+:::
+:::
+
+## HAB varajane hoiatus — *in situ* andmed
+
+::: {.columns}
+::: {.column width="52%"}
+The **PRIMROSE** mooring platform at Anse du Roz in the Daoulas estuary records microphytoplankton images with an **Imaging FlowCytobot (IFCB)**, giving seasonal patterns for picoeukaryotes, *Synechococcus*, Cryptophyceae and nanophytoplankton.
+
+The economic impact of **harmful algal blooms** has been estimated at **€919 million per year** in the EU.
+
+This is flow cytometry — from the earlier lecture — redeployed as an unattended, moored, continuous sensor.
+:::
+::: {.column width="48%"}
+![](/assets/lecture9/s11_4.jpg){height="150px"}
+
+![](/assets/lecture9/s11_5.jpg){height="150px"}
+
+Ruiz-Villarreal et al. 2022
+:::
+:::
+
+## HAB: *Karenia brevis* Florida rannikul
+
+::: {.columns}
+::: {.column width="55%"}
+*Karenia brevis* blooms occur nearly annually along the southwest coast of Florida. Effective mitigation of the ecological, public-health and economic impacts requires **reliable real-time forecasting**.
+
+*K. brevis* is a marine dinoflagellate that naturally produces a suite of potent neurotoxins collectively called **brevetoxins**.
+
+Forecasting couples sensor networks, social-media signals and analytics — the "sensor cloud" and "social cloud" feeding the same prediction.
+:::
+::: {.column width="45%"}
+![](/assets/lecture9/s12_2.jpg){height="160px"}
+
+![](/assets/lecture9/s12_1.jpg){height="140px"}
+:::
+:::
+
+## Avatud teadus ja kodanikuteadus
+
+::: {.columns}
+::: {.column width="50%"}
+**EU Open Science** core principles:
+
+- Collaboration, Open Access, Open Data, Open Source (**FAIR** principles)
+- Transparency, Reproducibility
+- **Citizen Science**, Educational Outreach
+- Open Peer Review, Ethical Considerations
+
+**eDNA Expeditions** in marine World Heritage sites is a citizen-science project revealing the biodiversity of UNESCO's flagship sites and its vulnerability to climate change.
+:::
+::: {.column width="50%"}
+![](/assets/lecture9/s14_1.jpg){height="140px"}
+
+![](/assets/lecture9/s14_2.jpg){height="140px"}
+
+Purpose-built sampling devices and protocols make citizen science possible: the protocol has to survive a non-specialist.
+:::
+:::
+
+# Mikrofluidika
+
+## Mikrofluidika keskkonnarakendustes
+
+::: {.columns}
+::: {.column width="52%"}
+**Microfluidics** is the technology of driving and controlling fluids at the micrometre scale. It grew out of microanalytical methods and microelectronic circuits in the early 1990s, and expanded dramatically once **soft lithography** made patterned elastomeric devices easy to fabricate.
+
+For nucleic acids, the key trick is **immiscible phase processing**:
+
+- **immiscible phase filtration (IPF)** devices;
+- **superparamagnetic particles (PMPs)** dragged through an oil–water interface, carrying DNA and leaving inhibitors behind.
+
+Extraction and purification become a magnet moving across a chip.
+:::
+::: {.column width="48%"}
+![](/assets/lecture9/s15_1.png){height="150px"}
+
+![](/assets/lecture9/s15_2.png){height="150px"}
+:::
+:::
+
+## Mikrofluidika mikroobiökoloogias
+
+::: {.columns}
+::: {.column width="33%"}
+![](/assets/lecture9/s16_1.png){height="200px"}
+
+A device that cocultures three soil bacteria by imposing spatial structure on three wells and providing a **chemical communication channel** (PDMS).
+:::
+::: {.column width="33%"}
+![](/assets/lecture9/s16_2.png){height="200px"}
+
+Chemical gradients reveal navigation strategies: waves of *E. coli* crossing a channel at constant speed.
+:::
+::: {.column width="34%"}
+![](/assets/lecture9/s16_3.png){height="200px"}
+
+Agarose and topology impose the spatial structure that a shaken flask destroys.
+:::
+:::
+
+::: {.notes}
+The ecological point: a flask is a habitat with no structure, no gradients and no neighbours at a fixed distance. Microfluidics lets you put those back, one at a time, and see which one the behaviour depends on.
+:::
+
+# LAMP
+
+## Loop-mediated isothermal amplification
+
+::: {.columns}
+::: {.column width="55%"}
+**LAMP** combines rapidity, simplicity and high specificity. It uses **Bst DNA polymerase**, which has **strand-displacement activity**, so no thermal cycling is needed — a stable **60–65 °C** is enough.
+
+Primers:
+
+- **F3 / B3** — forward and backward outer primers
+- **FIP (F1c + F2) / BIP (B1c + B2)** — inner primers
+- **LF / LB** — loop primers
+
+The reaction repeats two elongation types at the loop regions: self-elongation from the stem-loop structure at the 3′ terminal, and binding and elongation of new primers at the loop. It has an **initial** and an **exponential** amplification phase.
+:::
+::: {.column width="45%"}
+![](/assets/lecture9/s17_2.png){height="140px"}
+
+![](/assets/lecture9/s17_1.jpg){height="160px"}
+
+First described by Notomi et al. (2000).
+:::
+:::
+
+## LAMP: variandid ja rakendused
+
+::: {.columns}
+::: {.column width="52%"}
+LAMP applies to **point-of-care testing**, genetic testing in resource-poor settings, and rapid testing of food products and environmental samples.
+
+Many variants exist, from generic intercalating dyes and pH-sensitive indicators through to probe-based assays — assimilating probes, DARQ, QProbe, Tsunami-LAMP.
+
+The **assimilating probe** carries a fluorophore and a quencher on opposite strands; amplification separates them, and the signal appears.
+
+RT-LAMP, multiplex LAMP, LAMP-on-a-chip and digital LAMP all build on the same enzyme.
+:::
+::: {.column width="48%"}
+![](/assets/lecture9/s18_1.png){height="140px"}
+
+![](/assets/lecture9/s18_4.jpg){height="150px"}
+:::
+:::
+
+## IFAST-LAMP kiibil
+
+::: {.columns}
+::: {.column width="52%"}
+**IFAST** — *immiscible filtration assisted by surface tension* (*pinnapingest toetatud mittesegunev filtreerimine*) — takes **10 minutes** for extraction and purification.
+
+A chip built to detect ***Agroathelia rolfsii***, a corticioid fungus and facultative plant pathogen, the causal agent of **southern blight** in crops.
+
+Devices were milled from **polymethyl methacrylate (PMMA)** on a CNC machine — which is to say, this is not exotic fabrication.
+
+Changator et al. 2024
+:::
+::: {.column width="48%"}
+![](/assets/lecture9/s19_1.jpg){height="130px"}
+
+![](/assets/lecture9/s19_2.jpg){height="170px"}
+
+Magnetic particles crossing the gate, carrying DNA and leaving soil matrix behind.
+:::
+:::
+
+## Liigituvastus põllul: lab-on-a-chip
+
+::: {.columns}
+::: {.column width="52%"}
+On-site genetic analysis for **species identification** using a lab-on-a-chip, with superparamagnetic particles and **colorimetric LAMP** (guanidine hydrochloride lysis).
+
+The field workflow: dung sample collection with minimal off-chip preparation and chemical lysis → DNA binding to PMPs → washing → amplification with colorimetric LAMP, including positive and negative controls on the same device.
+
+*Ecology and Evolution* **11**(4): 1535–1543 (2021), doi:10.1002/ece3.7053
+:::
+::: {.column width="48%"}
+![](/assets/lecture9/s20_1.jpg){height="150px"}
+
+![](/assets/lecture9/s20_2.jpg){height="140px"}
+
+Colour, read by eye, at the sampling site.
+:::
+:::
+
+## Digitaalne LAMP ja immunomagnetiline püüdmine
+
+::: {.columns}
+::: {.column width="50%"}
+![](/assets/lecture9/s21_1.jpg){height="150px"}
+
+**Smartphone-based IFAST droplet digital LAMP** for purification and detection of DNA (Hu et al. 2019). Partitioning into droplets turns a yes/no result into a count.
+:::
+::: {.column width="50%"}
+![](/assets/lecture9/s22_1.png){height="150px"}
+
+**Immunomagnetic capture**: antibody-functionalised magnetic beads pull the target cells out of a dirty sample, then an ATP assay reports them as light. Separation and detection, no amplification at all.
+:::
+:::
+
+# CRISPR–Cas
+
+## CRISPR–Cas süsteem (CCS)
+
+::: {.columns}
+::: {.column width="55%"}
+**Clustered Regularly Interspaced Palindromic Repeats.**
+
+- **1987**, Ishino et al. — while identifying the gene for alkaline phosphatase isozyme conversion in *E. coli*, found five homologous sequences of 29 nucleotides separated by 32-nucleotide spacers.
+- Second occurrence in *Haloferax mediterranei*: 30–34 nucleotide sequences with direct repeats spaced by 35 bp.
+- **2007**, Barrangou and co-authors: after a viral infection, **new spacer sequences from the invading bacteriophage were inserted into the host genome**.
+
+That last result turned a curiosity into an immune system — and then into a tool.
+:::
+::: {.column width="45%"}
+![](/assets/lecture9/s23_1.png){height="140px"}
+
+![](/assets/lecture9/s23_2.jpg){height="160px"}
+
+Nobel Prize in Chemistry 2020 — Charpentier and Doudna.
+:::
+:::
+
+## CCS tüübid
+
+::: {.columns}
+::: {.column width="48%"}
+![](/assets/lecture9/s26_1.jpg){height="300px"}
+:::
+::: {.column width="52%"}
+**Interference** involves the formation of either a multiprotein effector complex or a single effector protein.
+
+- **Class 1** systems use a **multiprotein effector complex** — multiple Cas proteins plus crRNA.
+- **Class 2** systems use a **single effector protein** with crRNA.
+
+The purpose of both is the same: recognise identical or very similar sequences in the genome of an invading virus or plasmid.
+
+Class 2 is what made genome editing practical, because one protein is far easier to deliver than a complex.
+:::
+:::
+
+## CRISPR–Cas9 — tüüp 2
+
+::: {.columns}
+::: {.column width="52%"}
+**Adaptation** — also called insertion or acquisition — is the incorporation of foreign DNA into the CRISPR array. Integration of a new spacer at the **leader sequence** is mediated by the heterohexameric **(Cas12–Cas2)₂** complex, and requires a **protospacer adjacent motif (PAM)**.
+
+Two spacer-acquisition systems:
+
+- **Type I** uses **integration host factor (IHF)** bound to the leader, bending the DNA so the complex can make the initial cleavage.
+- **Type II** uses the leader anchoring sequence instead.
+
+The double-strand break is then repaired by **NHEJ** (error-prone, gives indels) or **HDR** (template-directed, gives the edit you wanted).
+:::
+::: {.column width="48%"}
+![](/assets/lecture9/s27_1.png){height="140px"}
+
+![](/assets/lecture9/s27_2.jpg){height="150px"}
+:::
+:::
+
+## Juht-RNA ja redigeerimine
+
+::: {.columns}
+::: {.column width="52%"}
+**(A)** The crRNA–tracrRNA complex, and the artificial **single-guide RNA (sgRNA)** that fuses the two into one molecule.
+
+**(B)** CRISPR–Cas-assisted gene editing with a **chimeric single-guide RNA**, carrying both the sequence that generates the double-stranded break and the one directing **homology-directed repair**.
+
+::: {.callout-note}
+sgRNAs do not always outperform two-part guide RNAs, despite frequent claims to the contrary. Which works better is an empirical question for your target.
+:::
+:::
+::: {.column width="48%"}
+![](/assets/lecture9/s25_1.jpg){height="150px"}
+
+![](/assets/lecture9/s25_2.png){height="140px"}
+:::
+:::
+
+## CRISPR–Cas rakendused — ja riskid
+
+::: {.columns}
+::: {.column width="50%"}
+![](/assets/lecture9/s24_1.jpg){height="250px"}
+
+In plant biotechnology, therapeutics and personal medicine, management of infectious diseases and of cancers, and the food industry.
+:::
+::: {.column width="50%"}
+![](/assets/lecture9/s24_2.jpg){height="250px"}
+
+**Risks and challenges:** off-target effects, epigenetic changes, toxicity, non-target and cross-kingdom effects, delivery, regulatory acceptance, public acceptance.
+:::
+:::
+
+# Geenitehnoloogia taastamiseks
+
+## Kloonimine, taastamine ja väljasuremise tagasipööramine
+
+::: {.columns}
+::: {.column width="52%"}
+Three routes to a lost phenotype:
+
+- **Back-breeding** — after many generations of selective breeding, the extinct phenotype is resurrected from the variation still present in living relatives.
+- **Cloning** — somatic cells are harvested and cultured *in vitro*, nuclei transferred to an egg from a closely related species, and the embryo implanted.
+- **Genome editing** — the genome of the extinct species is sequenced, cells are taken from a close living relative, and editing is used to make the living genome resemble the extinct one.
+
+Only the third needs ancient DNA, and only the third produces a hybrid rather than the original.
+:::
+::: {.column width="48%"}
+![](/assets/lecture9/s28_1.png){height="150px"}
+
+![](/assets/lecture9/s29_2.jpg){height="150px"}
+:::
+:::
+
+## Peaksime me?
+
+::: {.columns}
+::: {.column width="50%"}
+![](/assets/lecture9/s29_1.jpg){height="230px"}
+
+Gene-editing breakthroughs could allow us to bring back extinct species, like the woolly mammoth. **Should we?**
+:::
+::: {.column width="50%"}
+![](/assets/lecture9/s29_4.png){height="230px"}
+
+The same toolbox, pointed the other way: **Cas12, Cas13 and Cas14** are the proteins behind CRISPR *diagnostics* — detecting dsDNA, ssRNA and ssDNA rather than editing them.
+:::
+:::
+
+::: {.notes}
+Worth pausing on the asymmetry: de-extinction attracts the funding and the headlines, while CRISPR diagnostics is the part that will actually show up in environmental monitoring within this decade.
+:::
+
+## Geneetiline taastamine
+
+**Documenting the genetic decline of a population is important but not enough** from a conservation perspective.
+
+**Restorative genetic management** increases the genetic diversity of a population using individuals from another wild population or from captive stock.
+
+::: {.callout-important}
+The risk is **outbreeding depression** — adaptation may be reduced by diluting locally selected alleles, resulting in lower fitness of offspring when individuals with very different genetic backgrounds interbreed.
+:::
+
+**Captive breeding** (*ex situ* conservation) brings rare or endangered animals into captivity — which creates its own selection regime, towards whatever survives in captivity.
+
+## Genoomika ökosüsteemide taastamisel
+
+::: {.columns}
+::: {.column width="50%"}
+![](/assets/lecture9/s31_1.jpg){height="250px"}
+
+The three ecosystems a restoration ecologist deals with: **reference**, **degraded** and **restored**.
+:::
+::: {.column width="50%"}
+- **Population genomics** improves restoration inputs — enhancing plant provenance delineation and assessing how well restoration plantings capture genomic diversity.
+- **Meta-omics** improves assessment and monitoring, including functional and often cryptic components such as bacteria and insects, and their interactions.
+- **CRISPR–Cas9 genome editing** may become useful for recovery of severely degraded landscapes, with appropriate attention to risk.
+:::
+:::
+
+## Kliimaga kohandatud päritolu valik
+
+::: {.columns}
+::: {.column width="48%"}
+![](/assets/lecture9/s32_1.jpg){height="290px"}
+:::
+::: {.column width="52%"}
+A hypothetical species with three sampled populations: a frost- and drought-prone site (Pop 1), a mesic site (Pop 2) and an arid site (Pop 3).
+
+Genomic diversity measures feed restoration management through **genomics-informed climate-adjusted provenancing**: putatively adaptive markers are identified to derive an **adaptively enriched genetic space**.
+
+Population genomics can also assess the diversity actually captured in plantings, by comparing donor provenances against the restoration planting itself.
+
+This is the adaptive-variation argument from the next lecture, applied with a spade.
+:::
+:::
+
+## Geenilevi — gene drive
+
+::: {.columns}
+::: {.column width="52%"}
+A **gene drive** biases inheritance so that an allele spreads through a population far faster than Mendelian expectation.
+
+Proposed applications:
+
+- exterminating insects that carry pathogens — notably mosquitoes transmitting malaria, dengue and Zika;
+- controlling **invasive species**;
+- eliminating **herbicide** resistance;
+- eliminating **pesticide** resistance.
+
+Normal inheritance halves an allele each generation. Drive inheritance does not — which is exactly what makes it both powerful and hard to recall once released.
+:::
+::: {.column width="48%"}
+![](/assets/lecture9/s33_1.png){height="150px"}
+
+![](/assets/lecture9/s33_2.jpg){height="150px"}
+:::
+:::
+
+## Gene drive ja Everglades
+
+::: {.columns}
+::: {.column width="34%"}
+![](/assets/lecture9/s34_1.jpg){height="230px"}
+:::
+::: {.column width="33%"}
+![](/assets/lecture9/s34_3.jpg){height="230px"}
+
+Burmese python spread, 1995 → 2021.
+:::
+::: {.column width="33%"}
+![](/assets/lecture9/s34_2.jpg){height="230px"}
+
+Sample diet for one python: raccoons, opossums, alligators, coots, herons, ibises, squirrels, rabbits, wrens, cotton rats, mice.
+:::
+:::
+
+How do you eradicate tens of thousands of Burmese pythons from the Everglades? USGS scientists are asking whether gene editing could help — modifying females to produce **only male offspring**, so that after many years the dearth of reproductive females bottlenecks the population. Genetically engineered mosquitoes have already been released in Florida to produce a similar crash. Feasibility is still being explored; concrete plans are far off.
+
+## Korallid ja biotehnoloogia
+
+::: {.columns}
+::: {.column width="50%"}
+![](/assets/lecture9/s37_1.jpg){height="250px"}
+
+Biotechnological approaches for coral conservation are needed to "future-proof" corals: pathogen and symbiont isolation, natural product screening, phage therapy, probiotics, 3D-printed bionic coral, assisted evolution and CRISPR–Cas9.
+:::
+::: {.column width="50%"}
+![](/assets/lecture9/s37_2.jpg){height="250px"}
+
+Selective breeding, interspecific hybrids, genetic engineering for stress resilience and probiotics — then coral gardening to upscale for restoration in nurseries.
+
+Microinjection, gene knockdown and CRISPR-mediated knock-in have all been demonstrated in the hard coral *Astrangia poculata*.
+:::
+:::
+
+# Lisa: Fe–Mn konkretsioonid
+
+## Konkretsioonide levik Soome merealadel
+
+::: {.columns}
+::: {.column width="48%"}
+![](/assets/lecture9/s39_1.png){height="280px"}
+:::
+::: {.column width="52%"}
+Modelling the occurrence of **ferromanganese concretions** in Finnish marine areas (Kaikkonen et al. 2019).
+
+- Concretions were found at about **7000 sites**, and projected to occur on over **11%** of Finnish sea areas.
+- Using seafloor characteristics and hydrographical conditions as predictors, the extent of concretion-covered seafloor in the northern Baltic is **larger than anticipated**.
+- Phosphorus does not necessarily drive growth directly but acts as a **proxy** for the availability of other elements; the chemistry of the underlying sediment is likely an important driver.
+:::
+:::
+
+## Konkretsioonide kasv — mikroobide roll
+
+::: {.columns}
+::: {.column width="52%"}
+Heylas et al. (2021) investigated freshwater ferromanganese concretions in eastern Canada at the Northgrippian–Meghalayan boundary, finding two periods of near-uniform accretion:
+
+- **1.5 mm per 1000 years** (8448–4683 yr BP)
+- **3.4 mm per 1000 years** (4224–826 yr BP, warmer and more eutrophic)
+
+Growth requires a sustained source of Fe and Mn, from the overlying water column and/or the underlying sediment porewater. Oxygenated lake water is an unlikely source — Fe(II) and Mn(II) are not easily transported in O₂-rich, near-neutral water.
+
+::: {.callout-important}
+Fe oxidation dominates at lower temperatures, and chemical oxidation of Mn(II) is kinetically inhibited below pH 8 — so **biologically mediated oxidation is the only viable mechanism**. The structure is a microbial product.
+:::
+:::
+::: {.column width="48%"}
+![](/assets/lecture9/s40_1.jpg){height="290px"}
+
+Basal Fe-rich zone, radial growth zone, upper low-density zone.
+:::
+:::
+
+## Check yourself
+
+<details>
+<summary>Why does LAMP suit field work better than PCR, and what do you give up?</summary>
+
+It runs isothermally at 60–65 °C, so it needs a heat block rather than a thermal cycler, and strand-displacing Bst polymerase tolerates inhibitors that would stop Taq. The result can be read as colour by eye. What you give up is quantification and, with six primers against one target, a much harder assay to design and to multiplex — plus a real risk of amplicon contamination, because nobody opens tubes carefully in a boat.
+
+</details>
+
+<details>
+<summary>An immiscible-phase chip moves DNA on magnetic particles through an oil barrier. What is the oil actually doing?</summary>
+
+It is the wash step. Inhibitors, soil matrix and cell debris stay in the aqueous sample because they cannot cross the oil–water interface, while the DNA-loaded particles are dragged through by a magnet. Surface tension replaces three centrifugation and wash cycles, which is what collapses the protocol from an hour to ten minutes.
+
+</details>
+
+<details>
+<summary>Why is the distinction between Class 1 and Class 2 CRISPR systems the one that mattered for biotechnology?</summary>
+
+Because Class 2 systems achieve interference with a single effector protein plus guide RNA, while Class 1 needs a multiprotein complex. Delivering one protein and one RNA into a cell is tractable; assembling a multi-subunit complex in a foreign cell is not. The biology is not better in Class 2 — it is just deliverable.
+
+</details>
+
+<details>
+<summary>A gene drive would work against the Everglades pythons. Name the two things that make it a hard decision anyway.</summary>
+
+It does not respect borders — a drive released in Florida is, in principle, a drive released anywhere the species occurs, including its native range where it is not a pest. And it is difficult to recall: once an allele is biasing its own inheritance, stopping it requires a second intervention that is at least as hard as the first. Those are governance problems, not technical ones.
+
+</details>
+
+## Aitäh! Thank you — questions?
+
+::: {.columns}
+::: {.column width="55%"}
+![](/assets/lecture9/s36_3.png){height="230px"}
+:::
+::: {.column width="45%"}
+::: {.callout-important}
+peeter.laas@taltech.ee · peeter.laas@ut.ee
+:::
+
+*Läänemeri on meie džungel, raba meie oaas, kaevuvesi meie kullamaak.*
+:::
+:::

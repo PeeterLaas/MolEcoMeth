@@ -108,6 +108,12 @@ website:
             text: "4 · Markerid, vöötkoodid ja eDNA"
           - href: lectures/loeng5.qmd
             text: "5 · eDNA, hübridisatsioon ja tsütomeetria"
+          - href: lectures/lecture9.qmd
+            text: "9 · Mikrofluidika, LAMP ja CRISPR"
+          - href: lectures/lecture10.qmd
+            text: "10 · Neutraalne ja adaptiivne muutlikkus"
+          - href: lectures/lecture11.qmd
+            text: "11 · MK-test, CRISPR, fülogeograafia, epigeneetika"
           - href: lectures/population_genetics.qmd
             text: "10 · Populatsioonigeneetika"
           - href: lectures/molecular_evolution.qmd

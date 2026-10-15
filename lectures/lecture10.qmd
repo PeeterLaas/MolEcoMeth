@@ -1,0 +1,932 @@
+---
+title: "Lecture 10: Neutral and adaptive molecular variation"
+subtitle: "MLB7052.LT: Modern Methods in Molecular Ecology"
+title-slide-attributes:
+    data-background-image: ../assets/logos/uu_sigill_right.png
+    data-background-size: contain
+    data-background-opacity: "0.25"
+author: "Peeter Laas"
+institute: "TalTech / UT Institute of Technology"
+format:
+  revealjs: 
+    theme: [serif, ../css/lectures.scss]
+    slide-number: false
+    show-slide-number: all
+    toc: true
+    toc-depth: 1
+    progress: true
+    width: 1200
+    height: 675
+    transition: slide
+    toc-title: "Modern Methods in Molecular Ecology lecture:"
+    smaller: true
+    footer: "Fall 2026"
+    logo: ../assets/logos/uu_sigill_right.png
+    header-logo: ../assets/logos/UUtopleft.png
+    self-contained: true
+    html-math-method: mathml
+filters:
+  - reveal-header
+editor_options: 
+  chunk_output_type: inline
+---
+
+## Kaasaegsed molekulaarsed meetodid ökoloogias
+
+**Loeng 10 — neutraalne ja adaptiivne molekulaarne muutlikkus (*neutraalne ja adaptiivne molekulaarne muutlikkus*).**
+
+Every marker you have used so far was assumed to be neutral. This lecture asks what that assumption actually buys you, when it fails, and what you do about the variation that is *not* neutral.
+
+Key terms are given with their Estonian translation. Eestikeelne materjal: A. Heinaru, *Geneetika*, evolutsioonigeneetika peatükk.
+
+::: {.notes}
+The through-line: neutrality is not a property of a marker, it is a hypothesis about a marker in a particular population. Most of the lecture is about how that hypothesis is tested and where it breaks.
+:::
+
+## Eelmine kord — last time
+
+::: {.columns}
+::: {.column width="50%"}
+![](/assets/lecture10/s03_1.png){height="250px"}
+
+The genetic rescue toolkit: bioinformatics, molecular biology, advanced reproduction, engineering — from genomic insight through to de-extinction.
+:::
+::: {.column width="50%"}
+![](/assets/lecture10/s04_1.png){height="250px"}
+
+…and we made maps. Even a simple one is informative (*ka lihtsad kaardid võivad olla informatiivsed*).
+:::
+:::
+
+## Võrdlev fülogeograafia — natural experiments
+
+::: {.columns}
+::: {.column width="52%"}
+In the **comparative biogeographic approach**, relationships are reconstructed across multiple clades of co-distributed species, and the patterns they share are attributed to shared events.
+
+In some frameworks time is treated explicitly; in others only the branching order matters.
+
+**Meta-analysis** then asks whether a factor — pelagic larval duration, fecundity, population size — predicts an effect size such as a difference in $F_{ST}$.
+:::
+::: {.column width="48%"}
+![](/assets/lecture10/s05_1.png){height="230px"}
+
+![](/assets/lecture10/s06_1.png){height="150px"}
+:::
+:::
+
+## Täna — today
+
+| | |
+|---:|---|
+| **1** | Forces of evolution and the fate of new mutations |
+| **2** | The neutral theory and the molecular clock |
+| **3** | Detecting selection in DNA sequences |
+| **4** | Which molecular markers are neutral? |
+| **5** | Adaptive molecular variation in nature |
+| **6** | Quantitative traits, gene expression and conservation |
+
+# Evolutsiooni tegurid ja mutatsioonide saatus
+
+## Neli jõudu muudavad alleelisagedusi
+
+**Synthetic theory of evolution** (*sünteetiline evolutsiooniteooria*): Fisher, Wright, Haldane, 1920s–1930s.
+
+| Force | Eesti keeles | What it does |
+|---|---|---|
+| **Mutation** | *mutatsioon* | The only source of new alleles. Spontaneous rate ~$10^{-9}$–$10^{-8}$ per nucleotide per generation |
+| **Natural selection** | *looduslik valik* | Non-random differences in survival and reproduction among genotypes |
+| **Genetic drift** | *geenitriiv* | Random change in allele frequency from the sampling of gametes; strongest in small populations |
+| **Gene flow** | *migratsioon, geenivool* | Moves alleles between populations; homogenises them and spreads new variants |
+
+::: {.notes}
+Selectionists emphasise selection — beneficial and deleterious mutations. Neutralists emphasise mutation, purifying selection and drift. The whole lecture is the argument between those two emphases, and how it was settled empirically.
+:::
+
+## Nullmudel: Hardy–Weinbergi tasakaal
+
+::: {.columns}
+::: {.column width="55%"}
+**Hardy–Weinberg equilibrium** (*Hardy-Weinbergi tasakaal*):
+
+$$p^2 + 2pq + q^2 = 1$$
+
+In a large, randomly mating population with no mutation, selection, drift or migration, allele and genotype frequencies stay constant. **Departures — or change over time — point to one of the four forces.**
+
+Red fox fur colour, Canada 1830–1930: red $AA$, reddish-black $Aa$, silver $aa$. Trappers preferentially took the valuable silver pelts, and the frequency of the $a$ allele declined.
+:::
+::: {.column width="45%"}
+![](/assets/lecture10/s10_1.png){height="300px"}
+:::
+:::
+
+::: {.notes}
+A single locus with incomplete dominance. The decline of silver foxes is directional, human-induced selection against aa — the same phenomenon as the trophy-hunting example later in the lecture.
+:::
+
+## Uue mutatsiooni saatus
+
+::: {.columns}
+::: {.column width="55%"}
+Mutation rates vary almost **1000-fold** between species — from $10^{-11}$ per nucleotide per generation in some unicellular organisms to ~$10^{-8}$ in primates.
+
+Only **1–2%** of a large eukaryotic genome encodes structural proteins, so most new mutations land in the vast non-functional regions.
+
+A new mutation may be:
+
+- **Deleterious** (*kahjulik*)
+- **Neutral** (*neutraalne*)
+- **Advantageous** (*kasulik*)
+- **Overdominant** (*üledominantne*) — the heterozygote has the highest fitness
+:::
+::: {.column width="45%"}
+![](/assets/lecture10/s11_1.png){height="300px"}
+:::
+:::
+
+## Kohasus — fitness
+
+::: {.columns}
+::: {.column width="55%"}
+**Fitness** (*kohasus*) is the ability to survive and reproduce; a common measure is lifetime offspring number.
+
+The **absolute fitness** $W$ of a genotype is the proportional change in its abundance over one generation attributable to selection:
+
+$$n_{t+1} = W \cdot n_t$$
+
+Relative fitness $w = W / W_{max}$, and the **selection coefficient** $s = 1 - w$.
+
+Fitness components trade off: more offspring often means lower survival.
+:::
+::: {.column width="45%"}
+![](/assets/lecture10/s12_1.png){height="270px"}
+
+(A) annual survival vs fecundity across bird species; (B) mated *Drosophila* males live shorter lives than virgin males.
+:::
+:::
+
+## Geneetiline koormus — genetic load
+
+$$L = \frac{W_{max} - W_{mean}}{W_{max}}$$
+
+The difference between the fitness of the most fit genotype and that of the average genotype in the population.
+
+| | |
+|---|---|
+| **Low genetic load** | Reproductive fitness is similar among all organisms; most are likely to survive and reproduce |
+| **High genetic load** | Greater variance in fitness: few carry the most-fit genotype, the majority have much lower reproductive fitness |
+
+Fisher's (1930) treatment predicted that any genetic load would decline, reducing population genetic variability to low levels — and *Drosophila* studies showed that many mutations are indeed deleterious.
+
+## Neodarvinism ja sünteetiline evolutsiooniteooria
+
+In the 1920s, mathematical treatments of natural selection — culminating in Fisher's *The Genetical Theory of Natural Selection* (1930) — reinvigorated evolutionary biology. This became **The Modern Synthesis** (*sünteetiline evolutsiooniteooria*), a pervasive **selectionist** view.
+
+Its expectation was clear: genetic variability in most species would be **low**, with most individuals homozygous for the same allele at most loci, because mutation-produced variation would create a heavy genetic load (Muller 1950).
+
+| | | | | | | |
+|---|---|---|---|---|---|---|
+| **1859** | **1900** | **1920–30s** | **1950** | **1966** | **1968** | **1973** |
+| Darwin | Mendel rediscovered | Fisher, Wright, Haldane | Muller — genetic load | Lewontin & Hubby; Harris | Kimura | Ohta |
+
+## Üllatus: rohke polümorfism
+
+Gel electrophoresis of allozymes (**Lewontin & Hubby 1966**; **Harris 1966**) revealed far more variation than anyone expected:
+
+- about **⅓** of human soluble enzymes are polymorphic;
+- **12–15%** of individuals are heterozygous at these loci;
+- Duffy $Fy^b$ allele frequency: **0.005** in Korea vs **0.94** in South Africa.
+
+**How is so much variation maintained?**
+
+| | |
+|---|---|
+| **Selectionist answer** | Balancing selection (*tasakaalustav selektsioon*) actively keeps alleles in the population |
+| **Neutralist answer** | Most variants are selectively neutral (*selektiivselt neutraalne*) and drift randomly towards fixation or loss |
+
+::: {.notes}
+This "too much variation" observation is what the Modern Synthesis did not predict, and what motivated Kimura's neutral theory and the whole selectionist–neutralist debate.
+:::
+
+## Geenitriiv — genetic drift
+
+::: {.columns}
+::: {.column width="55%"}
+Each generation is a finite random sample of the parents' gametes, so allele frequencies wander by chance — **random genetic drift** (*juhuslik geenitriiv*).
+
+- Every population eventually reaches **fixation** (*fikseerumine*) or loss of an allele.
+- The probability that a new neutral mutation is fixed equals its initial frequency, $1/(2N)$.
+- Heterozygosity decays as $H_t = H_0 (1 - 1/2N_e)^t$.
+- Drift is strongest when the **effective population size** $N_e$ is small.
+:::
+::: {.column width="45%"}
+![](/assets/lecture10/s16_1.png){height="300px"}
+
+20 simulated populations starting at $p = 0.5$. After 20 generations $A$ is fixed in 7 and lost in 5.
+:::
+:::
+
+## Triiv väikeses populatsioonis: nurmkana
+
+::: {.columns}
+::: {.column width="55%"}
+*Tympanuchus cupido* in Illinois (Westemeier et al. 1998, *Science*).
+
+- Prairie habitat shrank to **<1%** of its 1820 extent.
+- Population: **25 000** (1933) → **<50 birds** (1993).
+- Alleles at six loci: **31 → 22**; egg hatching **93% → <50%** — drift plus **inbreeding depression** (*inbriidingdepressioon*).
+- Translocating birds from Kansas, Minnesota and Nebraska restored hatching success — **genetic rescue**.
+:::
+::: {.column width="45%"}
+![](/assets/lecture10/s17_1.png){height="290px"}
+:::
+:::
+
+::: {.notes}
+Neutral microsatellite markers are what documented the loss of allelic diversity relative to the large outbred populations. This is the link back to last week's genetic rescue toolkit.
+:::
+
+## Valiku tüübid — modes of selection
+
+::: {.columns}
+::: {.column width="46%"}
+![](/assets/lecture10/s18_1.png){height="310px"}
+:::
+::: {.column width="54%"}
+| Mode | Eesti keeles | Example |
+|---|---|---|
+| **Directional** | *suunav valik* | Galápagos finches: mean beak depth rose within two years of the 1977 drought |
+| **Stabilizing** | *stabiliseeriv valik* | Gall flies: wasps kill larvae in small galls, birds in large ones |
+| **Disruptive** | *lõhestav valik* | African seedcrackers: small and large mandibles each handle a seed type |
+| **Balancing** | *tasakaalustav selektsioon* | Maintains polymorphism — heterozygote advantage, frequency dependence, seasonal change |
+| **Purifying** | *puhastav selektsioon* | Removes deleterious mutations — the commonest selection at the molecular level |
+:::
+:::
+
+# Neutraalsusteooria ja molekulaarne kell
+
+## Molekulaarse evolutsiooni neutraalsusteooria
+
+::: {.columns}
+::: {.column width="62%"}
+**Motoo Kimura, 1968.**
+
+Most evolutionary changes at the molecular level, and most variation within and between species, are due to **random genetic drift of selectively neutral mutant alleles**.
+
+- Most mutations may be deleterious, but they are rapidly removed by selection and so contribute little to variation.
+- Most mutations that are *not* deleterious are **neutral rather than beneficial**.
+- Because only a fraction of gametes is sampled each generation, a mutant allele can reach **fixation by chance** rather than by selective advantage.
+:::
+::: {.column width="38%"}
+![](/assets/lecture10/s20_1.png){height="280px"}
+
+Motoo Kimura (1924–1994)
+:::
+:::
+
+## Neutraalne asenduskiirus = mutatsioonikiirus
+
+::: {.columns}
+::: {.column width="55%"}
+$$2N u \times \frac{1}{2N} = k = u$$
+
+- $2Nu$ — new neutral mutations per generation
+- $1/(2N)$ — the probability that one of them is fixed
+- $k = u$ — substitutions per generation
+
+The rate of neutral substitution is **independent of population size** — $N$ cancels out. If $u$ is constant, substitutions accumulate steadily: a **molecular clock** (*molekulaarne kell*).
+
+Rates differ between genes and regions because the *fraction* of mutations that is neutral differs — **functional constraints**.
+:::
+::: {.column width="45%"}
+![](/assets/lecture10/s21_1.png){height="290px"}
+
+Amino-acid differences accumulate linearly with divergence time.
+:::
+:::
+
+## Teooria ühendab kolm muutlikkuse taset
+
+::: {.columns}
+::: {.column width="52%"}
+Kimura's neutral theory unifies:
+
+- **Mutation** — individual level
+- **Polymorphism** (*polümorfism*) — population level
+- **Divergence** — species level
+
+Intrapopulation polymorphism is just a **random walk** of variants on their way to fixation or loss.
+
+Polymorphism and divergence are therefore two phases of **the same process** — which is exactly what the HKA and McDonald–Kreitman tests exploit.
+:::
+::: {.column width="48%"}
+![](/assets/lecture10/s22_1.png){height="290px"}
+:::
+:::
+
+## Funktsionaalsed piirangud: valgud
+
+::: {.columns}
+::: {.column width="48%"}
+![](/assets/lecture10/s23_1.png){height="300px"}
+:::
+::: {.column width="52%"}
+**The more important a protein or region, the slower it evolves** — functional constraints (*funktsionaalsed piirangud*).
+
+- **Fibrinopeptides** ~8 substitutions per site per billion years;
+- **histones** and **cytochrome c** ~0.01;
+- α-globin **surface** 1.3 vs **interior** 0.17;
+- insulin signal and C peptide just above 1, the active insulin segments 0.2.
+
+Constraint is not noise. It is the property that makes a marker suitable for a particular taxonomic depth.
+:::
+:::
+
+## Funktsionaalsed piirangud: DNA saidid
+
+::: {.columns}
+::: {.column width="48%"}
+![](/assets/lecture10/s24_1.png){height="300px"}
+:::
+::: {.column width="52%"}
+Substitutions per site per $10^9$ years in different parts of a gene:
+
+| | |
+|---:|---|
+| **5.1** | α-globin pseudogene ψα1 (*pseudogeen*) |
+| **2.6** | 3rd codon positions — mostly **synonymous** (*sünonüümne asendus*) |
+| **0.7** | 1st + 2nd codon positions — mostly **non-synonymous** (*mittesünonüümne asendus*) |
+
+Fastest where mutations matter least; slowest at non-degenerate sites — exactly as the neutral theory predicts.
+:::
+:::
+
+## Vaikiv polümorfism — silent polymorphism
+
+::: {.columns}
+::: {.column width="52%"}
+Sequencing **11 *Adh* alleles** (Kreitman 1983) revealed **43 polymorphic sites**.
+
+Only **one** of them — Lys ↔ Thr at codon 192 — changes the protein: the classic Fast/Slow allozyme. The rest lie in introns, UTRs, flanking regions, or in synonymous codons.
+
+**Allozymes reveal only a small fraction of the DNA variation that is actually there.**
+:::
+::: {.column width="48%"}
+![](/assets/lecture10/s25_1.png){height="250px"}
+:::
+:::
+
+::: {.notes}
+Silent polymorphism results from the redundancy of the genetic code. This same locus is used by McDonald & Kreitman in section 3 — one gene, three lessons.
+:::
+
+## Enamik aminohappevariante on kahjutud
+
+::: {.columns}
+::: {.column width="48%"}
+![](/assets/lecture10/s26_1.png){height="300px"}
+:::
+::: {.column width="52%"}
+Point mutations in human **β-globin** (146 aa): variants are known at **9 amino-acid positions**, yet only **HbS**, **HbC** and **HbE** cause disease.
+
+Many replacements are effectively neutral — detectable in the protein or the DNA, invisible in the phenotype.
+
+**HbS** (Glu6Val) is the exception that proves the rule: homozygotes have sickle-cell anaemia, but heterozygotes resist malaria — **overdominance** maintained by balancing selection.
+:::
+:::
+
+## Peaaegu neutraalne teooria
+
+::: {.columns}
+::: {.column width="48%"}
+![](/assets/lecture10/s27_1.png){height="300px"}
+:::
+::: {.column width="52%"}
+**(A)** Kimura's neutral theory, 1960s. **(B)** Ohta's nearly neutral theory, 1970s, with selection coefficients graded from strongly deleterious through neutral to advantageous.
+
+A mutation behaves as neutral when $|N_e s| \ll 1$ — drift outweighs selection.
+
+Slightly deleterious mutations can therefore **drift to fixation in small populations** but are **purged in large ones**, which makes the substitution rate depend on $N_e$ after all.
+:::
+:::
+
+## Kolm seletusmudelit
+
+::: {.columns}
+::: {.column width="52%"}
+| Model | Explains evolution by |
+|---|---|
+| **Neutralist** | mutation + random genetic drift + purifying selection |
+| **Selectionist** | advantageous (positive) selection + balancing selection |
+| **Nearly neutral** | borderline mutations, whose effects lie between the selected and the neutral classes |
+
+These are not three camps to pick from. They are three regions of the same distribution of selection coefficients, and which one dominates depends on the gene and on $N_e$.
+:::
+::: {.column width="48%"}
+![](/assets/lecture10/s28_1.png){height="300px"}
+:::
+:::
+
+# Selektsiooni tuvastamine DNA järjestustes
+
+## McDonald–Kreitmani test
+
+The **MK test** is the standard statistical test of neutrality versus selection using DNA sequences. It needs sequences of several alleles **from within a species** and at least one sequence of the same gene **from a different species**.
+
+For a protein-coding locus, the neutral theory predicts that the ratio of non-synonymous to synonymous changes **within** a species equals the same ratio **between** species.
+
+| | Fixed between species | Polymorphic within species |
+|---|---|---|
+| **Synonymous** | $D_s$ | $P_s$ |
+| **Non-synonymous** | $D_n$ | $P_n$ |
+
+- Variation within a species — **polymorphism** (*polümorfism*)
+- Divergence between species — **substitution** (*asendus*)
+
+## Kuidas tabelit lugeda
+
+| | |
+|---|---|
+| $D_n/D_s \;<\; P_n/P_s$ | **Negative selection** — disadvantageous mutations inflating polymorphism (*negatiivne selektsioon*) |
+| $D_n/D_s \;=\; P_n/P_s$ | **The neutral expectation** (*neutraalsus*) |
+| $D_n/D_s \;>\; P_n/P_s$ | **Positive selection** — adaptive amino-acid fixations (*positiivne selektsioon*) |
+
+The **neutrality index** quantifies the departure:
+
+$$NI = \frac{P_n/P_s}{D_n/D_s} \qquad \alpha = 1 - NI$$
+
+$NI > 1$ → negative selection; $NI < 1$ → positive selection; $NI = 1$ → neutral. $\alpha$ (Smith & Eyre-Walker 2002) estimates the **fraction of amino-acid substitutions fixed by positive selection**.
+
+## Näide: *Adh* (McDonald & Kreitman 1991)
+
+::: {.columns}
+::: {.column width="46%"}
+*D. melanogaster*, *D. simulans*, *D. yakuba*:
+
+| | Fixed | Polymorphic |
+|---|---:|---:|
+| **Non-synonymous** | 7 | 2 |
+| **Synonymous** | 17 | 42 |
+:::
+::: {.column width="54%"}
+$D_n/D_s = 0.41$ vs $P_n/P_s = 0.05$
+
+$NI \approx 0.12$, $\alpha \approx 0.88$, Fisher's exact test $P \approx 0.007$.
+
+An **excess of fixed amino-acid differences** between species → adaptive protein evolution at *Adh*.
+:::
+:::
+
+::: {.callout-important}
+**Caveat:** slightly deleterious polymorphisms inflate $P_n$ and make $\alpha$ an *underestimate*. This is why rare variants are often excluded before the test is run.
+:::
+
+## Teised selektsiooni jäljed
+
+::: {.columns}
+::: {.column width="56%"}
+| Signature | What it measures |
+|---|---|
+| **dN/dS ($\omega$)** | Non-synonymous to synonymous rate ratio along a phylogeny: $\omega < 1$ purifying, $= 1$ neutral, $> 1$ positive |
+| **Tajima's $D$** | Site-frequency spectrum: $D < 0$ excess of rare variants (sweep or expansion); $D > 0$ excess of intermediate variants (balancing selection or bottleneck) |
+| **$F_{ST}$ outlier scans** | Loci far more (or less) differentiated between populations than the genome-wide background → local adaptation |
+| **Haplotype tests** | Long unbroken haplotypes at high frequency (EHH, iHS) reveal recent sweeps |
+:::
+::: {.column width="44%"}
+![](/assets/lecture10/s34_1.png){height="230px"}
+
+::: {.callout-important}
+Demography — bottlenecks, expansions, population structure — can mimic every one of these. Always compare against a genome-wide neutral background.
+:::
+:::
+:::
+
+# Kas marker on neutraalne?
+
+## Neutraalne ja adaptiivne muutlikkus
+
+| | |
+|---|---|
+| **Neutral markers** | Until recently molecular ecology focused on polymorphic markers not directly affected by selection. A large body of evidence testifies to the safety of that assumption for most markers in most situations. |
+| **Adaptive variation** | Traits of functional significance, likely to be under some form of selection: behaviour, morphology, life history — quantitative characters underpinned by alleles at many genes. |
+
+Assumptions of marker neutrality are central to much of molecular ecology. They may sometimes be violated, and in any case they **omit** the adaptive variation in natural populations.
+
+**So: are the markers really always neutral?**
+
+## (Mitte päris) neutraalsed markerid: allosüümid
+
+::: {.columns}
+::: {.column width="55%"}
+**Allozymes** (*allosüümid*) — forms of one enzyme encoded by different alleles of a gene, separated by gel electrophoresis.
+
+Environmental selection for optimum enzyme performance acts on allozyme variants, particularly in **ectotherms**.
+
+*Fundulus heteroclitus* shows a latitudinal cline of **lactate dehydrogenase (LdhB)** alleles that tracks ocean temperature along eastern North America.
+:::
+::: {.column width="45%"}
+![](/assets/lecture10/s37_1.png){height="270px"}
+:::
+:::
+
+## Allosüümikliinid järgivad kliimat
+
+::: {.columns}
+::: {.column width="48%"}
+![](/assets/lecture10/s38_1.png){height="310px"}
+:::
+::: {.column width="52%"}
+$Adh^S$ frequency falls with latitude along eastern Australia.
+
+Between **1979–82** and **2002–04** the whole cline shifted about **4° of latitude** polewards as the climate warmed (Umina et al. 2005, *Science*).
+
+A "neutral" allozyme responding to temperature over twenty years is **selection, not drift**.
+
+This is the same gene as the silent-polymorphism and MK examples — one locus, three lessons.
+:::
+:::
+
+## (Mitte päris) neutraalsed markerid: mtDNA
+
+mtDNA became popular for its technical ease, supposed clonality, near-neutrality and clock-like substitution rate. However:
+
+- There are **diseases** caused by mutations in mtDNA.
+- **Codon usage is not random**: in chicken mtDNA, two of the six-fold redundant leucine codons are used 5–8× more often than the others.
+- mtDNA polymorphism can be maintained by selection on the **joint mitochondrial–nuclear genotype**.
+- mtDNA is inherited together with **maternally transmitted symbionts** — so it hitchhikes.
+
+::: {.callout-note}
+Evidence keeps accumulating that strict neutrality of mtDNA is invalid. That does not make mtDNA useless; it makes "mtDNA is neutral" a claim you have to defend for your system rather than assume.
+:::
+
+## mtDNA liftisõit kaitsva sümbiondiga
+
+::: {.columns}
+::: {.column width="52%"}
+*Spiroplasma* protects *Drosophila neotestacea* against a sterilising nematode (Jaenike et al. 2010, *Science*).
+
+- With the nematode present, *Spiroplasma*-infected flies rose from ~50% to ~96% **in seven generations**; uninfected populations were sterilised and went extinct.
+- Symbionts and mtDNA travel together in the **egg cytoplasm**, so the mtDNA haplotype of infected lines sweeps along with the symbiont.
+
+mtDNA diversity can then reflect **symbiont dynamics**, not neutral demography.
+:::
+::: {.column width="48%"}
+![](/assets/lecture10/s40_1.png){height="280px"}
+:::
+:::
+
+# Adaptiivne muutlikkus looduses
+
+## Molekulaarsed lähenemised adaptiivsele muutlikkusele
+
+::: {.columns}
+::: {.column width="55%"}
+Factors contributing to fitness constitute only **part** of the adaptive variation in natural populations.
+
+Much morphological variation may have little immediate relation to fitness — but could become important if environmental circumstances change.
+
+**Neutral molecular markers are generally poor indicators of adaptive variation.** That is the whole reason this section exists.
+:::
+::: {.column width="45%"}
+![](/assets/lecture10/s42_1.png){height="260px"}
+:::
+:::
+
+## Üksiku geeni kohastumus: taskuhiired
+
+::: {.columns}
+::: {.column width="52%"}
+Dark mice on black lava, light mice on pale rock (*Chaetodipus intermedius*). Coat colour matches substrate under strong selection by visual predators.
+
+- At the Pinacate lava (Arizona), melanism is caused by **four amino-acid mutations in *Mc1r*** (Nachman et al. 2003).
+- Dark mice on **other lava flows lack them** — the same phenotype evolved by different genetic routes.
+- Neutral mtDNA shows **little structure** exactly where *Mc1r* is sharply divergent (Hoekstra et al. 2004).
+:::
+::: {.column width="48%"}
+![](/assets/lecture10/s43_1.jpg){height="260px"}
+:::
+:::
+
+::: {.notes}
+Heinaru's parallel plant example: Linanthus parryae flower colour, blue dominant vs white recessive, blue frequency 1–80% across the Mojave. Single alleles can carry large evolutionary significance.
+:::
+
+## Adaptiivne muutlikkus: jooksiklane
+
+::: {.columns}
+::: {.column width="55%"}
+*Pogonus chalceus* has **short-winged** and **long-winged** populations — wing length directly controls dispersal capacity.
+
+Found exclusively in salt marshes, largely restricted to the coastal tidal zones of the Atlantic and Mediterranean.
+
+Mean population wing size is tightly correlated with the frequencies of allozymes of the nuclear-encoded mitochondrial **NADP⁺-dependent isocitrate dehydrogenase (mtIdh)**.
+
+The two reflect similar selection pressures from different hydrological regimes: regular short tidal inundation versus unpredictable seasonal inundation.
+:::
+::: {.column width="45%"}
+![](/assets/lecture10/s44_1.jpg){height="250px"}
+:::
+:::
+
+## mtIdh genealoogia: sweep või tasakaalustav valik?
+
+::: {.columns}
+::: {.column width="48%"}
+![](/assets/lecture10/s45_1.png){height="300px"}
+:::
+::: {.column width="52%"}
+Short-winged-associated **mtIdh-D** haplotypes cluster *within* the long-winged **mtIdh-B** haplotypes.
+
+- More than **10× lower** haplotype diversity among mtIdh-D alleles; low nucleotide diversity suggests a **selective sweep**.
+- But there are **many fixed differences** between the B and D clusters, which instead suggests long-term **balancing selection** or geographic isolation.
+
+The same genealogy supports two opposite stories. Which one you believe depends on which summary statistic you privilege.
+:::
+:::
+
+## Mammuti hemoglobiin: kohastunud külmaga
+
+::: {.columns}
+::: {.column width="55%"}
+A key adaptive physiochemical trait reconstructed in an **extinct species** (Campbell et al. 2010).
+
+Haemoglobin binds and carries O₂, but offloading it to respiring cells is hampered at low temperature, because haem deoxygenation is **endothermic** — Hb–O₂ affinity rises as temperature falls.
+
+Mammoth haemoglobin, "resurrected" from ancient DNA sequence and expressed in the lab, carries amino-acid substitutions that make O₂ binding **less temperature-sensitive** — an adaptation to cold.
+:::
+::: {.column width="45%"}
+![](/assets/lecture10/s46_1.png){height="280px"}
+:::
+:::
+
+## Geenivool levitab adaptiivseid alleele
+
+::: {.columns}
+::: {.column width="48%"}
+![](/assets/lecture10/s47_1.png){height="290px"}
+:::
+::: {.column width="52%"}
+A resistance allele $R$ arises **once** by mutation. Gene flow — or accidental transport — carries it to new populations, where insecticide selection drives it to high frequency.
+
+In *Culex pipiens*, amplified esterase resistance alleles spread worldwide from a **single origin** (Raymond et al. 1991).
+
+**Neutral markers measure the gene flow; adaptive alleles ride on it.**
+:::
+:::
+
+## Inimtekkeline valik: trofeejaht
+
+::: {.columns}
+::: {.column width="52%"}
+Ram Mountain, Alberta (Coltman et al. 2003, *Nature*).
+
+- **30 years** of trophy hunting removed the rams with the largest horns.
+- Average body weight **and** horn length both declined.
+- Horn size is **heritable**, so this is unintended artificial selection against exactly the trait hunters value.
+
+Harvest selects like a predator — but on the **largest** individuals, which no natural predator does.
+:::
+::: {.column width="48%"}
+![](/assets/lecture10/s48_2.png){height="280px"}
+:::
+:::
+
+## Tunnuste nihkumine: Darwini vindid
+
+::: {.columns}
+::: {.column width="48%"}
+![](/assets/lecture10/s49_2.png){height="300px"}
+:::
+::: {.column width="52%"}
+Where *G. fortis* and *G. fuliginosa* **co-occur**, their beaks differ strongly; on islands where each lives **alone**, they are similar. Competition drives divergent selection on beak size.
+
+During the **2004–05 drought**, an *HMGA2* haplotype for small beaks rose in *G. fortis* as the larger *G. magnirostris* took the big seeds (Lamichhaney et al. 2016).
+
+**Ecological interactions leave signatures at specific loci.**
+:::
+:::
+
+# Kvantitatiivsed tunnused, geeniekspressioon ja looduskaitse
+
+## Kvantitatiivsed tunnused
+
+Most traits that vary among individuals result from the combined effects of different alleles at **multiple genes** — particularly traits that bear upon fitness. In the mouse, at least **650 genes** have some phenotypic effect on growth.
+
+Quantitative trait analysis usually requires laboratory breeding, but in wild populations relatedness can be estimated with molecular markers instead.
+
+| Term | Eesti keeles | Meaning |
+|---|---|---|
+| $V_P$ | *fenotüübiline varieeruvus* | Total phenotypic variance, genetic and environmental |
+| $V_A$ | *aditiivne geneetiline varieeruvus* | Additive genetic variance — loci whose allele effects add up |
+| $h^2$ | *päritavus* | Heritability, $h^2 = V_A / V_P$ |
+| $COV_A$ | *pleiotroopsus, aheldustasakaalutus* | Additive genetic covariation of several traits |
+| $\mathbf{G}$ | *G-maatriks* | Matrix of $V_A$ and $COV_A$ — the directions adaptation can take |
+| $V_D$ | *dominantsus* | Non-additive variance, mostly dominance |
+
+## Vastus valikule: aretaja võrrand
+
+$$R = h^2 \cdot S$$
+
+| | |
+|---|---|
+| $R$ | **response** — change in the mean of the next generation |
+| $h^2$ | **heritability** ($V_A/V_P$) |
+| $S$ | **selection differential** — mean of selected parents minus population mean |
+
+Selection changes the next generation **only through the heritable part** of the variation. A strong selection differential on a trait with $h^2 \approx 0$ produces nothing.
+
+Galápagos finches: offspring of drought survivors inherited deeper beaks — evolution observed within **one generation** (Grant & Grant).
+
+## Käitumise geneetika: urud *Peromyscus*'el
+
+::: {.columns}
+::: {.column width="52%"}
+Weber, Peterson & Hoekstra 2013, *Nature*.
+
+- Oldfield mice (*P. polionotus*) dig **long burrows with an escape tunnel**; deer mice (*P. maniculatus*) dig short, simple ones.
+- $F_1$ hybrids build escape tunnels → the trait is **dominant**; backcrosses segregate.
+- **QTL mapping** (*kvantitatiivse tunnuse lookus*): one region for escape tunnels, three for tunnel length.
+
+A complex behaviour splits into a few genetic modules.
+:::
+::: {.column width="48%"}
+![](/assets/lecture10/s55_1.png){height="270px"}
+:::
+:::
+
+## Geeniekspressiooni muutlikkus
+
+::: {.columns}
+::: {.column width="52%"}
+Gene expression has been hypothesised to be of adaptive importance — and heritable variation that affects fitness is **necessary** for evolution by natural selection.
+
+Adaptive expression differences have been found in single-gene studies; microarrays and now RNA-seq assay many loci at once and can test the hypothesis rigorously.
+
+Much variation in expression under a given condition has a **genetic basis** — shown in yeast, *Drosophila*, mice and humans.
+
+**Neutral expectation:** expression divergence accumulates with time like neutral sequence divergence. Deviations suggest selection.
+:::
+::: {.column width="48%"}
+![](/assets/lecture10/s57_1.png){height="270px"}
+
+Four scenarios of genomic response to an environmental challenge across taxa — each supporting a different evolutionary inference.
+:::
+:::
+
+## Plastilisus või kohastumus?
+
+::: {.columns}
+::: {.column width="55%"}
+| Timescale | What is happening |
+|---|---|
+| **Minutes–weeks** | Stress, then **acclimation** (*aklimatiseerumine*) — phenotypic plasticity (*fenotüübiline plastilisus*), often via gene expression |
+| **Generations** | **Adaptation** (*kohastumus*) — change in allele frequencies |
+
+To tell them apart: **common-garden** and **reciprocal-transplant** experiments, and eQTL mapping.
+
+The two look identical in a single field sample. They are distinguished by experimental design, not by sequencing depth.
+:::
+::: {.column width="45%"}
+![](/assets/lecture10/s58_1.png){height="200px"}
+
+![](/assets/lecture10/s58_2.png){height="110px"}
+:::
+:::
+
+## Miks mõlemad looduskaitses loevad
+
+::: {.columns}
+::: {.column width="52%"}
+Small populations enter a feedback loop: **inbreeding depression** (*inbriidingdepressioon*), drift and loss of genetic diversity → lower fitness → even smaller $N_e$.
+
+- **Neutral markers** estimate $N_e$, inbreeding, connectivity and history.
+- **Adaptive variation** — functional genes, genome scans — indicates the capacity to adapt to change.
+
+Management units should integrate **both**.
+:::
+::: {.column width="48%"}
+![](/assets/lecture10/s59_1.png){height="290px"}
+:::
+:::
+
+## Kokkuvõte — take-home messages
+
+| | |
+|---:|---|
+| **1** | Four forces — mutation, selection, drift, gene flow — shape molecular variation |
+| **2** | Neutral theory: most molecular change is drift of neutral mutations; neutral substitution rate = mutation rate → molecular clock |
+| **3** | Functional constraints explain why rates differ among genes, sites and protein regions |
+| **4** | Polymorphism vs divergence (MK test, $NI$, $\alpha$) and other signatures detect selection — mind demography |
+| **5** | Popular "neutral" markers (allozymes, mtDNA) are not always neutral |
+| **6** | Adaptive variation ranges from single genes (*Mc1r*) to polygenic traits ($h^2$, QTL) and plastic gene expression |
+
+## Põhimõisted — key terms (1/2)
+
+::: {.columns}
+::: {.column width="50%"}
+| English | Eesti keeles |
+|---|---|
+| Mutation | mutatsioon |
+| Natural selection | looduslik valik |
+| Genetic drift | geenitriiv |
+| Gene flow | geenivool |
+| Fitness | kohasus |
+| Genetic load | geneetiline koormus |
+| Fixation | fikseerumine |
+| Effective population size | efektiivne populatsiooni suurus |
+| Modern Synthesis | sünteetiline evolutsiooniteooria |
+:::
+::: {.column width="50%"}
+| English | Eesti keeles |
+|---|---|
+| Neutral theory | neutraalsusteooria |
+| Selectively neutral | selektiivselt neutraalne |
+| Purifying selection | puhastav selektsioon |
+| Balancing selection | tasakaalustav selektsioon |
+| Positive / negative selection | positiivne / negatiivne selektsioon |
+| Directional selection | suunav valik |
+| Stabilizing selection | stabiliseeriv valik |
+| Disruptive selection | lõhestav valik |
+| Overdominance | üledominantsus |
+:::
+:::
+
+## Põhimõisted — key terms (2/2)
+
+::: {.columns}
+::: {.column width="50%"}
+| English | Eesti keeles |
+|---|---|
+| Polymorphism | polümorfism |
+| Silent polymorphism | vaikiv polümorfism |
+| SNP | üksiknukleotiidne polümorfism |
+| Allozyme | allosüüm, alloensüüm |
+| Synonymous substitution | sünonüümne asendus |
+| Non-synonymous substitution | mittesünonüümne asendus |
+| Functional constraints | funktsionaalsed piirangud |
+| Molecular clock | molekulaarne kell |
+| Pseudogene | pseudogeen |
+:::
+::: {.column width="50%"}
+| English | Eesti keeles |
+|---|---|
+| Adaptation | kohastumus |
+| Acclimation | aklimatiseerumine |
+| Phenotypic plasticity | fenotüübiline plastilisus |
+| Quantitative trait | kvantitatiivne tunnus |
+| Heritability | päritavus |
+| Additive genetic variance | aditiivne geneetiline varieeruvus |
+| Inbreeding depression | inbriidingdepressioon |
+| Cline | kliin |
+| Gene expression | geeniekspressioon |
+:::
+:::
+
+## Küsimused aruteluks
+
+<details>
+<summary>Why does the neutral substitution rate not depend on population size — and why does the nearly neutral rate do so?</summary>
+
+Because $2Nu$ new neutral mutations each have fixation probability $1/(2N)$, and the two cancel to give $k = u$. Under Ohta's nearly neutral theory the *class* of mutations that behaves neutrally is set by $|N_e s| \ll 1$, so $N_e$ decides how much of the genome is effectively neutral — and therefore the rate.
+
+</details>
+
+<details>
+<summary>You find $NI = 2.5$ for a gene in a Baltic fish. What are two biological explanations?</summary>
+
+$NI > 1$ means more amino-acid polymorphism than expected from the divergence. Either purifying selection is removing slightly deleterious amino-acid variants that are still segregating, or the population has a small $N_e$ — a post-glacial Baltic population is a good candidate — so slightly deleterious variants drift to appreciable frequency. A recent bottleneck can produce the same signal without any change in selection.
+
+</details>
+
+<details>
+<summary>Your microsatellite study shows no structure between two cod populations. Can you conclude that they are one management unit?</summary>
+
+No. Neutral markers measure gene flow and drift, and a handful of migrants per generation is enough to erase $F_{ST}$ while leaving the populations adaptively distinct. Local adaptation can persist at a few loci under selection against a background of homogenised neutral variation — which is exactly why management should look at adaptive variation too.
+
+</details>
+
+<details>
+<summary>Design a study to tell apart plastic and genetic differences in heat tolerance between two populations.</summary>
+
+A common-garden experiment: raise both populations for at least one full generation under identical conditions, then measure heat tolerance. Any difference that remains is genetic; what disappears was plasticity. A reciprocal transplant adds the environmental half of the answer, and eQTL mapping tells you which loci carry the expression response.
+
+</details>
+
+## Aitäh! Thank you — questions?
+
+::: {.columns}
+::: {.column width="55%"}
+![](/assets/lecture10/s49_1.png){height="250px"}
+:::
+::: {.column width="45%"}
+::: {.callout-important}
+peeter.laas@taltech.ee · peeter.laas@ut.ee
+:::
+
+**Eestikeelne materjal:**
+
+A. Heinaru, *Geneetika*, evolutsioonigeneetika peatükk.
+
+**Seminarid:** 15 min ettekanne + 5 min küsimusi. Ülesehitus: sissejuhatus (taust ja eesmärgid), meetodid, peamised tulemused, järeldused. Ole valiv — kõiki tulemusi ei pea esitama.
+:::
+:::
