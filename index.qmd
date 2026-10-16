@@ -67,7 +67,9 @@ andmed tegelikult võimaldavad väita. Neli sisuplokki on lahti kirjutatud
 #| echo: false
 #| results: asis
 
-cards <- schedule |> filter(!is.na(lecture), lecture != "")
+# Kaardid on ainult loengud. Ka muud read võivad lingi kanda (praktikumi
+# taustaleht), aga need kuuluvad ajakavasse, mitte slaidide võrestikku.
+cards <- schedule |> filter(kind == "Loeng", !is.na(lecture), lecture != "")
 
 cat('<div class="lecture-grid">\n')
 for (i in seq_len(nrow(cards))) {

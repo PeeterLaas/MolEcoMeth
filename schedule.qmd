@@ -18,7 +18,8 @@ start    <- as.Date(course_meta("semester-start"))
 schedule <- course_schedule() |>
   mutate(
     past  = date < Sys.Date(),
-    # Rida lingib oma slaididele, kui need on olemas; muidu on teema tavaline tekst.
+    # Rida lingib oma slaididele või taustalehele, kui see on olemas;
+    # muidu on teema tavaline tekst.
     topic_cell = ifelse(is.na(lecture), topic, sprintf("[%s](%s)", topic, lecture)),
     state = ifelse(past, "toimunud", status),
     # Nädalal võib olla mitu rida; nädal ja kuupäev näidatakse ainult esimesel.
