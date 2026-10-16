@@ -1,0 +1,231 @@
+---
+title: "🏖️ Praktikum: Kopli laht"
+subtitle: "Taustainfo enne liiva- ja veeproovide kogumist"
+---
+
+Praktikumi proovid kogume **Kopli lahest**. See leht on taust, mida tasub lugeda
+*enne* välitööd: kus me oleme, mis seal juba teada on, ja mida meie proovid
+sellele juurde annavad.
+
+Kogu allpool esitatud seisundihinnang pärineb TÜ Eesti Mereinstituudi aruandest
+*Kopli lahe elustiku, ökosüsteemi seisundi ja vee keemilise kvaliteedi uuringud*
+(Tallinn, 2023; tellija Tallinna Keskkonna- ja Kommunaalamet).
+
+# Kus me oleme
+
+::: {.callout-note}
+Kopli laht on Tallinna lääneossa jääv **väikelaht**, mis moodustab kogu Tallinna
+lahe pindalast ligikaudu **5%** — vastavalt 13 ja 250 km².
+:::
+
+Laht lõikub Kopli ja Kakumäe poolsaare vahele kitsa (kuni **2,5 km**) ja
+suhteliselt sügava (kuni **30 m**) vaona. Põhjaosas on ta avatud Soome lahe
+keskosa vete sissevoolule — ja see avatus on, nagu allpool näeb, lahe ökoloogia
+seisukohalt üks olulisemaid asju.
+
+Lahe kaldal on **Stroomi supelrand**. Seda tasub meeles pidada: suplusvee
+kvaliteet on konkreetne, seadusega reguleeritud ja inimestele oluline näitaja,
+mida meie molekulaarsed meetodid otseselt puudutavad.
+
+# Milline koormus lahele langeb
+
+Vaatamata väikesele pindalale suubuvad Kopli lahte **Põhja-Tallinna, Kristiine,
+Mustamäe ja Haabersti** linnaosade sademeveed. Suuremad allikad:
+
+| Allikas | Tähtsus |
+|---|---|
+| **Mustjõe oja** | Üks kahest peamisest väljalasust |
+| **Rocca al Mare sademevee väljalask** | Teine peamine; üldfosfori kontsentratsioon väljalasus kuni 0,66 mg l⁻¹ |
+| **Seewaldi kollektor** | Kolmas oluline punktallikas |
+
+Mustjõe oja ja Rocca al Mare väljalask annavad kokku ligikaudu **80% kogu
+sademeveega Tallinna lahte jõudvast lämmastikukoormusest** ja umbes **72%
+fosforikoormusest**.
+
+::: {.callout-important}
+Kavas on viia Kopli lahte suubuv kanalisatsioonisüsteem **lahkvoolseks**, mis
+suurendaks oluliselt merre juhitava sademevee mahtu. Just see plaan oli aruande
+tellimise põhjus — ja seepärast on olemas nii värske ja detailne ülevaade.
+:::
+
+# Mida 2023. aasta uuring tegi
+
+Seirejaamu külastati **viiel korral juunist septembrini**. Vee füüsikalis-keemilised
+näitajad, fütoplankton ja zooplankton määrati igal korral; põhjaloomastik ühe
+juunikuise proovivõtu põhjal; põhjakooslused kirjeldati juulis sukeldumis- ja
+videotehnoloogia abil.
+
+| Jaam / transekt | Asukoht | Sügavus |
+|---|---|---|
+| **TLN14** | lahe siseosa | 9 m |
+| **TLN1**, **TLN16** | lahe väliosa, suudmeala | 25–30 m |
+| **TLN29–TLN32** | kaldalähedane vöönd | 1,5–4 m |
+| **Merirahu 1**, **Merirahu 3**, **Vabaõhu** | põhjataimestiku transektid | kuni ~12 m |
+| **Kopli prügi 1**, **Kopli prügi 2** | lisatransektid merepõhja prügiseirest | |
+
+# Mis välja tuli
+
+## Koondhinnang
+
+::: {.callout-important}
+Kolme bioloogilise kvaliteedielemendi alusel määrati Kopli laht **„kesisesse"
+ökoloogilisse kvaliteediklassi**. Hinnangu määrasid fütoplankton ja
+põhjataimestik — põhjaloomastiku ning füüsikalis-keemiliste näitajate põhjal oli
+mereala **„heas" seisundis**.
+:::
+
+| Kvaliteedielement | Seisund |
+|---|---|
+| Fütoplankton | **kesine** |
+| Põhjataimestik | **kesine** |
+| Põhjaloomastik | hea |
+| Füüsikalis-keemilised näitajad (Nüld, Püld, läbipaistvus) | hea |
+| Zooplankton | alla hea taseme (indikaator on siiski avamere jaoks) |
+| **Üldhinnang** | **KESINE** |
+
+## Fütoplankton — kesine
+
+Suvine (juuni–september) klorofülli *a* mediaan oli **4,6 µg l⁻¹** ja fütoplanktoni
+biomassi mediaan **0,65 mg l⁻¹** — sisuliselt sama mis kogu Muuga-Tallinna-Kakumäe
+veekogumis.
+
+Vetikaõitseng oli juulis-augustis suhteliselt intensiivne: biomassi üle 1 mg l⁻¹
+mõõdeti **9 proovist 7-s**. Domineerisid järgemööda:
+
+- **juunis** apvellingu ajal autotroofne ripsloom *Mesodinium rubrum*;
+- **juulis** niitjas sinivetikas *Aphanizomenon flos-aquae* ja silmviburvetikas
+  *Eutreptiella gymnastica*;
+- **augustis** ränivetikas *Coscinodiscus granii*, septembris hakkas biomass hääbuma.
+
+## Põhjataimestik — kesine
+
+Taimestiku levikut määrab **substraat** ja avatus lainetusele. Kopli lahes on
+valdav substraat **peenliiv**; kõva põhi esineb lahe **lääne- ja loodeosas**.
+
+- Põhjataimestiku maksimaalne sügavuslevik oli **12,3 m**, hinnangu aluseks olnud
+  transektide keskmine **9,9 m**.
+- **Põisadru** (*Fucus vesiculosus*) ulatus 3–3,8 m sügavuseni ja esines kõigil
+  kolmel transektil — varasemate aastatega võrreldes on põisadru ohtrus
+  **suurenenud**.
+- **Meriheina** (*Zostera marina*) kooslus esines Vabaõhu transektil 3–4 m
+  sügavusel katvusega kuni **90%**.
+- Mitmeaastaste liikide osakaal jäi vahemikku **67–81%**.
+
+## Põhjaloomastik — hea
+
+Suurselgrootute koosluse indeks **ZKI2 = 0,27**, mis vastab klassile **hea**.
+
+Kokku leiti **33 liiki ja rühma**, nende seas **12 suurema reostustundlikkusega
+liiki** — näiteks kirpvähilised *Bathyporeia pilosa* ja *Monoporeia affinis*.
+Sügavamates punktides domineerisid biomassilt karbid, eeskätt **balti lamekarp**
+(*Macoma balthica*, kuni 78,6 g m⁻²) ja **südakarp** (*Cerastoderma glaucum*).
+
+::: {.callout-note}
+Kõige liigirikkamad olid just need punktid, kus esines ka põhjataimestikku
+(TLN32: 21 taksonit). Taimestik on elupaik — see on seos, mida meie proovides
+peaks samuti näha olema.
+:::
+
+## Vesi — hea
+
+| Näitaja | 2023. aasta väärtused |
+|---|---|
+| Pindmise kihi soolsus | **5,89–6,60 PSU** (keskmine 6,33) |
+| Pindmise kihi temperatuur juuli–september | **16,5–19,1 °C** |
+| Üldlämmastik | 17,0–26,5 µmol l⁻¹ (0,24–0,37 mg l⁻¹) |
+| Üldfosfor | 0,45–1,12 µmol l⁻¹ (0,014–0,035 mg l⁻¹) |
+| Vee läbipaistvus (Secchi) | keskmine **4,8 m**; miinimum 2,5–2,8 m juuli lõpus |
+
+Juuni alguses registreeriti **apvelling** ehk süvavee kerge: pindmise kihi
+temperatuur langes 6,5–11,9 °C-ni, põhjalähedases kihis mõõdeti 3,4 °C ja vee
+läbipaistvus küündis lahe suudmealal **9 meetrini**.
+
+## Zooplankton — alla hea taseme
+
+Mesozooplanktoni arvukus kõikus **30 000 – 3 000 000 is m⁻³**, biomass
+**174–3550 mg m⁻³**. Ülekaalukalt domineeris keriloom *Keratella quadrata*, mis
+moodustas üle **80% arvukusest** ja 50% biomassist.
+
+Biomass oli seega kõrge, aga keskmine isendi kaal väga madal (**2,9 µg** vs Soome
+lahe avaosa hea seisundi lävi 8,6 µg). Hea keskkonnaseisund ei ole zooplanktoni
+osas Soome lahes saavutatud juba pikemat aega.
+
+# Mis sellest praktikumi jaoks järeldub
+
+**Laht ei ole ühtlane.** Siseosa (Stroomi) ja väliosa (suudmeala) käituvad
+erinevalt. Suudmeala on tihedalt seotud Soome lahe avaosaga — intensiivsed
+vetikaõitsengud koonduvad just sinna, mitte lahe siseossa.
+
+**Substraat otsustab, mida sa leiad.** Valdav peenliiv tähendab, et liivaproov on
+enamiku lahe jaoks esinduslik — aga kõva põhi ja sellega kaasnev põisadru- ja
+agarikukooslus on ainult lääne- ja loodeosas, merihein aga siseosas pehmetel
+põhjadel.
+
+**Toitainete gradienti lahes ei ole näha.** Sademevee väljalasude ja meres
+mõõdetud kontsentratsioonide vahe on üldlämmastiku puhul **8–20-kordne** ja
+üldfosfori puhul **4–47-kordne**. Seirejaamade vahel erinevusi ei tuvastatud —
+koormus **lahjeneb kiiresti**.
+
+**Orgaanika ei kuhju.** Hoovused ja suhteline avatus lainetusele pesevad
+orgaanikarikka muda setetest välja. Mõnes piirkonnas tähendab see setteelustikule
+hoopis **toiduvaest** keskkonda.
+
+**Hoovused on tuulest juhitud.** Väljavool toimib püsivamalt idakalda lähedal,
+seda kompenseerib pinnakihialune sissevool lahe keskteljel. Võimaliku reostuse
+hajumine on kõige aeglasem **põhjakaare tuulte** korral.
+
+::: {.callout-important}
+Pane välitööl **tuulesuund kirja**. Lahe hüdrodünaamika on tuulest sõltuv, ja
+ilma selle metaandmeta ei ole hiljem võimalik seletada, miks üks proov teistest
+erineb.
+:::
+
+# Mida meie proovid juurde annavad
+
+Aruande hinnang on koostatud **klassikaliste meetoditega**: mikroskoopia,
+Secchi ketas, CTD-sondeerimine, põhjaammutaja, sukeldumistransektid. Need on
+head meetodid — ja nad ei näe seda, mida meie kursus õpetab.
+
+| Aruandes | Meie praktikumis |
+|---|---|
+| Fütoplanktoni liigid mikroskoobi all | Metavöötkoodistamine — ka need rühmad, mida mikroskoobiga ei määra |
+| Põhjaloomastik ammutajaproovist | Setete eDNA — liigid, keda proovis füüsiliselt ei ole |
+| Üldlämmastik ja -fosfor | Mikroobikoosluse struktuur, mis toitainetele reageerib |
+| Suplusvee näitajad kultiveerimisega (18–48 h) | Fekaalse reostuse **molekulaarne allikatuvastus** — peremeesspetsiifilised markerid |
+
+::: {.callout-note}
+Viimane rida seob praktikumi otse **9. loenguga**: One Health, suplusvee
+kvaliteet ja fekaalse reostuse geneetiline diagnostika. Stroomi rand on siinsamas
+— see ei ole hüpoteetiline näide.
+:::
+
+# Proovivõtu kontroll-loend
+
+Metaandmed, mis tuleb **kohapeal** kirja panna — hiljem neid enam ei saa:
+
+- **koordinaadid** ja kellaaeg;
+- **sügavus** ja **substraat** (peenliiv? kivid? taimestik?);
+- **vee temperatuur** ja **soolsus**, võimalusel läbipaistvus;
+- **tuulesuund ja -tugevus**, viimaste päevade sademed;
+- kaugus lähimast väljalasust või vooluveekogust;
+- proovi **säilitusviis** ja aeg proovivõtust säilitamiseni.
+
+Ja kontrollid, ilma milleta tulemust tõlgendada ei saa:
+
+- **välipimeproov** (*field blank*) — puhas vesi, mis läbib kogu protseduuri;
+- **ekstraktsiooni pimeproov**;
+- vähemalt **kaks tehnilist kordust** igast proovipunktist.
+
+::: {.callout-important}
+Ilma pimeproovita ei ole võimalik eristada "selles liivas oli see liik" ja
+"see liik oli minu kindas". eDNA puhul ei ole see teoreetiline mure.
+:::
+
+# Allikas
+
+TÜ Eesti Mereinstituut, 2023. *Kopli lahe elustiku, ökosüsteemi seisundi ja vee
+keemilise kvaliteedi uuringud.* Aruanne, töövõtuleping TKA129, tellija Tallinna
+Keskkonna- ja Kommunaalamet. Tallinn, 35 lk.
+
+Vastutav täitja Andres Jaanus (fütoplankton, hüdrokeemia), põhjataimestik Kaire
+Torn jt., TÜ Eesti Mereinstituut.

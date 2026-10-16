@@ -120,6 +120,8 @@ website:
             text: "11 · Molekulaarne evolutsioon"
       - href: seminars/index.qmd
         text: "🎤 Seminarid"
+      - href: praktikum-kopli.qmd
+        text: "🏖️ Praktikum: Kopli laht"
       - href: materials.qmd
         text: "📚 Materjalid"
   page-footer:
